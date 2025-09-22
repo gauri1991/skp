@@ -1,0 +1,188 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Home Page Management - Dashboard{% endblock %}
+{% block page_title %}Home Page Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
+        </div>
+        <div class="p-6">
+            <div class="flex flex-wrap gap-4">
+                <a href="{% url 'dashboard_homepage_preview' %}" 
+                   class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                    <i data-lucide="eye" class="h-4 w-4 mr-2"></i>
+                    Preview Homepage
+                </a>
+                <a href="{% url 'home' %}" target="_blank" 
+                   class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                    View Live Site
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sections List -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Homepage Sections</h2>
+            <p class="text-sm text-gray-600 mt-1">Manage the sections that appear on your homepage. Enable/disable sections and edit their content.</p>
+        </div>
+        
+        <div class="divide-y divide-gray-200">
+            {% for section in sections %}
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <!-- Section Icon -->
+                        <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                            {% if section.section_type == 'hero' %}
+                                <i data-lucide="home" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'about' %}
+                                <i data-lucide="user" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'services' %}
+                                <i data-lucide="briefcase" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'portfolio' %}
+                                <i data-lucide="folder" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'testimonials' %}
+                                <i data-lucide="message-circle" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'contact' %}
+                                <i data-lucide="mail" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'stats' %}
+                                <i data-lucide="bar-chart" class="h-5 w-5 text-primary-600"></i>
+                            {% elif section.section_type == 'skills' %}
+                                <i data-lucide="zap" class="h-5 w-5 text-primary-600"></i>
+                            {% else %}
+                                <i data-lucide="layout" class="h-5 w-5 text-primary-600"></i>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Section Info -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">{{ section.title }}</h3>
+                            <p class="text-sm text-gray-500">{{ section.get_section_type_display }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Section Status and Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Status Toggle -->
+                        <div class="flex items-center">
+                            <span class="text-sm text-gray-600 mr-3">{% if section.is_enabled %}Enabled{% else %}Disabled{% endif %}</span>
+                            <div class="relative inline-flex items-center">
+                                <input type="checkbox" 
+                                       {% if section.is_enabled %}checked{% endif %}
+                                       class="sr-only peer" 
+                                       onchange="toggleSection({{ section.id }}, this.checked)">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex items-center space-x-2">
+                            <a href="{% url 'dashboard_homepage_content_edit' section.section_type %}" 
+                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 bg-primary-100 rounded-md hover:bg-primary-200 transition-colors">
+                                <i data-lucide="edit" class="h-4 w-4 mr-1"></i>
+                                Edit Content
+                            </a>
+                            <a href="{% url 'dashboard_homepage_section_edit' section.pk %}" 
+                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                <i data-lucide="settings" class="h-4 w-4 mr-1"></i>
+                                Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section Preview -->
+                {% if section.is_enabled %}
+                <div class="mt-4 pl-14">
+                    <div class="text-sm text-gray-600">
+                        {% if section.section_type == 'hero' %}
+                            Main banner section with title, description, and call-to-action buttons
+                        {% elif section.section_type == 'about' %}
+                            Professional summary and statistics about your experience
+                        {% elif section.section_type == 'services' %}
+                            Showcase of your professional services and offerings
+                        {% elif section.section_type == 'portfolio' %}
+                            Featured projects and work samples
+                        {% elif section.section_type == 'testimonials' %}
+                            Client feedback and recommendations
+                        {% elif section.section_type == 'contact' %}
+                            Contact information and social media links
+                        {% elif section.section_type == 'stats' %}
+                            Key statistics and achievements
+                        {% elif section.section_type == 'skills' %}
+                            Technical skills and expertise
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="bg-blue-50 rounded-lg p-6">
+        <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                <i data-lucide="help-circle" class="h-4 w-4 text-blue-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-blue-900 mb-1">How it works</h3>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• <strong>Toggle sections:</strong> Use the switches to enable/disable sections on your homepage</li>
+                    <li>• <strong>Edit content:</strong> Click "Edit Content" to modify text, images, and other section content</li>
+                    <li>• <strong>Section settings:</strong> Click "Settings" to change the section title and display order</li>
+                    <li>• <strong>Preview changes:</strong> Use "Preview Homepage" to see how your changes look before going live</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleSection(sectionId, isEnabled) {
+    fetch(`{% url 'dashboard_homepage_sections' %}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            'action': 'toggle_section',
+            'section_id': sectionId,
+            'is_enabled': isEnabled
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Optionally show a success message
+            console.log('Section toggled successfully');
+        } else {
+            // Revert the toggle if there was an error
+            event.target.checked = !isEnabled;
+            alert('Error updating section: ' + data.error);
+        }
+    })
+    .catch(error => {
+        // Revert the toggle if there was an error
+        event.target.checked = !isEnabled;
+        console.error('Error:', error);
+        alert('Error updating section');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}

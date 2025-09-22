@@ -1,0 +1,185 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Theme Settings{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Theme Settings</h1>
+        <p class="text-gray-600">Choose your preferred color scheme for the website</p>
+    </div>
+
+    <!-- Current Theme Info -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Current Theme</h2>
+        <div class="flex items-center space-x-4">
+            <div class="flex space-x-2">
+                <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.primary_color }}" title="Primary"></div>
+                <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.secondary_color }}" title="Secondary"></div>
+                <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.accent_color }}" title="Accent"></div>
+                <div class="w-8 h-8 rounded border" style="background-color: {{ current_theme.background_color }}" title="Background"></div>
+            </div>
+            <span class="text-lg font-medium text-gray-900">{{ current_theme.get_theme_name_display }}</span>
+        </div>
+    </div>
+
+    <!-- Theme Options -->
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Professional Trust Theme -->
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'professional' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Professional Trust</h3>
+                    
+                    <!-- Color Preview -->
+                    <div class="mb-4 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Navy & Teal</span>
+                            <div class="flex space-x-1">
+                                <div class="w-6 h-6 rounded" style="background-color: #1e3a5f"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #64748b"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #0891b2"></div>
+                                <div class="w-6 h-6 rounded border" style="background-color: #fafafa"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 mb-4">
+                        Conveys trust, professionalism, and technical expertise. Perfect for engineering services.
+                    </p>
+                    
+                    <button type="submit" name="theme_name" value="professional" 
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'professional' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                        {% if current_theme.theme_name == 'professional' %}
+                            <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
+                            Active
+                        {% else %}
+                            Select Theme
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modern Minimal Theme -->
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'minimal' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Modern Minimal</h3>
+                    
+                    <!-- Color Preview -->
+                    <div class="mb-4 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Charcoal & Blue</span>
+                            <div class="flex space-x-1">
+                                <div class="w-6 h-6 rounded" style="background-color: #18181b"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #71717a"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #2563eb"></div>
+                                <div class="w-6 h-6 rounded border" style="background-color: #f4f4f5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 mb-4">
+                        Clean, modern aesthetic with strong contrast. Great for contemporary professional image.
+                    </p>
+                    
+                    <button type="submit" name="theme_name" value="minimal" 
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'minimal' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                        {% if current_theme.theme_name == 'minimal' %}
+                            <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
+                            Active
+                        {% else %}
+                            Select Theme
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Warm Professional Theme -->
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'warm' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Warm Professional</h3>
+                    
+                    <!-- Color Preview -->
+                    <div class="mb-4 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Brown & Orange</span>
+                            <div class="flex space-x-1">
+                                <div class="w-6 h-6 rounded" style="background-color: #451a03"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #78716c"></div>
+                                <div class="w-6 h-6 rounded" style="background-color: #ea580c"></div>
+                                <div class="w-6 h-6 rounded border" style="background-color: #fef3c7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 mb-4">
+                        Warm, approachable colors that convey creativity and innovation. Unique professional look.
+                    </p>
+                    
+                    <button type="submit" name="theme_name" value="warm" 
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'warm' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                        {% if current_theme.theme_name == 'warm' %}
+                            <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
+                            Active
+                        {% else %}
+                            Select Theme
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Color Details -->
+    <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Active Theme Colors</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+                <label class="text-sm font-medium text-gray-600">Primary</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.primary_color }}"></div>
+                    <code class="text-sm">{{ current_theme.primary_color }}</code>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Secondary</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.secondary_color }}"></div>
+                    <code class="text-sm">{{ current_theme.secondary_color }}</code>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Accent</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.accent_color }}"></div>
+                    <code class="text-sm">{{ current_theme.accent_color }}</code>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Background</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded border" style="background-color: {{ current_theme.background_color }}"></div>
+                    <code class="text-sm">{{ current_theme.background_color }}</code>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Surface</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded border" style="background-color: {{ current_theme.surface_color }}"></div>
+                    <code class="text-sm">{{ current_theme.surface_color }}</code>
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Success</label>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-8 h-8 rounded" style="background-color: {{ current_theme.success_color }}"></div>
+                    <code class="text-sm">{{ current_theme.success_color }}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends 'client/base.html' %}
+
+{% block title %}My Deliverables - Client Portal{% endblock %}
+{% block page_title %}My Deliverables{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Files</p>
+                    <p class="text-3xl font-bold text-blue-600">{{ total_deliverables }}</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="file" class="h-6 w-6 text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Ready to Download</p>
+                    <p class="text-3xl font-bold text-green-600">{{ ready_deliverables }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="download" class="h-6 w-6 text-green-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Downloaded</p>
+                    <p class="text-3xl font-bold text-gray-600">{{ downloaded_deliverables }}</p>
+                </div>
+                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="check-circle" class="h-6 w-6 text-gray-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Filters</h2>
+        </div>
+        <div class="p-6">
+            <form method="get" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Status Filter -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select name="status" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                        <option value="">All Status</option>
+                        {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Order Filter -->
+                <div>
+                    <label for="order" class="block text-sm font-medium text-gray-700 mb-2">Order</label>
+                    <select name="order" id="order" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                        <option value="">All Orders</option>
+                        {% for order in orders %}
+                        <option value="{{ order.pk }}" {% if current_order == order.pk|stringformat:"s" %}selected{% endif %}>{{ order.order_number }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Filter Button -->
+                <div class="flex items-end">
+                    <button type="submit" class="w-full bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center">
+                        <i data-lucide="filter" class="h-4 w-4 mr-2"></i>
+                        Apply Filters
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deliverables List -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-900">Your Deliverables</h2>
+            </div>
+        </div>
+
+        {% if deliverables %}
+        <div class="divide-y divide-gray-200">
+            {% for deliverable in deliverables %}
+            <div class="p-6 hover:bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <!-- File Icon -->
+                        <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                            {% if deliverable.file_name %}
+                                {% if '.pdf' in deliverable.file_name.lower %}
+                                    <i data-lucide="file-text" class="h-6 w-6 text-red-600"></i>
+                                {% elif '.doc' in deliverable.file_name.lower or '.docx' in deliverable.file_name.lower %}
+                                    <i data-lucide="file-text" class="h-6 w-6 text-blue-600"></i>
+                                {% elif '.jpg' in deliverable.file_name.lower or '.jpeg' in deliverable.file_name.lower or '.png' in deliverable.file_name.lower %}
+                                    <i data-lucide="image" class="h-6 w-6 text-green-600"></i>
+                                {% elif '.zip' in deliverable.file_name.lower %}
+                                    <i data-lucide="archive" class="h-6 w-6 text-purple-600"></i>
+                                {% else %}
+                                    <i data-lucide="file" class="h-6 w-6 text-gray-600"></i>
+                                {% endif %}
+                            {% else %}
+                                <i data-lucide="file" class="h-6 w-6 text-gray-600"></i>
+                            {% endif %}
+                        </div>
+
+                        <!-- File Details -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">{{ deliverable.title }}</h3>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500 mt-1">
+                                <span>Order: {{ deliverable.order.order_number }}</span>
+                                <span>•</span>
+                                <span>{{ deliverable.file_size_mb }} MB</span>
+                                {% if deliverable.download_count > 0 %}
+                                <span>•</span>
+                                <span>Downloaded {{ deliverable.download_count }} time{{ deliverable.download_count|pluralize }}</span>
+                                {% endif %}
+                                <span>•</span>
+                                <span>{{ deliverable.created_at|timesince }} ago</span>
+                            </div>
+                            {% if deliverable.description %}
+                            <p class="text-sm text-gray-600 mt-2">{{ deliverable.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Status & Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Status Badge -->
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                            {% if deliverable.status == 'pending' %}bg-yellow-100 text-yellow-800
+                            {% elif deliverable.status == 'processing' %}bg-blue-100 text-blue-800
+                            {% elif deliverable.status == 'ready' %}bg-green-100 text-green-800
+                            {% elif deliverable.status == 'expired' %}bg-red-100 text-red-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ deliverable.get_status_display }}
+                        </span>
+
+                        <!-- Download Button -->
+                        {% if deliverable.status == 'ready' %}
+                        <a href="{% url 'client_deliverable_download' deliverable.pk %}" 
+                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i data-lucide="download" class="h-4 w-4 mr-2"></i>
+                            Download
+                        </a>
+                        {% elif deliverable.status == 'pending' %}
+                        <span class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm">
+                            Processing...
+                        </span>
+                        {% elif deliverable.status == 'expired' %}
+                        <span class="px-4 py-2 bg-red-100 text-red-600 rounded-lg text-sm">
+                            Expired
+                        </span>
+                        {% endif %}
+
+                        <!-- Order Details Link -->
+                        <a href="{% url 'client_order_detail' deliverable.order.pk %}" 
+                           class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                            View Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="px-6 py-4 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} deliverables
+                </div>
+                <div class="flex space-x-2">
+                    {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}" 
+                       class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Previous
+                    </a>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if num == page_obj.number %}
+                    <span class="px-3 py-2 text-sm bg-primary-600 text-white border border-primary-600 rounded-lg">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}" 
+                       class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50">{{ num }}</a>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.order %}&order={{ request.GET.order }}{% endif %}" 
+                       class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Next
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="p-12 text-center">
+            <i data-lucide="download" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No deliverables found</h3>
+            <p class="text-gray-500 mb-6">No files are available for download yet or no deliverables match your filters.</p>
+            <a href="{% url 'client_orders' %}" class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
+                <i data-lucide="shopping-bag" class="h-4 w-4 mr-2"></i>
+                View Orders
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Download Instructions -->
+    <div class="bg-blue-50 rounded-lg p-6">
+        <div class="flex items-start">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                <i data-lucide="info" class="h-4 w-4 text-blue-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-blue-900 mb-2">Download Instructions</h3>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• Files are available for download immediately once marked as "Ready"</li>
+                    <li>• Download links are secure and tracked for your protection</li>
+                    <li>• If you encounter any issues downloading, please contact our support team</li>
+                    <li>• Files may have download limits or expiry dates for security purposes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        lucide.createIcons();
+    });
+</script>
+{% endblock %}

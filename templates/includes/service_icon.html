@@ -1,0 +1,9 @@
+{% comment %}
+Service icon include template
+Usage: {% include 'includes/service_icon.html' with service=service_obj icon_class="h-5 w-5" %}
+{% endcomment %}
+{% if service.image %}
+    <img src="{{ service.image.url }}" alt="{{ service.title }}" class="{{ icon_class|default:'h-5 w-5' }} object-cover rounded">
+{% else %}
+    <i data-lucide="{{ service.icon|default:'settings' }}" class="{{ icon_class|default:'h-5 w-5' }} {{ icon_color|default:'text-primary-600' }}"></i>
+{% endif %}

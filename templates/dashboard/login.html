@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Login - Sumithra KP</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': {
+                            DEFAULT: '#2563eb',
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Header -->
+            <div class="text-center">
+                <h1 class="text-3xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
+                    {% if login_type == 'client' %}Client Portal{% else %}Dashboard Login{% endif %}
+                </h1>
+                <p class="text-gray-600">
+                    {% if login_type == 'client' %}
+                        Access your orders, deliverables, and manage your account
+                    {% else %}
+                        Sign in to manage your website content
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                <div class="space-y-3">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}">
+                            <div class="flex items-center">
+                                {% if message.tags == 'error' %}
+                                    <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                                {% elif message.tags == 'warning' %}
+                                    <i data-lucide="alert-triangle" class="h-5 w-5 mr-2"></i>
+                                {% elif message.tags == 'success' %}
+                                    <i data-lucide="check-circle" class="h-5 w-5 mr-2"></i>
+                                {% else %}
+                                    <i data-lucide="info" class="h-5 w-5 mr-2"></i>
+                                {% endif %}
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Login/Signup Form -->
+            <div class="bg-white p-8 rounded-lg shadow-lg" x-data="authForm()">
+                <!-- Tab Navigation (only for client portal) -->
+                {% if login_type == 'client' %}
+                <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
+                    <button type="button" 
+                            @click="activeTab = 'login'"
+                            :class="activeTab === 'login' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+                            class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all">
+                        Sign In
+                    </button>
+                    <button type="button" 
+                            @click="activeTab = 'signup'"
+                            :class="activeTab === 'signup' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+                            class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all">
+                        Sign Up
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- Login Form -->
+                <form method="post" class="space-y-6" x-show="activeTab === 'login'">
+                    {% csrf_token %}
+                    <input type="hidden" name="login_type" value="{% if login_type == 'client' %}client{% else %}admin{% endif %}">
+                    
+                    <!-- Username Field -->
+                    <div>
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {% if login_type == 'client' %}Email or Mobile Number{% else %}Username{% endif %}
+                        </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="mt-1 text-sm text-red-600">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div>
+                        <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Password
+                        </label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="mt-1 text-sm text-red-600">
+                                {{ form.password.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Non-field errors -->
+                    {% if form.non_field_errors %}
+                        <div class="text-sm text-red-600">
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center">
+                            <i data-lucide="log-in" class="h-5 w-5 mr-2"></i>
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Signup Form (only for client portal) -->
+                {% if login_type == 'client' %}
+                <form method="post" action="{% url 'client_signup' %}" class="space-y-6" x-show="activeTab === 'signup'">
+                    {% csrf_token %}
+                    
+                    <!-- Full Name -->
+                    <div>
+                        <label for="full_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="full_name" name="full_name" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="Enter your email address">
+                    </div>
+
+                    <!-- Mobile Number -->
+                    <div>
+                        <label for="mobile" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Mobile Number <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" id="mobile" name="mobile" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="+91 XXXX XXXX XX">
+                    </div>
+
+                    <!-- Company (Optional) -->
+                    <div>
+                        <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Company/Organization
+                        </label>
+                        <input type="text" id="company" name="company"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="Enter your company name (optional)">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password1" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="password1" name="password1" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="Enter your password">
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="password2" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Confirm Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="password2" name="password2" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                               placeholder="Confirm your password">
+                    </div>
+
+                    <!-- Terms Agreement -->
+                    <div class="flex items-start">
+                        <input type="checkbox" id="terms" name="terms" required
+                               class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1">
+                        <label for="terms" class="ml-2 block text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-primary-600 hover:text-primary-700">Terms of Service</a> 
+                            and <a href="#" class="text-primary-600 hover:text-primary-700">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center">
+                            <i data-lucide="user-plus" class="h-5 w-5 mr-2"></i>
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center">
+                <a href="{% url 'home' %}" class="text-primary-600 hover:text-primary-700 text-sm flex items-center justify-center">
+                    <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                    Back to Website
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+        
+        // Alpine.js data function
+        function authForm() {
+            return {
+                activeTab: '{% if login_type == "client" %}login{% else %}login{% endif %}',
+                
+                init() {
+                    // Re-initialize icons when tab changes
+                    this.$watch('activeTab', () => {
+                        this.$nextTick(() => {
+                            lucide.createIcons();
+                        });
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

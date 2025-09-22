@@ -1,0 +1,393 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{% if object %}Edit {{ object.title }}{% else %}Create Service{% endif %} - Dashboard{% endblock %}
+{% block page_title %}{% if object %}Edit Service{% else %}Create Service{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">{% if object %}Edit{% else %}Create{% endif %}</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Form Card -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <form method="post" enctype="multipart/form-data" class="space-y-6" x-data="serviceForm()">
+                {% csrf_token %}
+                
+                <!-- Basic Information Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Basic Information</h3>
+                    <p class="mt-1 text-sm text-gray-600">Provide the basic details about your service.</p>
+                    
+                    <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Title -->
+                        <div class="lg:col-span-3">
+                            <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Service Title <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.title.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Category -->
+                        <div>
+                            <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Category <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.category }}
+                            {% if form.category.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Icon -->
+                        <div>
+                            <label for="{{ form.icon.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Icon (Lucide Icon Name)
+                            </label>
+                            {{ form.icon }}
+                            {% if form.icon.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.icon.errors.0 }}</p>
+                            {% endif %}
+                            <p class="mt-1 text-xs text-gray-500">
+                                Use icons from <a href="https://lucide.dev/icons/" target="_blank" class="text-primary-600 hover:text-primary-700">Lucide</a>
+                            </p>
+                        </div>
+
+                        <!-- Custom Image/Icon -->
+                        <div>
+                            <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Custom Icon/Image
+                            </label>
+                            {{ form.image }}
+                            {% if form.image.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.image.errors.0 }}</p>
+                            {% endif %}
+                            <p class="mt-1 text-xs text-gray-500">
+                                Upload a custom icon/image. If provided, this will be used instead of the Lucide icon.
+                            </p>
+                            {% if object and object.image %}
+                            <div class="mt-2">
+                                <div class="flex items-center space-x-3">
+                                    <img src="{{ object.image.url }}" alt="{{ object.title }}" class="w-10 h-10 rounded-lg object-cover">
+                                    <span class="text-sm text-gray-600">Current image</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Short Description -->
+                        <div class="lg:col-span-3">
+                            <label for="{{ form.short_description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Short Description <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.short_description }}
+                            {% if form.short_description.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.short_description.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Information Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Detailed Information</h3>
+                    <p class="mt-1 text-sm text-gray-600">Provide comprehensive details about your service.</p>
+                    
+                    <div class="mt-6 space-y-6">
+                        <!-- Description -->
+                        <div>
+                            <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Description <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Features -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">
+                                Features
+                            </label>
+                            <div class="mt-2">
+                                <div class="space-y-2" x-show="features.length === 0">
+                                    <p class="text-sm text-gray-500">No features added yet.</p>
+                                </div>
+                                <template x-for="(feature, index) in features" :key="index">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="text" 
+                                               x-model="features[index]"
+                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="Feature description">
+                                        <button type="button" 
+                                                @click="removeFeature(index)"
+                                                class="text-red-600 hover:text-red-700">
+                                            <i data-lucide="x" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <button type="button" 
+                                        @click="addFeature()"
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                                    Add Feature
+                                </button>
+                            </div>
+                            <input type="hidden" name="features" x-model="featuresJson">
+                        </div>
+
+                        <!-- Process Steps -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">
+                                Process Steps
+                            </label>
+                            <div class="mt-2">
+                                <div class="space-y-2" x-show="process_steps.length === 0">
+                                    <p class="text-sm text-gray-500">No process steps added yet.</p>
+                                </div>
+                                <template x-for="(step, index) in process_steps" :key="index">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-800 rounded-full flex items-center justify-center text-xs font-bold" x-text="index + 1"></span>
+                                        <input type="text" 
+                                               x-model="process_steps[index]"
+                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="Process step description">
+                                        <button type="button" 
+                                                @click="removeProcessStep(index)"
+                                                class="text-red-600 hover:text-red-700">
+                                            <i data-lucide="x" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <button type="button" 
+                                        @click="addProcessStep()"
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                                    Add Process Step
+                                </button>
+                            </div>
+                            <input type="hidden" name="process_steps" x-model="processStepsJson">
+                        </div>
+
+                        <!-- Deliverables -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">
+                                Deliverables
+                            </label>
+                            <div class="mt-2">
+                                <div class="space-y-2" x-show="deliverables.length === 0">
+                                    <p class="text-sm text-gray-500">No deliverables added yet.</p>
+                                </div>
+                                <template x-for="(deliverable, index) in deliverables" :key="index">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="text" 
+                                               x-model="deliverables[index]"
+                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="Deliverable description">
+                                        <button type="button" 
+                                                @click="removeDeliverable(index)"
+                                                class="text-red-600 hover:text-red-700">
+                                            <i data-lucide="x" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <button type="button" 
+                                        @click="addDeliverable()"
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                                    Add Deliverable
+                                </button>
+                            </div>
+                            <input type="hidden" name="deliverables" x-model="deliverablesJson">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing & Timeline Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Pricing & Timeline</h3>
+                    <p class="mt-1 text-sm text-gray-600">Set pricing and timeline information.</p>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Base Price -->
+                        <div>
+                            <label for="{{ form.base_price.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Base Price (₹)
+                            </label>
+                            {{ form.base_price }}
+                            {% if form.base_price.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.base_price.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Timeline -->
+                        <div>
+                            <label for="{{ form.timeline.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Timeline
+                            </label>
+                            {{ form.timeline }}
+                            {% if form.timeline.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.timeline.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Settings Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Service Settings</h3>
+                    <p class="mt-1 text-sm text-gray-600">Configure service behavior and features.</p>
+                    
+                    <div class="mt-6 space-y-4">
+                        <!-- Has BOM -->
+                        <div class="flex items-center">
+                            {{ form.has_bom }}
+                            <label for="{{ form.has_bom.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                This service includes Bill of Materials (BOM)
+                            </label>
+                        </div>
+
+                        <!-- Is Active -->
+                        <div class="flex items-center">
+                            {{ form.is_active }}
+                            <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Service is active and visible to clients
+                            </label>
+                        </div>
+
+                        <!-- Display Order -->
+                        <div class="w-32">
+                            <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Display Order
+                            </label>
+                            {{ form.display_order }}
+                            {% if form.display_order.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.display_order.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="pt-6">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{% url 'dashboard_service_list' %}" 
+                           class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Cancel
+                        </a>
+                        <button type="submit" 
+                                class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            {% if object %}Update Service{% else %}Create Service{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function serviceForm() {
+    return {
+        features: [],
+        process_steps: [],
+        deliverables: [],
+        
+        init() {
+            // Load existing data if editing
+            {% if object %}
+                this.features = {{ object.features|safe }} || [];
+                this.process_steps = {{ object.process_steps|safe }} || [];
+                this.deliverables = {{ object.deliverables|safe }} || [];
+            {% endif %}
+            
+            this.$watch('features', () => this.updateFeaturesJson());
+            this.$watch('process_steps', () => this.updateProcessStepsJson());
+            this.$watch('deliverables', () => this.updateDeliverablesJson());
+            
+            // Initialize JSON fields
+            this.updateFeaturesJson();
+            this.updateProcessStepsJson();
+            this.updateDeliverablesJson();
+        },
+        
+        get featuresJson() {
+            return JSON.stringify(this.features.filter(f => f.trim()));
+        },
+        
+        get processStepsJson() {
+            return JSON.stringify(this.process_steps.filter(s => s.trim()));
+        },
+        
+        get deliverablesJson() {
+            return JSON.stringify(this.deliverables.filter(d => d.trim()));
+        },
+        
+        updateFeaturesJson() {
+            document.querySelector('input[name="features"]').value = this.featuresJson;
+        },
+        
+        updateProcessStepsJson() {
+            document.querySelector('input[name="process_steps"]').value = this.processStepsJson;
+        },
+        
+        updateDeliverablesJson() {
+            document.querySelector('input[name="deliverables"]').value = this.deliverablesJson;
+        },
+        
+        addFeature() {
+            this.features.push('');
+        },
+        
+        removeFeature(index) {
+            this.features.splice(index, 1);
+        },
+        
+        addProcessStep() {
+            this.process_steps.push('');
+        },
+        
+        removeProcessStep(index) {
+            this.process_steps.splice(index, 1);
+        },
+        
+        addDeliverable() {
+            this.deliverables.push('');
+        },
+        
+        removeDeliverable(index) {
+            this.deliverables.splice(index, 1);
+        }
+    }
+}
+</script>
+{% endblock %}

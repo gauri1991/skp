@@ -1,0 +1,225 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Education{% else %}Add Education{% endif %} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Education{% else %}Add Education{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update your education details{% else %}Add a new education entry{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_resume_education_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Education
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Degree Type -->
+                    <div>
+                        <label for="{{ form.degree_type.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Degree Type *
+                        </label>
+                        {{ form.degree_type }}
+                        {% if form.degree_type.errors %}
+                            {% for error in form.degree_type.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Field of Study -->
+                    <div>
+                        <label for="{{ form.field_of_study.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Field of Study *
+                        </label>
+                        {{ form.field_of_study }}
+                        {% if form.field_of_study.errors %}
+                            {% for error in form.field_of_study.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Institution Name -->
+                    <div>
+                        <label for="{{ form.institution_name.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Institution Name *
+                        </label>
+                        {{ form.institution_name }}
+                        {% if form.institution_name.errors %}
+                            {% for error in form.institution_name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Location -->
+                    <div>
+                        <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Location
+                        </label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            {% for error in form.location.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Start Year -->
+                    <div>
+                        <label for="{{ form.start_year.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Start Year *
+                        </label>
+                        {{ form.start_year }}
+                        {% if form.start_year.errors %}
+                            {% for error in form.start_year.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- End Year -->
+                    <div>
+                        <label for="{{ form.end_year.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            End Year *
+                        </label>
+                        {{ form.end_year }}
+                        {% if form.end_year.errors %}
+                            {% for error in form.end_year.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Grade Type -->
+                    <div>
+                        <label for="{{ form.grade_type.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Grade Type
+                        </label>
+                        {{ form.grade_type }}
+                        {% if form.grade_type.errors %}
+                            {% for error in form.grade_type.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Grade Value -->
+                    <div>
+                        <label for="{{ form.grade_value.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Grade Value
+                        </label>
+                        {{ form.grade_value }}
+                        {% if form.grade_value.errors %}
+                            {% for error in form.grade_value.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Thesis Title -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.thesis_title.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Thesis/Project Title
+                        </label>
+                        {{ form.thesis_title }}
+                        {% if form.thesis_title.errors %}
+                            {% for error in form.thesis_title.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Relevant Coursework -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.relevant_coursework.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Relevant Coursework
+                        </label>
+                        {{ form.relevant_coursework }}
+                        {% if form.relevant_coursework.errors %}
+                            {% for error in form.relevant_coursework.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Honors and Awards -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.honors_awards.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Honors and Awards
+                        </label>
+                        {{ form.honors_awards }}
+                        {% if form.honors_awards.errors %}
+                            {% for error in form.honors_awards.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Order -->
+                    <div>
+                        <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Display Order
+                        </label>
+                        {{ form.display_order }}
+                        {% if form.display_order.errors %}
+                            {% for error in form.display_order.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Visible -->
+                    <div>
+                        <div class="flex items-center">
+                            {{ form.is_visible }}
+                            <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Show on resume
+                            </label>
+                        </div>
+                        {% if form.is_visible.errors %}
+                            {% for error in form.is_visible.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_education_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Education{% else %}Add Education{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

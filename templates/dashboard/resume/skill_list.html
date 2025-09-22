@@ -1,0 +1,73 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Skills Management - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Skills Management</h1>
+            <p class="mt-2 text-gray-600">Manage your skills and proficiency levels</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Back
+            </a>
+            <a href="{% url 'dashboard_resume_skill_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Add Skill
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        {% if skills %}
+            {% regroup skills by category as skill_groups %}
+            {% for group in skill_groups %}
+            <div class="border-b border-gray-200 last:border-b-0">
+                <div class="bg-gray-50 px-6 py-3">
+                    <h3 class="text-lg font-medium text-gray-900">{{ group.list.0.get_category_display }}</h3>
+                </div>
+                <ul class="divide-y divide-gray-200">
+                    {% for skill in group.list %}
+                    <li class="px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900">{{ skill.name }}</h4>
+                                {% if skill.description %}
+                                    <p class="text-sm text-gray-600">{{ skill.description }}</p>
+                                {% endif %}
+                                <div class="flex items-center mt-2 space-x-4">
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-primary-600 h-2 rounded-full" style="width: {{ skill.proficiency_percentage }}%"></div>
+                                        </div>
+                                        <span class="ml-2 text-sm text-gray-600">{{ skill.proficiency_percentage }}%</span>
+                                    </div>
+                                    <span class="text-sm text-gray-500">{{ skill.get_proficiency_level_display }}</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="{% url 'dashboard_resume_skill_edit' skill.pk %}" class="text-primary-600 hover:text-primary-900">
+                                    <i data-lucide="edit" class="h-4 w-4"></i>
+                                </a>
+                                <a href="{% url 'dashboard_resume_skill_delete' skill.pk %}" class="text-red-600 hover:text-red-900">
+                                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-12">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No skills added</h3>
+                <a href="{% url 'dashboard_resume_skill_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                    <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Add Skill
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

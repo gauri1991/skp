@@ -1,0 +1,244 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Projects -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 card-hover">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100">
+                <i data-lucide="briefcase" class="h-6 w-6 text-blue-600"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Total Projects</p>
+                <p class="text-2xl font-bold text-gray-900">{{ total_projects }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Categories -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 card-hover">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100">
+                <i data-lucide="tag" class="h-6 w-6 text-green-600"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Categories</p>
+                <p class="text-2xl font-bold text-gray-900">{{ total_categories }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Projects -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 card-hover">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100">
+                <i data-lucide="star" class="h-6 w-6 text-yellow-600"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-600">Featured</p>
+                <p class="text-2xl font-bold text-gray-900">{{ featured_projects }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 card-hover">
+        <div class="text-center">
+            <a href="{% url 'dashboard_project_create' %}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                Add Project
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Recent Projects -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Recent Projects</h3>
+                <a href="{% url 'dashboard_portfolio_list' %}" class="text-primary-600 hover:text-primary-700 text-sm">
+                    View All
+                </a>
+            </div>
+        </div>
+        
+        <div class="p-6">
+            {% if recent_projects %}
+                <div class="space-y-4 max-h-96 overflow-y-auto form-container">
+                    {% for project in recent_projects %}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                {% if project.thumbnail %}
+                                    <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="h-10 w-10 rounded-lg object-cover">
+                                {% else %}
+                                    <div class="h-10 w-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="image" class="h-5 w-5 text-primary-600"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="ml-3">
+                                    <p class="font-medium text-gray-900">{{ project.title }}</p>
+                                    <p class="text-sm text-gray-600">{{ project.year }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                {% if project.featured %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        <i data-lucide="star" class="h-3 w-3 mr-1"></i>
+                                        Featured
+                                    </span>
+                                {% endif %}
+                                <a href="{% url 'dashboard_project_edit' project.pk %}" class="text-primary-600 hover:text-primary-700">
+                                    <i data-lucide="edit" class="h-4 w-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="folder-open" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <p class="text-gray-600">No projects yet</p>
+                    <a href="{% url 'dashboard_project_create' %}" class="mt-2 inline-flex items-center text-primary-600 hover:text-primary-700">
+                        <i data-lucide="plus" class="h-4 w-4 mr-1"></i>
+                        Create your first project
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Category Statistics -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Category Distribution</h3>
+                <a href="{% url 'dashboard_category_list' %}" class="text-primary-600 hover:text-primary-700 text-sm">
+                    Manage
+                </a>
+            </div>
+        </div>
+        
+        <div class="p-6">
+            {% if category_stats %}
+                <div class="space-y-4 max-h-96 overflow-y-auto form-container">
+                    {% for category in category_stats %}
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-primary-600 rounded-full mr-3"></div>
+                                <span class="font-medium text-gray-900">{{ category.name }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-600 mr-2">{{ category.project_count }} project{{ category.project_count|pluralize }}</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-primary-600 h-2 rounded-full" style="width: {% widthratio category.project_count total_projects 100 %}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="tag" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <p class="text-gray-600">No categories yet</p>
+                    <a href="{% url 'dashboard_category_create' %}" class="mt-2 inline-flex items-center text-primary-600 hover:text-primary-700">
+                        <i data-lucide="plus" class="h-4 w-4 mr-1"></i>
+                        Create your first category
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="{% url 'dashboard_project_create' %}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+            <div class="p-2 bg-blue-600 rounded-lg mr-4">
+                <i data-lucide="plus" class="h-5 w-5 text-white"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Add New Project</p>
+                <p class="text-sm text-gray-600">Create a new portfolio project</p>
+            </div>
+        </a>
+        
+        <a href="{% url 'dashboard_category_create' %}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+            <div class="p-2 bg-green-600 rounded-lg mr-4">
+                <i data-lucide="tag" class="h-5 w-5 text-white"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Add Category</p>
+                <p class="text-sm text-gray-600">Create a new project category</p>
+            </div>
+        </a>
+        
+        <a href="{% url 'home' %}" target="_blank" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+            <div class="p-2 bg-purple-600 rounded-lg mr-4">
+                <i data-lucide="external-link" class="h-5 w-5 text-white"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">View Website</p>
+                <p class="text-sm text-gray-600">See your live website</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Scrollbar Demo Section -->
+<div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">System Status & Activity</h3>
+    <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto form-container">
+        <!-- Demo content to show scrollbars -->
+        <div class="space-y-3 text-sm">
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Dashboard initialized successfully</span>
+                <span class="text-xs text-gray-500">2 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Project database synchronized</span>
+                <span class="text-xs text-gray-500">5 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Theme settings loaded</span>
+                <span class="text-xs text-gray-500">5 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">User authentication verified</span>
+                <span class="text-xs text-gray-500">6 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Portfolio images optimized</span>
+                <span class="text-xs text-gray-500">10 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Category structure validated</span>
+                <span class="text-xs text-gray-500">12 minutes ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Backup completed successfully</span>
+                <span class="text-xs text-gray-500">1 hour ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Site performance optimized</span>
+                <span class="text-xs text-gray-500">2 hours ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Security scan completed</span>
+                <span class="text-xs text-gray-500">3 hours ago</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white rounded border">
+                <span class="text-gray-700">Media files organized</span>
+                <span class="text-xs text-gray-500">4 hours ago</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

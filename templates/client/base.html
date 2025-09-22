@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Client Portal - Sumithra KP{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': {
+                            DEFAULT: '#2563eb',
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        }
+        .sidebar-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        .sidebar-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .sidebar-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans" x-data="clientPortal()">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0"
+         :class="{ '-translate-x-full': !sidebarOpen, 'translate-x-0': sidebarOpen }">
+        
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between h-16 px-6 gradient-bg">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
+                    <i data-lucide="user" class="h-5 w-5 text-primary-600"></i>
+                </div>
+                <h1 class="text-white font-semibold text-lg">Client Portal</h1>
+            </div>
+            <button @click="sidebarOpen = false" class="lg:hidden text-white hover:text-gray-200">
+                <i data-lucide="x" class="h-6 w-6"></i>
+            </button>
+        </div>
+        
+        <!-- User Info -->
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="user" class="h-6 w-6 text-primary-600"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+                    <p class="text-xs text-gray-500">{{ user.client_profile.company|default:"Individual" }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 px-4 py-4 space-y-1 sidebar-scrollbar overflow-y-auto max-h-screen">
+            <!-- Dashboard -->
+            <a href="{% url 'client_dashboard' %}" 
+               class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.resolver_match.url_name == 'client_dashboard' %}bg-primary-50 text-primary-700 border-r-2 border-primary-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+                <i data-lucide="home" class="h-5 w-5 mr-3"></i>
+                Dashboard Overview
+                {% if unread_notifications_count > 0 %}
+                <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full">{{ unread_notifications_count }}</span>
+                {% endif %}
+            </a>
+            
+            <!-- My Orders -->
+            <div x-data="{ open: {% if 'orders' in request.path %}true{% else %}false{% endif %} }">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="shopping-bag" class="h-5 w-5 mr-3"></i>
+                        My Orders
+                    </div>
+                    <div class="flex items-center">
+                        {% if active_orders > 0 %}
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ active_orders }}</span>
+                        {% endif %}
+                        <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
+                    <a href="{% url 'client_orders' %}?status=requested,quoted,approved,in_progress" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Active Orders</a>
+                    <a href="{% url 'client_orders' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Order History</a>
+                    <a href="{% url 'client_orders' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Order Tracking</a>
+                </div>
+            </div>
+            
+            <!-- Quotations & Billing -->
+            <div x-data="{ open: {% if 'billing' in request.path %}true{% else %}false{% endif %} }">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="receipt" class="h-5 w-5 mr-3"></i>
+                        Quotations & Billing
+                    </div>
+                    <div class="flex items-center">
+                        {% if payment_due > 0 %}
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full mr-2">Due</span>
+                        {% endif %}
+                        <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Pending Quotes</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Payment History</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Invoices</a>
+                </div>
+            </div>
+            
+            <!-- Deliverables -->
+            <div x-data="{ open: {% if 'deliverables' in request.path %}true{% else %}false{% endif %} }">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="download" class="h-5 w-5 mr-3"></i>
+                        Deliverables
+                    </div>
+                    <div class="flex items-center">
+                        {% if ready_deliverables_count > 0 %}
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ ready_deliverables_count }}</span>
+                        {% endif %}
+                        <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
+                    <a href="{% url 'client_deliverables' %}?status=ready" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Ready for Download</a>
+                    <a href="{% url 'client_deliverables' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Download History</a>
+                </div>
+            </div>
+            
+            <!-- Communication -->
+            <div x-data="{ open: {% if 'messages' in request.path %}true{% else %}false{% endif %} }">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="message-circle" class="h-5 w-5 mr-3"></i>
+                        Communication
+                    </div>
+                    <div class="flex items-center">
+                        {% if unread_messages_count > 0 %}
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full mr-2">{{ unread_messages_count }}</span>
+                        {% endif %}
+                        <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }"></i>
+                    </div>
+                </button>
+                <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Messages</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Support Tickets</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Inquiry</a>
+                </div>
+            </div>
+            
+            <!-- Services -->
+            <div x-data="{ open: {% if 'services' in request.path %}true{% else %}false{% endif %} }">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="briefcase" class="h-5 w-5 mr-3"></i>
+                        Services
+                    </div>
+                    <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': open }"></i>
+                </button>
+                <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
+                    <a href="{% url 'services' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Browse Services</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Request</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Service History</a>
+                </div>
+            </div>
+            
+            <!-- Meetings -->
+            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                <i data-lucide="calendar" class="h-5 w-5 mr-3"></i>
+                Meetings & Consultations
+            </a>
+            
+            <!-- Account Settings -->
+            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                <i data-lucide="settings" class="h-5 w-5 mr-3"></i>
+                Account Settings
+            </a>
+        </nav>
+        
+        <!-- Sidebar Footer -->
+        <div class="border-t border-gray-200 p-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center">
+                    <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                    Back to Website
+                </a>
+                <a href="{% url 'dashboard_logout' %}" class="text-sm text-red-600 hover:text-red-700 flex items-center">
+                    <i data-lucide="log-out" class="h-4 w-4 mr-1"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile sidebar overlay -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false" 
+         class="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 transition-opacity lg:hidden"
+         x-transition:enter="ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"></div>
+    
+    <!-- Main Content -->
+    <div class="lg:pl-64">
+        <!-- Top Navigation -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center">
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-gray-500 hover:text-gray-700">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                    <h1 class="ml-4 lg:ml-0 text-2xl font-semibold text-gray-900">{% block page_title %}Dashboard{% endblock %}</h1>
+                </div>
+                
+                <!-- Top navigation actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="relative p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <i data-lucide="bell" class="h-6 w-6"></i>
+                            {% if unread_notifications_count > 0 %}
+                            <span class="absolute -top-1 -right-1 h-4 w-4 bg-red-400 text-white text-xs rounded-full flex items-center justify-center">{{ unread_notifications_count }}</span>
+                            {% endif %}
+                        </button>
+                        
+                        <!-- Notifications dropdown (placeholder) -->
+                        <div x-show="open" @click.away="open = false" x-transition
+                             class="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border border-gray-200">
+                            <div class="p-4">
+                                <h3 class="text-sm font-semibold text-gray-900 mb-2">Recent Notifications</h3>
+                                <p class="text-sm text-gray-500">No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User menu -->
+                    <div class="flex items-center">
+                        <span class="text-sm font-medium text-gray-700 mr-2">{{ user.get_full_name|default:user.username }}</span>
+                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                            <i data-lucide="user" class="h-5 w-5 text-primary-600"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Content -->
+        <main class="flex-1 p-6">
+            <!-- Messages -->
+            {% if messages %}
+                <div class="mb-6 space-y-3">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}">
+                            <div class="flex items-center">
+                                {% if message.tags == 'error' %}
+                                    <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                                {% elif message.tags == 'warning' %}
+                                    <i data-lucide="alert-triangle" class="h-5 w-5 mr-2"></i>
+                                {% elif message.tags == 'success' %}
+                                    <i data-lucide="check-circle" class="h-5 w-5 mr-2"></i>
+                                {% else %}
+                                    <i data-lucide="info" class="h-5 w-5 mr-2"></i>
+                                {% endif %}
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+        
+        // Alpine.js data function for client portal
+        function clientPortal() {
+            return {
+                sidebarOpen: false,
+                
+                init() {
+                    // Auto-close sidebar on larger screens
+                    this.$watch('sidebarOpen', () => {
+                        if (window.innerWidth >= 1024) {
+                            this.sidebarOpen = false;
+                        }
+                    });
+                    
+                    // Re-initialize icons when content changes
+                    this.$nextTick(() => {
+                        lucide.createIcons();
+                    });
+                }
+            }
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

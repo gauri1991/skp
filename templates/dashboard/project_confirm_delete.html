@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Delete Project{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <!-- Warning Icon -->
+        <div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+            <i data-lucide="alert-triangle" class="h-8 w-8 text-red-600"></i>
+        </div>
+        
+        <!-- Confirmation Message -->
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Delete Project?</h2>
+            <p class="text-gray-600 mb-4">
+                Are you sure you want to delete the project <strong>"{{ object.title }}"</strong>?
+            </p>
+            <p class="text-sm text-red-600">
+                This action cannot be undone. All images and data associated with this project will be permanently deleted.
+            </p>
+        </div>
+
+        <!-- Project Details -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-8">
+            <h3 class="font-semibold text-gray-900 mb-2">Project Details:</h3>
+            <ul class="text-sm text-gray-600 space-y-1">
+                <li><strong>Title:</strong> {{ object.title }}</li>
+                <li><strong>Year:</strong> {{ object.year }}</li>
+                {% if object.client %}
+                    <li><strong>Client:</strong> {{ object.client }}</li>
+                {% endif %}
+                <li><strong>Categories:</strong> 
+                    {% for category in object.categories.all %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+                <li><strong>Images:</strong> {{ object.images.count }} image{{ object.images.count|pluralize }}</li>
+            </ul>
+        </div>
+
+        <!-- Actions -->
+        <form method="post" class="flex items-center justify-center space-x-4">
+            {% csrf_token %}
+            <a href="{% url 'dashboard_portfolio_list' %}" 
+               class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+            </a>
+            <button type="submit" 
+                    class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                Delete Project
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

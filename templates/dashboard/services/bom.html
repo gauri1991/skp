@@ -1,0 +1,548 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Manage BOM - {{ service.title }}{% endblock %}
+{% block page_title %}Bill of Materials Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ service.title|truncatechars:20 }}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">BOM</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Service Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
+                        <p class="text-sm text-gray-500">Bill of Materials Management</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    {% if not service.has_bom %}
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-triangle" class="h-4 w-4 text-yellow-600 mr-2"></i>
+                            <span class="text-sm text-yellow-800">BOM disabled for this service</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" 
+                       class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Service</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if service.has_bom %}
+    <!-- BOM Management Interface -->
+    <div class="bg-white shadow rounded-lg" x-data="bomManager()">
+        <div class="px-4 py-5 sm:p-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Bill of Materials Templates</h2>
+                    <p class="text-sm text-gray-500">Manage material lists and pricing for this service</p>
+                </div>
+                <button @click="addBOM()" 
+                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                    <i data-lucide="plus" class="h-4 w-4"></i>
+                    <span>Add BOM Template</span>
+                </button>
+            </div>
+
+            <!-- BOM Categories Information -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 class="text-sm font-medium text-blue-900 mb-2">Common BOM Categories</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="package" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Materials</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="users" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Labor</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="tool" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Equipment</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="truck" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Transportation</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="settings" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Services</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="file-text" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Documentation</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="shield" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Safety</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="zap" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800">Utilities</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Existing BOMs -->
+            <div class="space-y-6" x-show="boms.length > 0">
+                <template x-for="(bom, bomIndex) in boms" :key="bom.id || bomIndex">
+                    <div class="border border-gray-200 rounded-lg">
+                        <!-- BOM Header -->
+                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3 flex-1">
+                                    <i data-lucide="package" class="h-5 w-5 text-gray-600"></i>
+                                    <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <input type="text" 
+                                               x-model="bom.name"
+                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="BOM Template Name">
+                                        <input type="text" 
+                                               x-model="bom.description"
+                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="Description">
+                                        <div class="flex items-center space-x-3">
+                                            <label class="flex items-center text-sm">
+                                                <input type="checkbox" 
+                                                       x-model="bom.is_active"
+                                                       class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                                <span class="ml-2">Active</span>
+                                            </label>
+                                            <label class="flex items-center text-sm">
+                                                <input type="checkbox" 
+                                                       x-model="bom.is_template"
+                                                       class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                                <span class="ml-2">Template</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg font-bold text-gray-900" x-text="'₹' + calculateBOMTotal(bom).toLocaleString()"></span>
+                                    <button @click="removeBOM(bomIndex)" 
+                                            class="text-red-600 hover:text-red-700">
+                                        <i data-lucide="trash-2" class="h-4 w-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BOM Items -->
+                        <div class="p-4">
+                            <!-- Add Item Button -->
+                            <div class="mb-4">
+                                <button @click="addBOMItem(bomIndex)" 
+                                        class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                    <i data-lucide="plus" class="h-4 w-4"></i>
+                                    <span>Add Item</span>
+                                </button>
+                            </div>
+
+                            <!-- Items Table -->
+                            <div class="overflow-x-auto" x-show="bom.items.length > 0">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Qty</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Rate</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <template x-for="(item, itemIndex) in bom.items" :key="itemIndex">
+                                            <tr>
+                                                <td class="px-3 py-2">
+                                                    <select x-model="item.category" 
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+                                                        <option value="Materials">Materials</option>
+                                                        <option value="Labor">Labor</option>
+                                                        <option value="Equipment">Equipment</option>
+                                                        <option value="Transportation">Transportation</option>
+                                                        <option value="Services">Services</option>
+                                                        <option value="Documentation">Documentation</option>
+                                                        <option value="Safety">Safety</option>
+                                                        <option value="Utilities">Utilities</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <input type="text" 
+                                                           x-model="item.item_name"
+                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           placeholder="Item name">
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <input type="number" 
+                                                           x-model="item.quantity"
+                                                           @input="updateItemTotal(item)"
+                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           step="0.01"
+                                                           min="0">
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <select x-model="item.unit" 
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+                                                        <option value="nos">nos</option>
+                                                        <option value="kg">kg</option>
+                                                        <option value="mt">mt</option>
+                                                        <option value="cum">cum</option>
+                                                        <option value="sqm">sqm</option>
+                                                        <option value="sqft">sqft</option>
+                                                        <option value="ltr">ltr</option>
+                                                        <option value="days">days</option>
+                                                        <option value="hrs">hrs</option>
+                                                        <option value="lot">lot</option>
+                                                    </select>
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <input type="number" 
+                                                           x-model="item.unit_price"
+                                                           @input="updateItemTotal(item)"
+                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           step="0.01"
+                                                           min="0">
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <span class="text-sm font-medium text-gray-900" x-text="'₹' + (item.total_cost || 0).toLocaleString()"></span>
+                                                </td>
+                                                <td class="px-3 py-2">
+                                                    <button @click="removeBOMItem(bomIndex, itemIndex)" 
+                                                            class="text-red-600 hover:text-red-700">
+                                                        <i data-lucide="trash-2" class="h-4 w-4"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Empty Items State -->
+                            <div x-show="bom.items.length === 0" class="text-center py-8">
+                                <i data-lucide="package" class="h-8 w-8 text-gray-400 mx-auto mb-2"></i>
+                                <p class="text-gray-500 text-sm">No items added yet</p>
+                            </div>
+
+                            <!-- Item Specification -->
+                            <template x-for="(item, itemIndex) in bom.items" :key="itemIndex">
+                                <div class="mt-2 pl-4 border-l-2 border-gray-200">
+                                    <input type="text" 
+                                           x-model="item.specification"
+                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                           :placeholder="'Specification for ' + (item.item_name || 'item')">
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="boms.length === 0" class="text-center py-12">
+                <i data-lucide="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No BOM templates created</h3>
+                <p class="text-gray-500 mb-4">Create bill of materials templates to standardize your service pricing.</p>
+                <button @click="addBOM()" 
+                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                    Create First BOM
+                </button>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200" x-show="boms.length > 0">
+                <button @click="resetBOMs()" 
+                        class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Reset
+                </button>
+                <button @click="saveBOMs()" 
+                        :disabled="saving"
+                        class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50">
+                    <span x-show="!saving">Save All BOMs</span>
+                    <span x-show="saving" class="flex items-center">
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Saving...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- BOM Disabled Message -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6 text-center">
+            <i data-lucide="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">BOM Not Enabled</h3>
+            <p class="text-gray-500 mb-4">This service doesn't have Bill of Materials enabled. Enable it in service settings to manage materials and pricing.</p>
+            <a href="{% url 'dashboard_service_edit' service.pk %}" 
+               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                Edit Service Settings
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Usage Tips -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">BOM Management Tips</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Organize by Categories</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Group similar items (Materials, Labor, Equipment)</li>
+                        <li>• Use consistent naming conventions</li>
+                        <li>• Include detailed specifications</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Pricing Strategy</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Include market rates for materials</li>
+                        <li>• Add contingency margins</li>
+                        <li>• Update prices regularly</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Template Management</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Create templates for reusable BOMs</li>
+                        <li>• Use descriptive names and descriptions</li>
+                        <li>• Mark templates as active for client visibility</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Best Practices</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Include all project costs</li>
+                        <li>• Use standard units consistently</li>
+                        <li>• Document assumptions and specifications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function bomManager() {
+    return {
+        boms: [],
+        saving: false,
+        
+        init() {
+            this.loadBOMs();
+        },
+        
+        loadBOMs() {
+            const existingBOMs = [
+                {% for bom in bom_templates %}
+                {
+                    id: {{ bom.pk }},
+                    name: '{{ bom.name|escapejs }}',
+                    description: '{{ bom.description|default:""|escapejs }}',
+                    is_active: {{ bom.is_active|yesno:"true,false" }},
+                    is_template: {{ bom.is_template|yesno:"true,false" }},
+                    items: [
+                        {% for item in bom.items.all %}
+                        {
+                            id: {{ item.pk }},
+                            category: '{{ item.category|escapejs }}',
+                            item_name: '{{ item.item_name|escapejs }}',
+                            specification: '{{ item.specification|default:""|escapejs }}',
+                            quantity: {{ item.quantity }},
+                            unit: '{{ item.unit }}',
+                            unit_price: {{ item.unit_price }},
+                            total_cost: {{ item.total_cost }},
+                            display_order: {{ item.display_order }}
+                        },
+                        {% endfor %}
+                    ]
+                },
+                {% endfor %}
+            ];
+            
+            this.boms = existingBOMs;
+        },
+        
+        addBOM() {
+            this.boms.push({
+                name: 'New BOM Template',
+                description: '',
+                is_active: true,
+                is_template: true,
+                items: []
+            });
+        },
+        
+        removeBOM(bomIndex) {
+            if (confirm('Are you sure you want to remove this BOM template?')) {
+                this.boms.splice(bomIndex, 1);
+            }
+        },
+        
+        addBOMItem(bomIndex) {
+            this.boms[bomIndex].items.push({
+                category: 'Materials',
+                item_name: '',
+                specification: '',
+                quantity: 1,
+                unit: 'nos',
+                unit_price: 0,
+                total_cost: 0,
+                display_order: this.boms[bomIndex].items.length
+            });
+        },
+        
+        removeBOMItem(bomIndex, itemIndex) {
+            if (confirm('Are you sure you want to remove this item?')) {
+                this.boms[bomIndex].items.splice(itemIndex, 1);
+            }
+        },
+        
+        updateItemTotal(item) {
+            const quantity = parseFloat(item.quantity) || 0;
+            const unitPrice = parseFloat(item.unit_price) || 0;
+            item.total_cost = quantity * unitPrice;
+        },
+        
+        calculateBOMTotal(bom) {
+            return bom.items.reduce((total, item) => {
+                return total + (parseFloat(item.total_cost) || 0);
+            }, 0);
+        },
+        
+        resetBOMs() {
+            if (confirm('Reset all BOMs? This will discard all changes.')) {
+                this.loadBOMs();
+            }
+        },
+        
+        saveBOMs() {
+            this.saving = true;
+            
+            // Validate BOMs
+            for (let bom of this.boms) {
+                if (!bom.name.trim()) {
+                    alert('All BOMs must have a name.');
+                    this.saving = false;
+                    return;
+                }
+                
+                for (let item of bom.items) {
+                    if (!item.item_name.trim()) {
+                        alert('All BOM items must have a name.');
+                        this.saving = false;
+                        return;
+                    }
+                    this.updateItemTotal(item);
+                }
+            }
+            
+            // Save to server
+            fetch('{% url "dashboard_service_bom" service.pk %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    boms: this.boms
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.showMessage('BOMs saved successfully!', 'success');
+                    
+                    // Update BOMs with server IDs
+                    if (data.boms) {
+                        this.boms = data.boms;
+                    }
+                } else {
+                    this.showMessage('Error saving BOMs: ' + (data.error || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.showMessage('Error saving BOMs. Please try again.', 'error');
+            })
+            .finally(() => {
+                this.saving = false;
+            });
+        },
+        
+        showMessage(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 
+                'bg-red-50 border border-red-200 text-red-800'
+            }`;
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="h-5 w-5 mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+    }
+}
+</script>
+{% endblock %}

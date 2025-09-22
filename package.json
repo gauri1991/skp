@@ -1,0 +1,17 @@
+{
+  "name": "sumithrakp_website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "tailwindcss -i ./static/src/input.css -o ./static/css/output.css --watch",
+    "build-css-prod": "tailwindcss -i ./static/src/input.css -o ./static/css/output.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^4.1.12"
+  }
+}

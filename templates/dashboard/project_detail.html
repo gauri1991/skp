@@ -1,0 +1,217 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} - Project Details{% endblock %}
+
+{% block page_title %}Project Details{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <div class="flex items-center space-x-3">
+                <h1 class="text-3xl font-bold text-gray-900">{{ project.title }}</h1>
+                {% if project.featured %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                        <i data-lucide="star" class="h-4 w-4 mr-1"></i>
+                        Featured
+                    </span>
+                {% endif %}
+            </div>
+            <p class="mt-2 text-gray-600">{{ project.short_description|default:project.description|truncatewords:25 }}</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'dashboard_portfolio_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Portfolio
+            </a>
+            <a href="{% url 'project_detail' project.slug %}" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                View Live
+            </a>
+            <a href="{% url 'dashboard_project_edit' project.pk %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                <i data-lucide="edit" class="h-4 w-4 mr-2"></i>
+                Edit Project
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Project Images -->
+            {% if images %}
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Project Images</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% for image in images %}
+                                <div class="relative group">
+                                    <img src="{{ image.image.url }}" alt="{{ project.title }}" 
+                                         class="w-full h-48 object-cover rounded-lg">
+                                    {% if image.caption %}
+                                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white p-2 rounded-b-lg">
+                                            <p class="text-sm">{{ image.caption }}</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-4 text-center">
+                            <a href="{% url 'dashboard_project_images' project.pk %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                <i data-lucide="image" class="h-4 w-4 mr-2"></i>
+                                Manage Images
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Description -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Description</h2>
+                </div>
+                <div class="p-6">
+                    <div class="prose max-w-none">
+                        {{ project.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Technologies -->
+            {% if project.get_technologies %}
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Technologies Used</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2">
+                            {% for tech in project.get_technologies %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                    {{ tech }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Project Info -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Project Information</h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Year</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ project.year }}</dd>
+                    </div>
+                    {% if project.client %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Client</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ project.client }}</dd>
+                        </div>
+                    {% endif %}
+                    {% if project.project_url %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Project URL</dt>
+                            <dd class="mt-1">
+                                <a href="{{ project.project_url }}" target="_blank" class="text-sm text-primary-600 hover:text-primary-700">
+                                    <i data-lucide="external-link" class="h-4 w-4 inline mr-1"></i>
+                                    View Project
+                                </a>
+                            </dd>
+                        </div>
+                    {% endif %}
+                    {% if project.github_url %}
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">GitHub</dt>
+                            <dd class="mt-1">
+                                <a href="{{ project.github_url }}" target="_blank" class="text-sm text-primary-600 hover:text-primary-700">
+                                    <i data-lucide="github" class="h-4 w-4 inline mr-1"></i>
+                                    View Code
+                                </a>
+                            </dd>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Categories</h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-wrap gap-2">
+                        {% for category in project.categories.all %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                                {{ category.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Actions</h2>
+                </div>
+                <div class="p-6 space-y-3">
+                    <a href="{% url 'dashboard_project_edit' project.pk %}" class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="edit" class="h-4 w-4 mr-2"></i>
+                        Edit Project
+                    </a>
+                    <a href="{% url 'dashboard_project_images' project.pk %}" class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="image" class="h-4 w-4 mr-2"></i>
+                        Manage Images
+                    </a>
+                    <a href="{% url 'dashboard_project_delete' project.pk %}" class="w-full inline-flex items-center justify-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100">
+                        <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
+                        Delete Project
+                    </a>
+                </div>
+            </div>
+
+            <!-- Related Projects -->
+            {% if related_projects %}
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Related Projects</h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        {% for related in related_projects %}
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
+                                    {% if related.thumbnail %}
+                                        <img src="{{ related.thumbnail.url }}" alt="{{ related.title }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                                            <i data-lucide="image" class="h-6 w-6 text-primary-400"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <a href="{% url 'dashboard_project_detail' related.pk %}" class="text-sm font-medium text-gray-900 hover:text-primary-600">
+                                        {{ related.title }}
+                                    </a>
+                                    <p class="text-sm text-gray-500 truncate">{{ related.short_description|default:related.description|truncatewords:8 }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

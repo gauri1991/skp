@@ -1,0 +1,251 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}{% if form.instance.pk %}Edit Project{% else %}Create New Project{% endif %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Custom checkbox styling */
+    input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.25rem;
+        border: 2px solid #d1d5db;
+        background-color: white;
+        cursor: pointer;
+    }
+    
+    input[type="checkbox"]:checked {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    
+    input[type="checkbox"]:hover {
+        border-color: #2563eb;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto min-h-screen pb-10">
+    <!-- Header with Back Button -->
+    <div class="flex items-start justify-between mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">
+                {% if form.instance.pk %}
+                    Edit Project: {{ form.instance.title }}
+                {% else %}
+                    Create New Project
+                {% endif %}
+            </h1>
+            <p class="text-gray-600 mt-2">Fill in the details below to {% if form.instance.pk %}update{% else %}create{% endif %} your project.</p>
+        </div>
+        
+        <div class="flex-shrink-0 ml-6">
+            <a href="{% url 'dashboard_portfolio_list' %}" class="inline-flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Portfolio
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Project Details</h2>
+            
+            <!-- Title -->
+            <div class="mb-6">
+                <label for="{{ form.title.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Project Title <span class="text-red-500">*</span>
+                </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Short Description -->
+            <div class="mb-6">
+                <label for="{{ form.short_description.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Short Description
+                </label>
+                <p class="text-xs text-gray-500 mb-2">Brief description for portfolio cards (max 300 characters)</p>
+                {{ form.short_description }}
+                {% if form.short_description.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.short_description.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Full Description -->
+            <div class="mb-6">
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Full Description <span class="text-red-500">*</span>
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Client and Location -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="{{ form.client.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Client
+                    </label>
+                    {{ form.client }}
+                    {% if form.client.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.client.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="{{ form.location.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Location
+                    </label>
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.location.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Year -->
+            <div class="mb-6">
+                <label for="{{ form.year.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Year <span class="text-red-500">*</span>
+                </label>
+                {{ form.year }}
+                {% if form.year.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.year.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Categories -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Categories <span class="text-red-500">*</span>
+                </label>
+                <div class="border border-gray-300 rounded-lg p-4 max-h-48 overflow-y-auto form-container">
+                    <div class="space-y-3">
+                        {% for choice in form.categories %}
+                            <label class="flex items-center">
+                                {{ choice.tag }}
+                                <span class="ml-2 text-sm text-gray-700">{{ choice.choice_label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if form.categories.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.categories.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Technologies -->
+            <div class="mb-6">
+                <label for="{{ form.technologies.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Technologies Used
+                </label>
+                <p class="text-xs text-gray-500 mb-2">Comma-separated list (e.g., AutoCAD, MS Visio, Civil 3D)</p>
+                {{ form.technologies }}
+                {% if form.technologies.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.technologies.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+
+            <!-- Thumbnail -->
+            <div class="mb-6">
+                <label for="{{ form.thumbnail.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Thumbnail Image
+                </label>
+                {% if form.instance.thumbnail %}
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-600 mb-2">Current thumbnail:</p>
+                        <img src="{{ form.instance.thumbnail.url }}" alt="Current thumbnail" class="h-32 w-auto rounded-lg border border-gray-300">
+                    </div>
+                {% endif %}
+                {{ form.thumbnail }}
+                {% if form.thumbnail.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.thumbnail.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Featured -->
+            <div class="mb-6">
+                <div class="flex items-center">
+                    {{ form.featured }}
+                    <label for="{{ form.featured.id_for_label }}" class="ml-2 text-sm font-semibold text-gray-700">
+                        Featured Project
+                    </label>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Featured projects appear on the homepage</p>
+                {% if form.featured.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.featured.errors.0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end space-x-4">
+            <button type="button" onclick="window.location.href='{% url 'dashboard_portfolio_list' %}'" 
+                    class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+            </button>
+            <button type="submit" class="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                {% if form.instance.pk %}
+                    Update Project
+                {% else %}
+                    Create Project
+                {% endif %}
+            </button>
+        </div>
+    </form>
+
+    <!-- Help Section with Scrollbar Demo -->
+    <div class="mt-8 bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-6">
+        <h3 class="text-lg font-semibold text-blue-900 mb-4">
+            <i data-lucide="help-circle" class="h-5 w-5 inline mr-2"></i>
+            Project Creation Guidelines
+        </h3>
+        <div class="bg-white rounded-lg p-4 max-h-64 overflow-y-auto form-container">
+            <div class="space-y-4 text-sm text-gray-700">
+                <div class="border-l-4 border-blue-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Title Guidelines</h4>
+                    <p>Use descriptive, professional titles that clearly identify your project. Examples: "Residential Complex Design - Phase 1", "USPTO Patent Illustration for Medical Device".</p>
+                </div>
+                <div class="border-l-4 border-green-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Description Best Practices</h4>
+                    <p>Provide comprehensive project details including objectives, scope, deliverables, and outcomes. Include technical specifications, challenges overcome, and innovative solutions implemented.</p>
+                </div>
+                <div class="border-l-4 border-yellow-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Category Selection</h4>
+                    <p>Select all relevant categories to improve project discoverability. Multiple categories help visitors find your work through different search paths.</p>
+                </div>
+                <div class="border-l-4 border-purple-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Technology Documentation</h4>
+                    <p>List all software, tools, and technologies used. Common examples: AutoCAD, MS Visio, Civil 3D, ArcGIS, AERMOD, MATLAB, Python, etc.</p>
+                </div>
+                <div class="border-l-4 border-red-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Image Requirements</h4>
+                    <p>Upload high-quality images that showcase your work. Recommended formats: JPG, PNG. Optimal dimensions: 1200x800px or higher for thumbnails.</p>
+                </div>
+                <div class="border-l-4 border-indigo-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Featured Projects</h4>
+                    <p>Mark your best work as featured to highlight it on the homepage. Featured projects should represent your top-quality work and diverse skills.</p>
+                </div>
+                <div class="border-l-4 border-pink-400 pl-4">
+                    <h4 class="font-semibold text-gray-900">Client Information</h4>
+                    <p>Include client names only if you have permission. For confidential projects, use generic terms like "Private Client" or "Government Agency".</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

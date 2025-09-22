@@ -1,0 +1,128 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Certifications Management - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Certifications Management</h1>
+            <p class="mt-2 text-gray-600">Manage your professional certifications</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Back
+            </a>
+            <a href="{% url 'dashboard_resume_certification_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Add Certification
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        {% if certifications %}
+            <ul role="list" class="divide-y divide-gray-200">
+                {% for cert in certifications %}
+                <li class="px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                                        {{ cert.name }}
+                                        {% if cert.is_valid %}
+                                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Valid
+                                            </span>
+                                        {% else %}
+                                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Expired
+                                            </span>
+                                        {% endif %}
+                                        {% if not cert.is_visible %}
+                                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                Hidden
+                                            </span>
+                                        {% endif %}
+                                    </h3>
+                                    <p class="text-primary-600 font-medium">{{ cert.issuing_organization }}</p>
+                                    <p class="text-sm text-gray-500">
+                                        Issued: {{ cert.issue_date|date:"M Y" }}
+                                        {% if cert.is_lifetime %}
+                                            • Lifetime
+                                        {% elif cert.expiry_date %}
+                                            • Expires: {{ cert.expiry_date|date:"M Y" }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            {% if cert.credential_id %}
+                                <p class="mt-1 text-sm text-gray-600">ID: {{ cert.credential_id }}</p>
+                            {% endif %}
+                            
+                            {% if cert.description %}
+                                <p class="mt-2 text-sm text-gray-600">{{ cert.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            
+                            {% if cert.verification_url %}
+                                <div class="mt-2">
+                                    <a href="{{ cert.verification_url }}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="external-link" class="h-3 w-3 inline mr-1"></i>
+                                        Verify Certificate
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="ml-6 flex-shrink-0 flex space-x-2">
+                            <a href="{% url 'dashboard_resume_certification_edit' cert.pk %}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                <i data-lucide="edit" class="h-4 w-4 mr-1"></i>
+                                Edit
+                            </a>
+                            <a href="{% url 'dashboard_resume_certification_delete' cert.pk %}" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
+                                <i data-lucide="trash-2" class="h-4 w-4 mr-1"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="text-center py-12">
+                <i data-lucide="certificate" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No certifications yet</h3>
+                <p class="text-gray-500 mb-4">Add your professional certifications to showcase your expertise.</p>
+                <a href="{% url 'dashboard_resume_certification_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                    <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                    Add Your First Certification
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if certifications %}
+    <div class="mt-6 bg-gray-50 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">{{ certifications|length }} certification{{ certifications|length|pluralize }}</span>
+                <span class="text-sm text-green-600">
+                    {% for cert in certifications %}{% if cert.is_valid %}{{ forloop.counter0|add:1 }}{% endif %}{% endfor %} valid
+                </span>
+            </div>
+            <div class="flex space-x-2">
+                <a href="/resume/" target="_blank" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i data-lucide="external-link" class="h-4 w-4 mr-1"></i>
+                    Preview Resume
+                </a>
+                <a href="{% url 'dashboard_resume_certification_create' %}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                    <i data-lucide="plus" class="h-4 w-4 mr-1"></i>
+                    Add Another
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

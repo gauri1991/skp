@@ -1,0 +1,183 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Homepage Preview - Dashboard{% endblock %}
+{% block page_title %}Homepage Preview{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Back Button -->
+    <div class="flex items-center justify-between">
+        <a href="{% url 'dashboard_homepage_sections' %}" 
+           class="inline-flex items-center text-gray-600 hover:text-gray-900">
+            <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+            Back to Homepage Sections
+        </a>
+        <div class="flex space-x-3">
+            <a href="{% url 'home' %}" target="_blank" 
+               class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                View Live Site
+            </a>
+        </div>
+    </div>
+
+    <!-- Preview Notice -->
+    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+        <div class="flex items-center">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                <i data-lucide="eye" class="h-4 w-4 text-blue-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-medium text-blue-900">Preview Mode</h3>
+                <p class="text-sm text-blue-700 mt-1">This preview shows how your homepage will look with the current content settings. Changes are applied immediately to the live site.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Status Summary -->
+    <div class="bg-white rounded-lg shadow border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Section Status</h2>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {% for section_type, data in sections_data.items %}
+                <div class="flex items-center p-3 {% if data.section.is_enabled %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %} border rounded-lg">
+                    <div class="w-8 h-8 {% if data.section.is_enabled %}bg-green-100{% else %}bg-gray-100{% endif %} rounded-lg flex items-center justify-center mr-3">
+                        {% if section_type == 'hero' %}
+                            <i data-lucide="home" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'about' %}
+                            <i data-lucide="user" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'services' %}
+                            <i data-lucide="briefcase" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'portfolio' %}
+                            <i data-lucide="folder" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'testimonials' %}
+                            <i data-lucide="message-circle" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'contact' %}
+                            <i data-lucide="mail" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'stats' %}
+                            <i data-lucide="bar-chart" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% elif section_type == 'skills' %}
+                            <i data-lucide="zap" class="h-4 w-4 {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}"></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium {% if data.section.is_enabled %}text-green-900{% else %}text-gray-600{% endif %}">{{ data.section.title }}</p>
+                        <p class="text-xs {% if data.section.is_enabled %}text-green-600{% else %}text-gray-500{% endif %}">
+                            {% if data.section.is_enabled %}Enabled{% else %}Disabled{% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Preview -->
+    <div class="bg-white rounded-lg shadow border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Content Preview</h2>
+            <p class="text-sm text-gray-600 mt-1">Preview of enabled sections with current content</p>
+        </div>
+        <div class="p-6">
+            {% for section_type, data in sections_data.items %}
+            {% if data.section.is_enabled %}
+            <div class="mb-8 pb-8 border-b border-gray-100 last:border-b-0 last:pb-0 last:mb-0">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        {% if section_type == 'hero' %}
+                            <i data-lucide="home" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'about' %}
+                            <i data-lucide="user" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'services' %}
+                            <i data-lucide="briefcase" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'portfolio' %}
+                            <i data-lucide="folder" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'testimonials' %}
+                            <i data-lucide="message-circle" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'contact' %}
+                            <i data-lucide="mail" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'stats' %}
+                            <i data-lucide="bar-chart" class="h-4 w-4 text-primary-600"></i>
+                        {% elif section_type == 'skills' %}
+                            <i data-lucide="zap" class="h-4 w-4 text-primary-600"></i>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ data.section.title }}</h3>
+                    <a href="{% url 'dashboard_homepage_content_edit' section_type %}" 
+                       class="ml-auto text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        Edit Content →
+                    </a>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4">
+                    {% if section_type == 'hero' %}
+                        <div class="space-y-2">
+                            {% if data.content.hero_title %}
+                                <h4 class="font-semibold text-gray-900">Title: {{ data.content.hero_title }}</h4>
+                            {% endif %}
+                            {% if data.content.hero_subtitle %}
+                                <p class="text-gray-700">Subtitle: {{ data.content.hero_subtitle }}</p>
+                            {% endif %}
+                            {% if data.content.hero_description %}
+                                <p class="text-gray-600 text-sm">{{ data.content.hero_description|truncatewords:20 }}</p>
+                            {% endif %}
+                        </div>
+                    {% elif section_type == 'about' %}
+                        <div class="space-y-2">
+                            {% if data.content.about_title %}
+                                <h4 class="font-semibold text-gray-900">{{ data.content.about_title }}</h4>
+                            {% endif %}
+                            {% if data.content.about_description %}
+                                <p class="text-gray-600 text-sm">{{ data.content.about_description|truncatewords:20 }}</p>
+                            {% endif %}
+                        </div>
+                    {% elif section_type == 'contact' %}
+                        <div class="space-y-1 text-sm">
+                            {% if data.content.contact_title %}
+                                <p><strong>Title:</strong> {{ data.content.contact_title }}</p>
+                            {% endif %}
+                            {% if data.content.contact_email %}
+                                <p><strong>Email:</strong> {{ data.content.contact_email }}</p>
+                            {% endif %}
+                            {% if data.content.contact_phone %}
+                                <p><strong>Phone:</strong> {{ data.content.contact_phone }}</p>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <p class="text-gray-600 text-sm">
+                            {{ data.section.get_section_type_display }} section is enabled and ready to display.
+                            <a href="{% url 'dashboard_homepage_content_edit' section_type %}" class="text-primary-600 hover:text-primary-700">
+                                Edit content →
+                            </a>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            
+            {% if not sections_data %}
+            <div class="text-center py-12">
+                <i data-lucide="layout" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No sections enabled</h3>
+                <p class="text-gray-500 mb-4">Enable some sections to see the preview.</p>
+                <a href="{% url 'dashboard_homepage_sections' %}" 
+                   class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                    Manage Sections
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    lucide.createIcons();
+});
+</script>
+{% endblock %}

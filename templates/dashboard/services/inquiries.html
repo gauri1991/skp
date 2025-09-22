@@ -1,0 +1,439 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Manage Inquiries - {{ service.title }}{% endblock %}
+{% block page_title %}Service Inquiries Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ service.title|truncatechars:20 }}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">Inquiries</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Service Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
+                        <p class="text-sm text-gray-500">Client Inquiries Management</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" 
+                       class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Service</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ total_inquiries }}</p>
+                </div>
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="mail" class="h-4 w-4 text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Pending</p>
+                    <p class="text-2xl font-bold text-orange-600">{{ pending_inquiries }}</p>
+                </div>
+                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="clock" class="h-4 w-4 text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Completed</p>
+                    <p class="text-2xl font-bold text-green-600">{{ completed_inquiries }}</p>
+                </div>
+                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Avg. Value</p>
+                    <p class="text-2xl font-bold text-purple-600">
+                        {% if inquiries %}
+                            ₹{{ inquiries|length|floatformat:0 }}
+                        {% else %}
+                            ₹0
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="trending-up" class="h-4 w-4 text-purple-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiries Management -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <!-- Header with Filters -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 mb-6">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Client Inquiries</h2>
+                    <p class="text-sm text-gray-500">Manage and track service inquiries from clients</p>
+                </div>
+                
+                <!-- Status Filter -->
+                <form method="get" class="flex items-center space-x-3">
+                    <select name="status" 
+                            class="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                            onchange="this.form.submit()">
+                        <option value="">All Status</option>
+                        {% for status_value, status_label in status_choices %}
+                            <option value="{{ status_value }}" {% if current_status == status_value %}selected{% endif %}>
+                                {{ status_label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% if current_status %}
+                    <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
+                       class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-4 w-4"></i>
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Inquiries List -->
+            {% if inquiries %}
+            <div class="space-y-4">
+                {% for inquiry in inquiries %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors" 
+                     x-data="{ expanded: false }">
+                    <!-- Inquiry Header -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="user" class="h-5 w-5 text-gray-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center space-x-3">
+                                    <h3 class="text-sm font-medium text-gray-900 truncate">
+                                        {{ inquiry.project_title }}
+                                    </h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                        {% if inquiry.status == 'pending' %}bg-orange-100 text-orange-800
+                                        {% elif inquiry.status == 'in_progress' %}bg-blue-100 text-blue-800
+                                        {% elif inquiry.status == 'completed' %}bg-green-100 text-green-800
+                                        {% elif inquiry.status == 'cancelled' %}bg-red-100 text-red-800
+                                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        {{ inquiry.get_status_display }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <p class="text-sm text-gray-600">{{ inquiry.client_name }}</p>
+                                    <p class="text-sm text-gray-500">{{ inquiry.client_email }}</p>
+                                    <p class="text-sm text-gray-500">{{ inquiry.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            {% if inquiry.estimated_cost %}
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-gray-900">₹{{ inquiry.estimated_cost|floatformat:0 }}</p>
+                                <p class="text-xs text-gray-500">Estimated</p>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Status Update Dropdown -->
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" 
+                                        class="text-gray-400 hover:text-gray-600">
+                                    <i data-lucide="more-horizontal" class="h-5 w-5"></i>
+                                </button>
+                                
+                                <div x-show="open" 
+                                     @click.away="open = false"
+                                     x-transition
+                                     class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                                    <div class="py-1">
+                                        <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'pending')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mark as Pending
+                                        </button>
+                                        <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'in_progress')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mark as In Progress
+                                        </button>
+                                        <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'completed')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mark as Completed
+                                        </button>
+                                        <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'cancelled')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50">
+                                            Mark as Cancelled
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button @click="expanded = !expanded" 
+                                    class="text-gray-400 hover:text-gray-600">
+                                <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': expanded }"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Expanded Details -->
+                    <div x-show="expanded" x-transition class="mt-4 border-t border-gray-200 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Client Information -->
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900 mb-3">Client Information</h4>
+                                <dl class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Name:</dt>
+                                        <dd class="text-sm text-gray-900">{{ inquiry.client_name }}</dd>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Email:</dt>
+                                        <dd class="text-sm text-gray-900">
+                                            <a href="mailto:{{ inquiry.client_email }}" class="text-primary-600 hover:text-primary-700">
+                                                {{ inquiry.client_email }}
+                                            </a>
+                                        </dd>
+                                    </div>
+                                    {% if inquiry.client_phone %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Phone:</dt>
+                                        <dd class="text-sm text-gray-900">
+                                            <a href="tel:{{ inquiry.client_phone }}" class="text-primary-600 hover:text-primary-700">
+                                                {{ inquiry.client_phone }}
+                                            </a>
+                                        </dd>
+                                    </div>
+                                    {% endif %}
+                                    {% if inquiry.company %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Company:</dt>
+                                        <dd class="text-sm text-gray-900">{{ inquiry.company }}</dd>
+                                    </div>
+                                    {% endif %}
+                                </dl>
+                            </div>
+
+                            <!-- Project Details -->
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900 mb-3">Project Details</h4>
+                                <dl class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Project:</dt>
+                                        <dd class="text-sm text-gray-900">{{ inquiry.project_title }}</dd>
+                                    </div>
+                                    {% if inquiry.project_description %}
+                                    <div>
+                                        <dt class="text-sm text-gray-500 mb-1">Description:</dt>
+                                        <dd class="text-sm text-gray-900">{{ inquiry.project_description|linebreaks }}</dd>
+                                    </div>
+                                    {% endif %}
+                                    {% if inquiry.estimated_cost %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Estimated Cost:</dt>
+                                        <dd class="text-sm font-semibold text-gray-900">₹{{ inquiry.estimated_cost|floatformat:0 }}</dd>
+                                    </div>
+                                    {% endif %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Submitted:</dt>
+                                        <dd class="text-sm text-gray-900">{{ inquiry.created_at|date:"F j, Y \a\t g:i A" }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <!-- Requirements Data -->
+                        {% if inquiry.requirements_data %}
+                        <div class="mt-6">
+                            <h4 class="text-sm font-medium text-gray-900 mb-3">Requirements Submitted</h4>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+                                    {% for key, value in inquiry.requirements_data.items %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">{{ key|title }}:</dt>
+                                        <dd class="text-sm text-gray-900">{{ value }}</dd>
+                                    </div>
+                                    {% endfor %}
+                                </dl>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Action Buttons -->
+                        <div class="mt-6 flex items-center justify-end space-x-3">
+                            <a href="mailto:{{ inquiry.client_email }}?subject=Re: {{ inquiry.project_title }}&body=Hi {{ inquiry.client_name }},{% if inquiry.estimated_cost %}%0A%0AThank you for your inquiry regarding {{ inquiry.project_title }}. Based on your requirements, we have prepared an estimate of ₹{{ inquiry.estimated_cost|floatformat:0 }}.{% endif %}%0A%0ABest regards,%0ASumithra KP" 
+                               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                <i data-lucide="mail" class="h-4 w-4"></i>
+                                <span>Reply to Client</span>
+                            </a>
+                            {% if inquiry.status == 'pending' %}
+                            <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'in_progress')"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                Start Working
+                            </button>
+                            {% elif inquiry.status == 'in_progress' %}
+                            <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'completed')"
+                                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                                Mark Complete
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <i data-lucide="inbox" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No inquiries yet</h3>
+                <p class="text-gray-500 mb-4">
+                    {% if current_status %}
+                        No inquiries found with {{ current_status }} status.
+                    {% else %}
+                        Client inquiries for this service will appear here when submitted.
+                    {% endif %}
+                </p>
+                {% if current_status %}
+                <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
+                   class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                    View All Inquiries
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Tips for Managing Inquiries -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Inquiry Management Tips</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Response Best Practices</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Respond to inquiries within 24 hours</li>
+                        <li>• Use the pre-filled email templates for quick replies</li>
+                        <li>• Always acknowledge receipt of inquiry first</li>
+                        <li>• Ask clarifying questions if requirements are unclear</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Status Management</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Keep status updated for better tracking</li>
+                        <li>• Use "In Progress" when you start working</li>
+                        <li>• Mark "Completed" only after delivery</li>
+                        <li>• Document cancellation reasons for future reference</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Client Communication</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Maintain professional tone in all communications</li>
+                        <li>• Provide regular updates on project progress</li>
+                        <li>• Be clear about timelines and deliverables</li>
+                        <li>• Follow up after project completion</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Opportunity Tracking</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Review inquiry patterns to identify trends</li>
+                        <li>• Analyze which services get most inquiries</li>
+                        <li>• Use data to improve service offerings</li>
+                        <li>• Follow up on incomplete inquiries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateInquiryStatus(inquiryId, newStatus) {
+    fetch(`/dashboard/services/inquiry/${inquiryId}/update-status/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            status: newStatus
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Refresh page to show updated status
+        } else {
+            alert('Error updating status: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating status. Please try again.');
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Professional Summary - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Professional Summary</h1>
+                <p class="mt-2 text-gray-600">Update your professional summary and key information</p>
+            </div>
+            <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Resume
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Professional Summary Content -->
+                    <div>
+                        <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Professional Summary *
+                        </label>
+                        {{ form.content }}
+                        {% if form.content.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.content.help_text }}</p>
+                        {% endif %}
+                        {% if form.content.errors %}
+                            {% for error in form.content.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Years of Experience -->
+                    <div>
+                        <label for="{{ form.years_experience.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Years of Experience
+                        </label>
+                        {{ form.years_experience }}
+                        {% if form.years_experience.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.years_experience.help_text }}</p>
+                        {% endif %}
+                        {% if form.years_experience.errors %}
+                            {% for error in form.years_experience.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Specializations -->
+                    <div>
+                        <label for="{{ form.specializations.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Specializations
+                        </label>
+                        {{ form.specializations }}
+                        {% if form.specializations.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.specializations.help_text }}</p>
+                        {% endif %}
+                        {% if form.specializations.errors %}
+                            {% for error in form.specializations.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Key Strengths -->
+                    <div>
+                        <label for="{{ form.key_strengths.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Key Strengths
+                        </label>
+                        {{ form.key_strengths }}
+                        {% if form.key_strengths.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.key_strengths.help_text }}</p>
+                        {% endif %}
+                        {% if form.key_strengths.errors %}
+                            {% for error in form.key_strengths.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Active -->
+                    <div class="flex items-center">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                            Set as active summary
+                        </label>
+                        {% if form.is_active.errors %}
+                            {% for error in form.is_active.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Delete Skill Category - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="trash-2" class="h-4 w-4 text-red-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Delete Skill Category</h2>
+                    <p class="text-sm text-gray-600">This action cannot be undone</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="px-6 py-6">
+            <div class="mb-6">
+                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex-shrink-0 h-10 w-10">
+                        <div class="h-10 w-10 rounded-lg flex items-center justify-center bg-gray-200">
+                            <i data-lucide="{{ object.icon }}" class="h-5 w-5 text-gray-600"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">{{ object.name }}</h3>
+                        <p class="text-sm text-gray-600">{{ object.skills.count }} skill(s) in this category</p>
+                        {% if object.description %}
+                        <p class="text-sm text-gray-500 mt-1">{{ object.description|truncatewords:20 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i data-lucide="alert-triangle" class="h-5 w-5 text-red-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">Warning</h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            {% if object.skills.count > 0 %}
+                            <p><strong>This category contains {{ object.skills.count }} skill(s).</strong></p>
+                            <p>Deleting this category will also delete all skills in it. Consider moving the skills to another category first.</p>
+                            {% else %}
+                            <p>Are you sure you want to delete this skill category? This action cannot be undone.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if object.skills.count > 0 %}
+            <div class="mb-6">
+                <h4 class="text-sm font-medium text-gray-900 mb-3">Skills that will be deleted:</h4>
+                <div class="space-y-2">
+                    {% for skill in object.skills.all %}
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="minus" class="h-3 w-3"></i>
+                        <span>{{ skill.name }} ({{ skill.proficiency_percentage }}%)</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="px-6 py-4 bg-gray-50 flex justify-between border-t border-gray-200">
+            <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Cancel
+            </a>
+            <form method="post" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+                    <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
+                    Delete Category
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Certification{% else %}Add Certification{% endif %} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Certification{% else %}Add Certification{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update certification details{% else %}Add a new professional certification{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_resume_certification_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Certifications
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Certification Name -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Certification Name *
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            {% for error in form.name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Issuing Organization -->
+                    <div>
+                        <label for="{{ form.issuing_organization.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Issuing Organization *
+                        </label>
+                        {{ form.issuing_organization }}
+                        {% if form.issuing_organization.errors %}
+                            {% for error in form.issuing_organization.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Credential ID -->
+                    <div>
+                        <label for="{{ form.credential_id.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Credential ID
+                        </label>
+                        {{ form.credential_id }}
+                        {% if form.credential_id.errors %}
+                            {% for error in form.credential_id.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Issue Date -->
+                    <div>
+                        <label for="{{ form.issue_date.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Issue Date *
+                        </label>
+                        {{ form.issue_date }}
+                        {% if form.issue_date.errors %}
+                            {% for error in form.issue_date.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Expiry Date -->
+                    <div>
+                        <label for="{{ form.expiry_date.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Expiry Date
+                        </label>
+                        {{ form.expiry_date }}
+                        {% if form.expiry_date.errors %}
+                            {% for error in form.expiry_date.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Lifetime -->
+                    <div class="md:col-span-2">
+                        <div class="flex items-center">
+                            {{ form.is_lifetime }}
+                            <label for="{{ form.is_lifetime.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                This is a lifetime certification (no expiry date)
+                            </label>
+                        </div>
+                        {% if form.is_lifetime.errors %}
+                            {% for error in form.is_lifetime.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Verification URL -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.verification_url.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Verification URL
+                        </label>
+                        {{ form.verification_url }}
+                        {% if form.verification_url.errors %}
+                            {% for error in form.verification_url.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Description
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Order -->
+                    <div>
+                        <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Display Order
+                        </label>
+                        {{ form.display_order }}
+                        {% if form.display_order.errors %}
+                            {% for error in form.display_order.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Visible -->
+                    <div>
+                        <div class="flex items-center">
+                            {{ form.is_visible }}
+                            <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Show on resume
+                            </label>
+                        </div>
+                        {% if form.is_visible.errors %}
+                            {% for error in form.is_visible.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_certification_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Certification{% else %}Add Certification{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lifetimeCheckbox = document.getElementById('{{ form.is_lifetime.id_for_label }}');
+    const expiryDateField = document.getElementById('{{ form.expiry_date.id_for_label }}');
+    
+    function toggleExpiryDate() {
+        if (lifetimeCheckbox.checked) {
+            expiryDateField.disabled = true;
+            expiryDateField.value = '';
+        } else {
+            expiryDateField.disabled = false;
+        }
+    }
+    
+    lifetimeCheckbox.addEventListener('change', toggleExpiryDate);
+    toggleExpiryDate(); // Run on page load
+});
+</script>
+{% endblock %}

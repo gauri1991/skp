@@ -1,0 +1,177 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Skill{% else %}Add Skill{% endif %} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Skill{% else %}Add Skill{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update skill details and proficiency{% else %}Add a new skill to your resume{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Skills
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Skill Name -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Skill Name *
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            {% for error in form.name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Category *
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            {% for error in form.category.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Proficiency Level -->
+                    <div>
+                        <label for="{{ form.proficiency_level.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Proficiency Level
+                        </label>
+                        {{ form.proficiency_level }}
+                        {% if form.proficiency_level.errors %}
+                            {% for error in form.proficiency_level.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Proficiency Percentage -->
+                    <div>
+                        <label for="{{ form.proficiency_percentage.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Proficiency Percentage (0-100)
+                        </label>
+                        {{ form.proficiency_percentage }}
+                        {% if form.proficiency_percentage.errors %}
+                            {% for error in form.proficiency_percentage.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Years of Experience -->
+                    <div>
+                        <label for="{{ form.years_experience.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Years of Experience
+                        </label>
+                        {{ form.years_experience }}
+                        {% if form.years_experience.errors %}
+                            {% for error in form.years_experience.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Description
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Order -->
+                    <div>
+                        <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Display Order
+                        </label>
+                        {{ form.display_order }}
+                        {% if form.display_order.errors %}
+                            {% for error in form.display_order.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Visible -->
+                    <div>
+                        <div class="flex items-center">
+                            {{ form.is_visible }}
+                            <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Show on resume
+                            </label>
+                        </div>
+                        {% if form.is_visible.errors %}
+                            {% for error in form.is_visible.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Skill{% else %}Add Skill{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const percentageSlider = document.getElementById('{{ form.proficiency_percentage.id_for_label }}');
+    const levelSelect = document.getElementById('{{ form.proficiency_level.id_for_label }}');
+    
+    function syncProficiencyLevel() {
+        const percentage = parseInt(percentageSlider.value);
+        if (percentage >= 80) levelSelect.value = 'expert';
+        else if (percentage >= 60) levelSelect.value = 'advanced';
+        else if (percentage >= 30) levelSelect.value = 'intermediate';
+        else levelSelect.value = 'beginner';
+    }
+    
+    percentageSlider?.addEventListener('input', syncProficiencyLevel);
+});
+</script>
+{% endblock %}

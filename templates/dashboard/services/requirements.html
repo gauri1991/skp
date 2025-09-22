@@ -1,0 +1,481 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Manage Requirements - {{ service.title }}{% endblock %}
+{% block page_title %}Service Requirements Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ service.title|truncatechars:20 }}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">Requirements</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Service Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
+                        <p class="text-sm text-gray-500">Requirements Management</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" 
+                       class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Service</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requirements Management Interface -->
+    <div class="bg-white shadow rounded-lg" x-data="requirementsManager()">
+        <div class="px-4 py-5 sm:p-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Service Requirements</h2>
+                    <p class="text-sm text-gray-500">Configure the information you need to collect from clients</p>
+                </div>
+                <button @click="addRequirement()" 
+                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                    <i data-lucide="plus" class="h-4 w-4"></i>
+                    <span>Add Requirement</span>
+                </button>
+            </div>
+
+            <!-- Field Types Information -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 class="text-sm font-medium text-blue-900 mb-2">Available Field Types</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="type" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Text:</strong> Single line input</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="file-text" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Textarea:</strong> Multi-line input</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="hash" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Number:</strong> Numeric input</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="calendar" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Date:</strong> Date picker</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="list" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Select:</strong> Dropdown menu</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="circle" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Radio:</strong> Single choice</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="square" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>Checkbox:</strong> Yes/no choice</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="upload" class="h-3 w-3 text-blue-600"></i>
+                        <span class="text-blue-800"><strong>File:</strong> File upload</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Existing Requirements -->
+            <div class="space-y-4" x-show="requirements.length > 0">
+                <template x-for="(req, index) in requirements" :key="req.id || index">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                            <!-- Drag Handle & Field Name -->
+                            <div class="lg:col-span-3">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <div class="cursor-move text-gray-400">
+                                        <i data-lucide="grip-vertical" class="h-4 w-4"></i>
+                                    </div>
+                                    <label class="text-sm font-medium text-gray-700">Field Name</label>
+                                </div>
+                                <input type="text" 
+                                       x-model="req.field_name"
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       placeholder="field_name">
+                            </div>
+
+                            <!-- Label -->
+                            <div class="lg:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Label</label>
+                                <input type="text" 
+                                       x-model="req.label"
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       placeholder="Label shown to users">
+                            </div>
+
+                            <!-- Field Type -->
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                                <select x-model="req.field_type" 
+                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                                    <option value="text">Text</option>
+                                    <option value="textarea">Textarea</option>
+                                    <option value="number">Number</option>
+                                    <option value="date">Date</option>
+                                    <option value="select">Select</option>
+                                    <option value="radio">Radio</option>
+                                    <option value="checkbox">Checkbox</option>
+                                    <option value="file">File</option>
+                                </select>
+                            </div>
+
+                            <!-- Order -->
+                            <div class="lg:col-span-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Order</label>
+                                <input type="number" 
+                                       x-model="req.display_order"
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       min="0">
+                            </div>
+
+                            <!-- Settings & Actions -->
+                            <div class="lg:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Settings</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center text-sm">
+                                        <input type="checkbox" 
+                                               x-model="req.is_required"
+                                               class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2">Required</span>
+                                    </label>
+                                    <label class="flex items-center text-sm">
+                                        <input type="checkbox" 
+                                               x-model="req.is_active"
+                                               class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2">Active</span>
+                                    </label>
+                                    <label class="flex items-center text-sm">
+                                        <input type="checkbox" 
+                                               x-model="req.affects_pricing"
+                                               class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2">Affects Price</span>
+                                    </label>
+                                </div>
+                                <button @click="removeRequirement(index)" 
+                                        class="text-red-600 hover:text-red-700 text-sm mt-2">
+                                    <i data-lucide="trash-2" class="h-4 w-4 inline mr-1"></i>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Fields -->
+                        <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <!-- Placeholder -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Placeholder</label>
+                                <input type="text" 
+                                       x-model="req.placeholder"
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       placeholder="Placeholder text">
+                            </div>
+
+                            <!-- Help Text -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Help Text</label>
+                                <input type="text" 
+                                       x-model="req.help_text"
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       placeholder="Additional help text">
+                            </div>
+                        </div>
+
+                        <!-- Choices (for select/radio fields) -->
+                        <div x-show="req.field_type === 'select' || req.field_type === 'radio'" class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Choices</label>
+                            <div class="space-y-2">
+                                <template x-for="(choice, choiceIndex) in req.choices" :key="choiceIndex">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="text" 
+                                               x-model="req.choices[choiceIndex]"
+                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               placeholder="Choice option">
+                                        <button @click="req.choices.splice(choiceIndex, 1)" 
+                                                class="text-red-600 hover:text-red-700">
+                                            <i data-lucide="x" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <button @click="if (!req.choices) req.choices = []; req.choices.push('')" 
+                                        class="text-primary-600 hover:text-primary-700 text-sm">
+                                    <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                                    Add Choice
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Multiplier (if affects pricing) -->
+                        <div x-show="req.affects_pricing" class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pricing Multiplier</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" 
+                                       x-model="req.pricing_multiplier"
+                                       step="0.1"
+                                       min="0.1"
+                                       class="block w-32 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                                <span class="text-sm text-gray-500">Factor to multiply base price by</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="requirements.length === 0" class="text-center py-12">
+                <i data-lucide="list" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No requirements configured</h3>
+                <p class="text-gray-500 mb-4">Add requirements to collect specific information from clients.</p>
+                <button @click="addRequirement()" 
+                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                    Add First Requirement
+                </button>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200" x-show="requirements.length > 0">
+                <button @click="resetRequirements()" 
+                        class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Reset
+                </button>
+                <button @click="saveRequirements()" 
+                        :disabled="saving"
+                        class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50">
+                    <span x-show="!saving">Save Requirements</span>
+                    <span x-show="saving" class="flex items-center">
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Saving...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usage Tips -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Tips for Effective Requirements</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Field Naming</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Use descriptive field names (e.g., "project_area", "budget_range")</li>
+                        <li>• Use lowercase with underscores for field names</li>
+                        <li>• Avoid spaces and special characters in field names</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Pricing Integration</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Check "Affects Price" for fields that change cost</li>
+                        <li>• Set appropriate multipliers (1.5 = 50% increase)</li>
+                        <li>• Use lower multipliers for smaller impacts</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">User Experience</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Keep labels clear and concise</li>
+                        <li>• Use placeholder text for examples</li>
+                        <li>• Add help text for complex fields</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Field Order</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Start with basic information first</li>
+                        <li>• Group related fields together</li>
+                        <li>• End with optional or detailed information</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function requirementsManager() {
+    return {
+        requirements: [],
+        saving: false,
+        
+        init() {
+            this.loadRequirements();
+        },
+        
+        loadRequirements() {
+            const existingRequirements = [
+                {% for req in requirements %}
+                {
+                    id: {{ req.pk }},
+                    field_name: '{{ req.field_name|escapejs }}',
+                    field_type: '{{ req.field_type }}',
+                    label: '{{ req.label|escapejs }}',
+                    placeholder: '{{ req.placeholder|default:""|escapejs }}',
+                    help_text: '{{ req.help_text|default:""|escapejs }}',
+                    choices: {{ req.choices|default:"[]"|safe }},
+                    is_required: {{ req.is_required|yesno:"true,false" }},
+                    is_active: {{ req.is_active|yesno:"true,false" }},
+                    affects_pricing: {{ req.affects_pricing|yesno:"true,false" }},
+                    pricing_multiplier: {{ req.pricing_multiplier|default:"1.0" }},
+                    display_order: {{ req.display_order }}
+                },
+                {% endfor %}
+            ];
+            
+            this.requirements = existingRequirements;
+        },
+        
+        addRequirement() {
+            const newOrder = Math.max(...this.requirements.map(r => r.display_order), 0) + 1;
+            this.requirements.push({
+                field_name: '',
+                field_type: 'text',
+                label: '',
+                placeholder: '',
+                help_text: '',
+                choices: [],
+                is_required: false,
+                is_active: true,
+                affects_pricing: false,
+                pricing_multiplier: 1.0,
+                display_order: newOrder
+            });
+        },
+        
+        removeRequirement(index) {
+            if (confirm('Are you sure you want to remove this requirement?')) {
+                this.requirements.splice(index, 1);
+            }
+        },
+        
+        resetRequirements() {
+            if (confirm('Reset all requirements? This will discard all changes.')) {
+                this.loadRequirements();
+            }
+        },
+        
+        saveRequirements() {
+            this.saving = true;
+            
+            // Validate requirements
+            for (let req of this.requirements) {
+                if (!req.field_name.trim() || !req.label.trim()) {
+                    alert('All requirements must have a field name and label.');
+                    this.saving = false;
+                    return;
+                }
+                
+                if ((req.field_type === 'select' || req.field_type === 'radio') && 
+                    (!req.choices || req.choices.length === 0)) {
+                    alert('Select and radio fields must have at least one choice.');
+                    this.saving = false;
+                    return;
+                }
+            }
+            
+            // Sort requirements by display order
+            this.requirements.sort((a, b) => a.display_order - b.display_order);
+            
+            // Save to server
+            fetch('{% url "dashboard_service_requirements" service.pk %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    requirements: this.requirements
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.showMessage('Requirements saved successfully!', 'success');
+                    
+                    // Update requirements with server IDs
+                    if (data.requirements) {
+                        this.requirements = data.requirements;
+                    }
+                } else {
+                    this.showMessage('Error saving requirements: ' + (data.error || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.showMessage('Error saving requirements. Please try again.', 'error');
+            })
+            .finally(() => {
+                this.saving = false;
+            });
+        },
+        
+        showMessage(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 
+                'bg-red-50 border border-red-200 text-red-800'
+            }`;
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="h-5 w-5 mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,830 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if sections_data.hero %}
+<!-- Hero Section -->
+<section class="relative text-white py-20 min-h-screen flex items-center hero-bg" 
+         style="background-image: linear-gradient(135deg, rgba(30, 58, 95, 0.9), rgba(8, 145, 178, 0.8)){% if sections_data.hero.content.hero_background %}, url('{{ sections_data.hero.content.hero_background.url }}'){% else %}, url('{% load static %}{% static "images/hero/sumithra-hero.png" %}'){% endif %}; 
+                background-size: cover; 
+                background-position: center; 
+                background-attachment: fixed;">
+    <style>
+    .hero-bg {
+        /* Fallback gradient if image doesn't load */
+        background: linear-gradient(135deg, #1e3a5f 0%, #0891b2 100%);
+    }
+    </style>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="text-center lg:text-left animate-fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    {{ sections_data.hero.content.hero_title|default:"Hi, I'm <span class='text-yellow-300'>Sumithra KP</span>"|safe }}
+                </h1>
+                <p class="text-xl md:text-2xl mb-4 text-blue-100">
+                    {{ sections_data.hero.content.hero_subtitle|default:"Civil Engineer & Patent Illustrator" }}
+                </p>
+                <p class="text-lg mb-8 text-blue-100 max-w-3xl mx-auto lg:mx-0">
+                    {{ sections_data.hero.content.hero_description|default:"Specializing in innovative civil engineering design, professional patent illustrations, and sustainable environmental engineering solutions." }}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{% if sections_data.hero.content.hero_cta_primary_url %}/{{ sections_data.hero.content.hero_cta_primary_url }}{% else %}/contact{% endif %}" 
+                       class="bg-white px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
+                       style="color: {{ theme_colors.primary }};">
+                        {{ sections_data.hero.content.hero_cta_primary_text|default:"Get In Touch" }}
+                    </a>
+                    <a href="{% if sections_data.hero.content.hero_cta_secondary_url %}/{{ sections_data.hero.content.hero_cta_secondary_url }}{% else %}/portfolio{% endif %}" 
+                       class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white transition-all duration-300"
+                       style="border-color: white;" 
+                       onmouseover="this.style.backgroundColor='white'; this.style.color='{{ theme_colors.primary }}';" 
+                       onmouseout="this.style.backgroundColor='transparent'; this.style.color='white';">
+                        {{ sections_data.hero.content.hero_cta_secondary_text|default:"View Portfolio" }}
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Content - Professional Stats -->
+            <div class="hidden lg:block animate-slide-up">
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20">
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div>
+                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat1_number|default:"50+" }}</div>
+                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat1_label|default:"Projects Completed" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat2_number|default:"5+" }}</div>
+                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat2_label|default:"Years Experience" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat3_number|default:"30+" }}</div>
+                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat3_label|default:"Patent Illustrations" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat4_number|default:"100%" }}</div>
+                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat4_label|default:"Client Satisfaction" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <a href="#about" class="text-white hover:text-yellow-300 transition-colors">
+            <i data-lucide="chevron-down" class="h-8 w-8"></i>
+        </a>
+    </div>
+</section>
+{% endif %}
+
+{% if sections_data.about %}
+<!-- About Me Section -->
+<section id="about" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="animate-slide-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    {{ sections_data.about.content.about_title|default:"About Me" }}
+                </h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    {{ sections_data.about.content.about_description|default:"I am a dedicated Civil Engineer with extensive expertise in design, patent illustrations, and environmental engineering. My passion lies in creating innovative solutions that bridge the gap between technical excellence and practical application." }}
+                </p>
+                <div class="space-y-4">
+                    {% if sections_data.about.content.about_point1 %}
+                    <div class="flex items-center">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
+                        <span class="text-gray-700">{{ sections_data.about.content.about_point1|default:"Professional Engineering Design" }}</span>
+                    </div>
+                    {% endif %}
+                    {% if sections_data.about.content.about_point2 %}
+                    <div class="flex items-center">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
+                        <span class="text-gray-700">{{ sections_data.about.content.about_point2|default:"Technical Patent Illustrations" }}</span>
+                    </div>
+                    {% endif %}
+                    {% if sections_data.about.content.about_point3 %}
+                    <div class="flex items-center">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
+                        <span class="text-gray-700">{{ sections_data.about.content.about_point3|default:"Environmental Engineering Solutions" }}</span>
+                    </div>
+                    {% endif %}
+                    {% if sections_data.about.content.about_point4 %}
+                    <div class="flex items-center">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
+                        <span class="text-gray-700">{{ sections_data.about.content.about_point4|default:"Sustainable Development Practices" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="animate-slide-up">
+                <div class="bg-gray-100 rounded-lg p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Facts</h3>
+                    <div class="space-y-3">
+                        {% if sections_data.about.content.about_fact1_label %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">{{ sections_data.about.content.about_fact1_label|default:"Experience" }}:</span>
+                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact1_value|default:"5+ Years" }}</span>
+                        </div>
+                        {% endif %}
+                        {% if sections_data.about.content.about_fact2_label %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">{{ sections_data.about.content.about_fact2_label|default:"Projects Completed" }}:</span>
+                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact2_value|default:"50+" }}</span>
+                        </div>
+                        {% endif %}
+                        {% if sections_data.about.content.about_fact3_label %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">{{ sections_data.about.content.about_fact3_label|default:"Specialization" }}:</span>
+                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact3_value|default:"Civil Engineering" }}</span>
+                        </div>
+                        {% endif %}
+                        {% if sections_data.about.content.about_fact4_label %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">{{ sections_data.about.content.about_fact4_label|default:"Location" }}:</span>
+                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact4_value|default:"India" }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if sections_data.services %}
+<!-- Services Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-slide-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {{ sections_data.services.content.services_title|default:"My Services" }}
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                {{ sections_data.services.content.services_subtitle|default:"I offer comprehensive engineering services that combine technical expertise with creative solutions." }}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Civil Engineering Design -->
+            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                    <i data-lucide="building" class="h-8 w-8 text-primary-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Civil Engineering Design</h3>
+                <p class="text-gray-600 mb-6">
+                    Comprehensive structural design solutions including residential, commercial, and infrastructure projects 
+                    with focus on safety, efficiency, and sustainability.
+                </p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Structural Analysis & Design
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        CAD Drawings & Plans
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Project Management
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Patent Illustrations -->
+            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                    <i data-lucide="pen-tool" class="h-8 w-8 text-primary-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Patent Illustrations</h3>
+                <p class="text-gray-600 mb-6">
+                    Professional technical illustrations for patent applications, combining artistic skill with 
+                    engineering precision to clearly communicate complex inventions.
+                </p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Technical Drawings
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Patent Documentation
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        3D Visualization
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Environmental Engineering -->
+            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
+                    <i data-lucide="leaf" class="h-8 w-8 text-primary-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Environmental Engineering</h3>
+                <p class="text-gray-600 mb-6">
+                    Sustainable engineering solutions focused on environmental protection, waste management, 
+                    and eco-friendly design practices for a better future.
+                </p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Environmental Impact Assessment
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Sustainable Design
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        Green Building Solutions
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if sections_data.skills %}
+<!-- Skills Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-slide-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {{ sections_data.skills.content.skills_title|default:"Professional Skills" }}
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                {{ sections_data.skills.content.skills_description|default:"Technical expertise across various engineering domains and software tools." }}
+            </p>
+        </div>
+        
+        {% if sections_data.skills.content.featured_skills.all %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {% for skill in sections_data.skills.content.featured_skills.all %}
+                {% if forloop.counter0|divisibleby:3 and forloop.counter0 == 0 %}
+                <div class="animate-slide-up">
+                    <div class="space-y-6">
+                {% elif forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
+                    </div>
+                </div>
+                <div class="animate-slide-up">
+                    <div class="space-y-6">
+                {% endif %}
+                
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-gray-900">{{ skill.name }}</span>
+                                <span class="text-primary-600 font-semibold">{{ skill.percentage }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-primary-600 h-3 rounded-full" style="width: {{ skill.percentage }}%"></div>
+                            </div>
+                        </div>
+                
+                {% if forloop.last %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Fallback skills if no featured skills are selected -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="animate-slide-up">
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-900">AutoCAD</span>
+                            <span class="text-primary-600 font-semibold">95%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-primary-600 h-3 rounded-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-900">Structural Analysis</span>
+                            <span class="text-primary-600 font-semibold">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-primary-600 h-3 rounded-full" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-900">Technical Illustration</span>
+                            <span class="text-primary-600 font-semibold">92%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-primary-600 h-3 rounded-full" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+{% if sections_data.testimonials %}
+<!-- Testimonials Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 animate-slide-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {{ sections_data.testimonials.content.testimonials_title|default:"Client Testimonials" }}
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                {{ sections_data.testimonials.content.testimonials_subtitle|default:"What my clients say about working with me." }}
+            </p>
+        </div>
+        
+        {% if sections_data.testimonials.content.featured_testimonials.all %}
+        <!-- Dynamic Display Based on Mode -->
+        {% if sections_data.testimonials.content.testimonials_display_mode == 'slider' %}
+        <!-- Slider Mode -->
+        <div class="testimonials-slider relative">
+            <div class="testimonials-container overflow-hidden">
+                <div class="testimonials-track flex transition-transform duration-500 ease-in-out">
+                    {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
+                    <div class="testimonial-slide min-w-full md:min-w-1/2 lg:min-w-1/3 px-4">
+                        <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                        {% else %}
+                                            <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mb-4">
+                                "{{ testimonial.content }}"
+                            </p>
+                            <div class="flex items-center">
+                                {% if testimonial.image %}
+                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                {% else %}
+                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                                {% endif %}
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Slider Navigation -->
+            <div class="flex items-center justify-center mt-6 space-x-4">
+                <button class="slider-prev bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 transition-colors">
+                    <i data-lucide="chevron-left" class="h-5 w-5"></i>
+                </button>
+                <div class="flex space-x-2" id="slider-dots">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+                <button class="slider-next bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 transition-colors">
+                    <i data-lucide="chevron-right" class="h-5 w-5"></i>
+                </button>
+            </div>
+        </div>
+        
+        {% elif sections_data.testimonials.content.testimonials_display_mode == 'continuous' %}
+        <!-- Continuous Scroll Mode -->
+        <div class="testimonials-continuous-container relative overflow-hidden">
+            <div class="testimonials-continuous-track flex animate-scroll">
+                {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
+                <div class="testimonial-continuous-item min-w-80 mx-4 flex-shrink-0">
+                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                    {% else %}
+                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            "{{ testimonial.content }}"
+                        </p>
+                        <div class="flex items-center">
+                            {% if testimonial.image %}
+                                <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                            {% else %}
+                                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                            {% endif %}
+                            <div>
+                                <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Duplicate for seamless loop -->
+                {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
+                <div class="testimonial-continuous-item min-w-80 mx-4 flex-shrink-0">
+                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                    {% else %}
+                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            "{{ testimonial.content }}"
+                        </p>
+                        <div class="flex items-center">
+                            {% if testimonial.image %}
+                                <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                            {% else %}
+                                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                            {% endif %}
+                            <div>
+                                <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Default Grid Mode -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
+            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= testimonial.rating %}
+                                <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                            {% else %}
+                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "{{ testimonial.content }}"
+                </p>
+                <div class="flex items-center">
+                    {% if testimonial.image %}
+                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                    {% else %}
+                        <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    {% endif %}
+                    <div>
+                        <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                        <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% else %}
+        <!-- Fallback testimonials if no featured testimonials are selected -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "Excellent work on our structural design project. Professional, timely, and exceeded expectations."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div>
+                        <p class="font-semibold text-gray-900">John Smith</p>
+                        <p class="text-sm text-gray-600">Construction Manager</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "The patent illustrations were exactly what we needed. Clear, detailed, and professionally executed."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Sarah Johnson</p>
+                        <p class="text-sm text-gray-600">Patent Attorney</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">
+                    "Outstanding environmental engineering consultation. Helped us achieve our sustainability goals."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Mike Davis</p>
+                        <p class="text-sm text-gray-600">Project Director</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+{% if sections_data.contact %}
+<!-- CTA Section -->
+<section class="py-20 text-white" style="background: linear-gradient(135deg, {{ theme_colors.primary }} 0%, {{ theme_colors.accent }} 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-slide-up">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            {{ sections_data.contact.content.contact_title|default:"Ready to Start Your Project?" }}
+        </h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto" style="color: rgba(255, 255, 255, 0.9);">
+            {{ sections_data.contact.content.contact_description|default:"Let's work together to bring your engineering vision to life with professional expertise and innovative solutions." }}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ sections_data.contact.content.contact_cta_primary_url|default:'/contact' }}" class="bg-white px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
+               style="color: {{ theme_colors.primary }};">
+                {{ sections_data.contact.content.contact_cta_primary_text|default:"Contact Me Today" }}
+            </a>
+            <a href="{{ sections_data.contact.content.contact_cta_secondary_url|default:'/portfolio' }}" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white transition-all duration-300"
+               style="border-color: white;" 
+               onmouseover="this.style.backgroundColor='white'; this.style.color='{{ theme_colors.primary }}';" 
+               onmouseout="this.style.backgroundColor='transparent'; this.style.color='white';">
+                {{ sections_data.contact.content.contact_cta_secondary_text|default:"View My Work" }}
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Testimonials Slider Styles */
+.testimonials-slider {
+    max-width: 100%;
+}
+
+.testimonial-slide {
+    transition: transform 0.3s ease;
+}
+
+.slider-prev, .slider-next {
+    transition: all 0.3s ease;
+}
+
+.slider-prev:hover, .slider-next:hover {
+    transform: scale(1.1);
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slider-dot.active {
+    background-color: #2563eb;
+}
+
+/* Continuous Scroll Styles */
+.testimonials-continuous-container {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.testimonials-continuous-track {
+    animation: continuousScroll 40s linear infinite;
+    width: max-content;
+}
+
+.testimonials-continuous-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes continuousScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.testimonial-continuous-item {
+    min-width: 320px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .testimonial-slide {
+        min-width: 100%;
+    }
+    
+    .testimonial-continuous-item {
+        min-width: 280px;
+    }
+    
+    .testimonials-continuous-track {
+        animation-duration: 60s;
+    }
+}
+
+/* Animation enhancements */
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    lucide.createIcons();
+    
+    // Slider functionality
+    const slider = document.querySelector('.testimonials-slider');
+    if (slider) {
+        initTestimonialsSlider();
+    }
+    
+    // Initialize any needed functionality for continuous scroll
+    const continuousContainer = document.querySelector('.testimonials-continuous-container');
+    if (continuousContainer) {
+        initContinuousScroll();
+    }
+});
+
+function initTestimonialsSlider() {
+    const track = document.querySelector('.testimonials-track');
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const prevBtn = document.querySelector('.slider-prev');
+    const nextBtn = document.querySelector('.slider-next');
+    const dotsContainer = document.getElementById('slider-dots');
+    
+    if (!track || slides.length === 0) return;
+    
+    let currentIndex = 0;
+    const slidesToShow = getSlidesToShow();
+    const totalSlides = slides.length;
+    const maxIndex = Math.max(0, totalSlides - slidesToShow);
+    
+    // Create dots
+    createSliderDots();
+    
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+        currentIndex = Math.max(0, currentIndex - 1);
+        updateSlider();
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentIndex = Math.min(maxIndex, currentIndex + 1);
+        updateSlider();
+    });
+    
+    // Auto-play functionality
+    let autoPlayInterval = setInterval(() => {
+        currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+        updateSlider();
+    }, 5000);
+    
+    // Pause auto-play on hover
+    track.addEventListener('mouseenter', () => {
+        clearInterval(autoPlayInterval);
+    });
+    
+    track.addEventListener('mouseleave', () => {
+        autoPlayInterval = setInterval(() => {
+            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+            updateSlider();
+        }, 5000);
+    });
+    
+    function getSlidesToShow() {
+        if (window.innerWidth >= 1024) return 3;
+        if (window.innerWidth >= 768) return 2;
+        return 1;
+    }
+    
+    function createSliderDots() {
+        if (!dotsContainer) return;
+        
+        dotsContainer.innerHTML = '';
+        const dotsCount = Math.ceil(totalSlides / slidesToShow);
+        
+        for (let i = 0; i < dotsCount; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'slider-dot';
+            if (i === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                currentIndex = i;
+                updateSlider();
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    function updateSlider() {
+        const slideWidth = 100 / slidesToShow;
+        const translateX = -currentIndex * slideWidth;
+        track.style.transform = `translateX(${translateX}%)`;
+        
+        // Update dots
+        const dots = dotsContainer.querySelectorAll('.slider-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === Math.floor(currentIndex / slidesToShow));
+        });
+        
+        // Update button states
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex >= maxIndex;
+        
+        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+    }
+    
+    // Responsive handling
+    window.addEventListener('resize', () => {
+        const newSlidesToShow = getSlidesToShow();
+        if (newSlidesToShow !== slidesToShow) {
+            location.reload(); // Simple solution - reload to recalculate
+        }
+    });
+    
+    // Initial update
+    updateSlider();
+}
+
+function initContinuousScroll() {
+    // Additional functionality can be added here if needed
+    // For now, CSS animations handle the continuous scroll
+    
+    // Optional: Add pause/resume on hover for better UX
+    const track = document.querySelector('.testimonials-continuous-track');
+    if (track) {
+        track.addEventListener('mouseenter', () => {
+            track.style.animationPlayState = 'paused';
+        });
+        
+        track.addEventListener('mouseleave', () => {
+            track.style.animationPlayState = 'running';
+        });
+    }
+}
+</script>
+{% endblock %}

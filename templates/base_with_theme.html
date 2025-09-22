@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sumithra KP - Civil Engineer & Patent Illustrator{% endblock %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block description %}Sumithra KP - Professional Civil Engineer specializing in design, patent illustrations, and environmental engineering solutions.{% endblock %}">
+    <meta name="keywords" content="civil engineering, patent illustrations, environmental engineering, sumithra kp">
+    <meta name="author" content="Sumithra KP">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}Sumithra KP - Civil Engineer & Patent Illustrator{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Professional Civil Engineer specializing in design, patent illustrations, and environmental engineering solutions.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sumithrakp.com">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS with Dynamic Theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '{{ theme_colors.primary }}',
+                        'secondary': '{{ theme_colors.secondary }}',
+                        'accent': '{{ theme_colors.accent }}',
+                        'surface': '{{ theme_colors.surface }}',
+                        'background': '{{ theme_colors.background }}',
+                        'success': '{{ theme_colors.success }}',
+                        'warning': '{{ theme_colors.warning }}',
+                        'error': '{{ theme_colors.error }}',
+                        'info': '{{ theme_colors.info }}',
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --color-primary: {{ theme_colors.primary }};
+            --color-secondary: {{ theme_colors.secondary }};
+            --color-accent: {{ theme_colors.accent }};
+            --color-background: {{ theme_colors.background }};
+            --color-surface: {{ theme_colors.surface }};
+        }
+        
+        body {
+            background-color: var(--color-background);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="font-sans text-secondary">
+    <!-- Navigation -->
+    <nav x-data="{ open: false }" class="bg-surface shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-primary">
+                        Sumithra KP
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-secondary hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                    <a href="/resume" class="text-secondary hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">Resume</a>
+                    <a href="/portfolio" class="text-secondary hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">Portfolio</a>
+                    <a href="/contact" class="text-secondary hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="open = !open" class="text-secondary hover:text-primary focus:outline-none">
+                        <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                            <path x-show="!open" d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path x-show="open" d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="open" x-transition class="md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface border-t">
+                <a href="/" class="text-secondary hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="/resume" class="text-secondary hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Resume</a>
+                <a href="/portfolio" class="text-secondary hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Portfolio</a>
+                <a href="/contact" class="text-secondary hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Sumithra KP</h3>
+                    <p class="text-gray-300 mb-4">Civil Engineer specializing in design, patent illustrations, and environmental engineering solutions.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="linkedin" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="mail" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="phone" class="h-5 w-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/resume" class="text-gray-300 hover:text-white transition-colors">Resume</a></li>
+                        <li><a href="/portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a></li>
+                        <li><a href="/contact" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-300">Civil Engineering Design</li>
+                        <li class="text-gray-300">Patent Illustrations</li>
+                        <li class="text-gray-300">Environmental Engineering</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2024 Sumithra KP. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

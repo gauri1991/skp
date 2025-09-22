@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Inquiry Submitted Successfully - Sumithra KP{% endblock %}
+{% block description %}Your service inquiry has been submitted successfully. We will respond within 24-48 hours with a detailed quote.{% endblock %}
+
+{% block content %}
+<!-- Success Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <!-- Success Icon -->
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="check-circle" class="h-8 w-8 text-green-600"></i>
+            </div>
+            
+            <!-- Success Message -->
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Inquiry Submitted Successfully!</h1>
+            <p class="text-xl text-gray-600 mb-8">
+                Thank you for your interest in {{ inquiry.service.title }}. We have received your requirements and will respond within 24-48 hours.
+            </p>
+        </div>
+        
+        <!-- Inquiry Details Card -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="border-b border-gray-200 pb-4 mb-4">
+                <h2 class="text-lg font-semibold text-gray-900">Inquiry Details</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Service</dt>
+                    <dd class="mt-1 text-sm text-gray-900 font-semibold">{{ inquiry.service.title }}</dd>
+                </div>
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Project Title</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.project_title }}</dd>
+                </div>
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Client Name</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.client_name }}</dd>
+                </div>
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.client_email }}</dd>
+                </div>
+                
+                {% if inquiry.client_phone %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Phone</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.client_phone }}</dd>
+                </div>
+                {% endif %}
+                
+                {% if inquiry.company %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Company</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.company }}</dd>
+                </div>
+                {% endif %}
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Submission Date</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ inquiry.created_at|date:"F j, Y \a\t g:i A" }}</dd>
+                </div>
+                
+                {% if inquiry.estimated_cost %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Estimated Cost</dt>
+                    <dd class="mt-1 text-lg font-bold text-primary-600">₹{{ inquiry.estimated_cost|floatformat:0 }}</dd>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- What's Next Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">What Happens Next?</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-4 mt-0.5">
+                        <span class="text-sm font-bold text-primary-600">1</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Review & Analysis</h3>
+                        <p class="text-gray-600 text-sm">Our team will carefully review your requirements and project details.</p>
+                        <p class="text-xs text-gray-500 mt-1">Within 4-8 hours</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-4 mt-0.5">
+                        <span class="text-sm font-bold text-primary-600">2</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Detailed Quote Preparation</h3>
+                        <p class="text-gray-600 text-sm">We'll prepare a comprehensive quote with timeline, deliverables, and pricing.</p>
+                        <p class="text-xs text-gray-500 mt-1">Within 24-48 hours</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-4 mt-0.5">
+                        <span class="text-sm font-bold text-primary-600">3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Consultation Call</h3>
+                        <p class="text-gray-600 text-sm">Schedule a free consultation to discuss your project in detail.</p>
+                        <p class="text-xs text-gray-500 mt-1">After quote review</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Information -->
+        <div class="bg-gradient-to-r from-primary-50 to-blue-50 rounded-lg p-6 mb-8">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Need Immediate Assistance?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="phone" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-700">Phone</dt>
+                        <dd class="text-sm text-primary-600 font-semibold">
+                            <a href="tel:+918296244110">+91 829 624 4110</a>
+                        </dd>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="mail" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-700">Email</dt>
+                        <dd class="text-sm text-primary-600 font-semibold">
+                            <a href="mailto:contact@sumithrakp.com">contact@sumithrakp.com</a>
+                        </dd>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex items-center text-sm text-gray-600">
+                <i data-lucide="clock" class="h-4 w-4 mr-2"></i>
+                <span>Response time: 24-48 hours | Phone hours: 9 AM - 6 PM IST</span>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="text-center space-y-4">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'services' %}" 
+                   class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold">
+                    View Other Services
+                </a>
+                <a href="{% url 'portfolio' %}" 
+                   class="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors font-semibold">
+                    View Our Work
+                </a>
+            </div>
+            
+            <div class="text-sm text-gray-600">
+                <p>
+                    Questions about your inquiry? 
+                    <a href="{% url 'contact' %}" class="text-primary-600 hover:text-primary-700 font-semibold">Contact us</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Email Confirmation Notice -->
+<section class="py-8 bg-yellow-50 border-t border-yellow-200">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center">
+            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                <i data-lucide="mail" class="h-4 w-4 text-yellow-600"></i>
+            </div>
+            <div>
+                <p class="text-sm text-yellow-800">
+                    <strong>Email Confirmation:</strong> 
+                    A confirmation email has been sent to {{ inquiry.client_email }}. 
+                    Please check your inbox and spam folder.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

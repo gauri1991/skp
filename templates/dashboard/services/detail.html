@@ -1,0 +1,510 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{{ service.title }} - Service Details{% endblock %}
+{% block page_title %}Service Details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">{{ service.title|truncatechars:30 }}</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Service Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                        {% include 'includes/service_icon.html' with service=service icon_class="h-6 w-6" icon_color="text-primary-600" %}
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ service.title }}</h1>
+                        <div class="flex items-center space-x-4 mt-1">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {{ service.get_category_display }}
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if service.is_active %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                {% if service.is_active %}
+                                    <i data-lucide="check-circle" class="h-3 w-3 mr-1"></i>
+                                    Active
+                                {% else %}
+                                    <i data-lucide="x-circle" class="h-3 w-3 mr-1"></i>
+                                    Inactive
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'dashboard_service_preview' service.pk %}" 
+                       class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center space-x-2"
+                       target="_blank">
+                        <i data-lucide="external-link" class="h-4 w-4"></i>
+                        <span>Preview</span>
+                    </a>
+                    <a href="{% url 'dashboard_service_edit' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="edit" class="h-4 w-4"></i>
+                        <span>Edit</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ total_inquiries }}</p>
+                </div>
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="mail" class="h-4 w-4 text-blue-600"></i>
+                </div>
+            </div>
+            {% if total_inquiries > 0 %}
+            <div class="mt-2">
+                <a href="{% url 'dashboard_service_inquiries' service.pk %}" class="text-sm text-blue-600 hover:text-blue-700">View all →</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Pending Quotes</p>
+                    <p class="text-2xl font-bold text-orange-600">{{ pending_quotes }}</p>
+                </div>
+                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="clock" class="h-4 w-4 text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Service Tabs</p>
+                    <p class="text-2xl font-bold text-green-600">{{ tabs.count }}</p>
+                </div>
+                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="folder" class="h-4 w-4 text-green-600"></i>
+                </div>
+            </div>
+            {% if tabs.count > 0 %}
+            <div class="mt-2">
+                <a href="{% url 'dashboard_service_tabs' service.pk %}" class="text-sm text-green-600 hover:text-green-700">Manage →</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Requirements</p>
+                    <p class="text-2xl font-bold text-purple-600">{{ requirements.count }}</p>
+                </div>
+                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="list" class="h-4 w-4 text-purple-600"></i>
+                </div>
+            </div>
+            {% if requirements.count > 0 %}
+            <div class="mt-2">
+                <a href="{% url 'dashboard_service_requirements' service.pk %}" class="text-sm text-purple-600 hover:text-purple-700">Manage →</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Service Content Tabs -->
+    <div class="bg-white shadow rounded-lg" x-data="{ activeTab: 'overview' }">
+        <!-- Tab Navigation -->
+        <div class="border-b border-gray-200">
+            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                <button @click="activeTab = 'overview'" 
+                        :class="{ 'border-primary-500 text-primary-600': activeTab === 'overview', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'overview' }"
+                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Overview
+                </button>
+                <button @click="activeTab = 'tabs'" 
+                        :class="{ 'border-primary-500 text-primary-600': activeTab === 'tabs', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'tabs' }"
+                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Service Tabs ({{ tabs.count }})
+                </button>
+                <button @click="activeTab = 'requirements'" 
+                        :class="{ 'border-primary-500 text-primary-600': activeTab === 'requirements', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'requirements' }"
+                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Requirements ({{ requirements.count }})
+                </button>
+                {% if service.has_bom %}
+                <button @click="activeTab = 'bom'" 
+                        :class="{ 'border-primary-500 text-primary-600': activeTab === 'bom', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'bom' }"
+                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    BOM ({{ bom_templates.count }})
+                </button>
+                {% endif %}
+                <button @click="activeTab = 'inquiries'" 
+                        :class="{ 'border-primary-500 text-primary-600': activeTab === 'inquiries', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'inquiries' }"
+                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    Recent Inquiries
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6">
+            <!-- Overview Tab -->
+            <div x-show="activeTab === 'overview'" class="space-y-6">
+                <!-- Service Information -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Basic Info -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+                        <dl class="space-y-3">
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Short Description</dt>
+                                <dd class="text-sm text-gray-900">{{ service.short_description }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Category</dt>
+                                <dd class="text-sm text-gray-900">{{ service.get_category_display }}</dd>
+                            </div>
+                            {% if service.base_price %}
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Base Price</dt>
+                                <dd class="text-sm text-gray-900">₹{{ service.base_price|floatformat:0 }}</dd>
+                            </div>
+                            {% endif %}
+                            {% if service.timeline %}
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Timeline</dt>
+                                <dd class="text-sm text-gray-900">{{ service.timeline }}</dd>
+                            </div>
+                            {% endif %}
+                        </dl>
+                    </div>
+
+                    <!-- Settings -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Settings</h3>
+                        <dl class="space-y-3">
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Status</dt>
+                                <dd class="text-sm">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if service.is_active %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                        {% if service.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Has BOM</dt>
+                                <dd class="text-sm text-gray-900">{% if service.has_bom %}Yes{% else %}No{% endif %}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Display Order</dt>
+                                <dd class="text-sm text-gray-900">{{ service.display_order }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Created</dt>
+                                <dd class="text-sm text-gray-900">{{ service.created_at|date:"F j, Y \a\t g:i A" }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Description</h3>
+                    <div class="prose prose-sm max-w-none">
+                        <p class="text-gray-700">{{ service.description|linebreaks }}</p>
+                    </div>
+                </div>
+
+                <!-- Features, Process Steps, Deliverables -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {% if service.features %}
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Features</h3>
+                        <ul class="space-y-2">
+                            {% for feature in service.features %}
+                            <li class="flex items-start">
+                                <i data-lucide="check" class="h-4 w-4 text-green-600 mt-0.5 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm text-gray-700">{{ feature }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if service.process_steps %}
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Process Steps</h3>
+                        <ol class="space-y-2">
+                            {% for step in service.process_steps %}
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-5 h-5 bg-primary-100 text-primary-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">{{ forloop.counter }}</span>
+                                <span class="text-sm text-gray-700">{{ step }}</span>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                    {% endif %}
+
+                    {% if service.deliverables %}
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Deliverables</h3>
+                        <ul class="space-y-2">
+                            {% for deliverable in service.deliverables %}
+                            <li class="flex items-start">
+                                <i data-lucide="file-text" class="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0"></i>
+                                <span class="text-sm text-gray-700">{{ deliverable }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Tabs Tab -->
+            <div x-show="activeTab === 'tabs'">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Service Tabs</h3>
+                    <a href="{% url 'dashboard_service_tabs' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="plus" class="h-4 w-4"></i>
+                        <span>Manage Tabs</span>
+                    </a>
+                </div>
+
+                {% if tabs %}
+                <div class="space-y-4">
+                    {% for tab in tabs %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i data-lucide="{{ tab.icon|default:'folder' }}" class="h-5 w-5 text-gray-600 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">{{ tab.title }}</h4>
+                                    <p class="text-sm text-gray-500">Type: {{ tab.get_tab_type_display }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-500">Order: {{ tab.display_order }}</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if tab.is_active %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {% if tab.is_active %}Active{% else %}Inactive{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="folder" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No tabs configured</h3>
+                    <p class="text-gray-500 mb-4">Add tabs to organize your service content.</p>
+                    <a href="{% url 'dashboard_service_tabs' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        Add First Tab
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Requirements Tab -->
+            <div x-show="activeTab === 'requirements'">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Service Requirements</h3>
+                    <a href="{% url 'dashboard_service_requirements' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="plus" class="h-4 w-4"></i>
+                        <span>Manage Requirements</span>
+                    </a>
+                </div>
+
+                {% if requirements %}
+                <div class="space-y-4">
+                    {% for requirement in requirements %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-medium text-gray-900">{{ requirement.label }}</h4>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <span class="text-sm text-gray-500">Type: {{ requirement.get_field_type_display }}</span>
+                                    {% if requirement.is_required %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Required</span>
+                                    {% endif %}
+                                    {% if requirement.affects_pricing %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Affects Pricing</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">Order: {{ requirement.display_order }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="list" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No requirements configured</h3>
+                    <p class="text-gray-500 mb-4">Add requirements to collect specific information from clients.</p>
+                    <a href="{% url 'dashboard_service_requirements' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        Add First Requirement
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- BOM Tab -->
+            {% if service.has_bom %}
+            <div x-show="activeTab === 'bom'">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Bill of Materials</h3>
+                    <a href="{% url 'dashboard_service_bom' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="plus" class="h-4 w-4"></i>
+                        <span>Manage BOM</span>
+                    </a>
+                </div>
+
+                {% if bom_templates %}
+                <div class="space-y-4">
+                    {% for bom in bom_templates %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-medium text-gray-900">{{ bom.name }}</h4>
+                                <p class="text-sm text-gray-500">{{ bom.description }}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-bold text-gray-900">₹{{ bom.total_cost|floatformat:0 }}</p>
+                                <p class="text-sm text-gray-500">{{ bom.items.count }} items</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No BOM templates configured</h3>
+                    <p class="text-gray-500 mb-4">Add bill of materials templates for this service.</p>
+                    <a href="{% url 'dashboard_service_bom' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        Add First BOM
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Recent Inquiries Tab -->
+            <div x-show="activeTab === 'inquiries'">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-medium text-gray-900">Recent Inquiries</h3>
+                    {% if recent_inquiries %}
+                    <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
+                       class="text-primary-600 hover:text-primary-700 font-medium">
+                        View All ({{ total_inquiries }}) →
+                    </a>
+                    {% endif %}
+                </div>
+
+                {% if recent_inquiries %}
+                <div class="space-y-4">
+                    {% for inquiry in recent_inquiries %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-medium text-gray-900">{{ inquiry.project_title }}</h4>
+                                <p class="text-sm text-gray-600">{{ inquiry.client_name }} • {{ inquiry.client_email }}</p>
+                                <p class="text-xs text-gray-500 mt-1">{{ inquiry.created_at|date:"M d, Y \a\t g:i A" }}</p>
+                            </div>
+                            <div class="text-right">
+                                {% if inquiry.estimated_cost %}
+                                <p class="font-semibold text-gray-900">₹{{ inquiry.estimated_cost|floatformat:0 }}</p>
+                                {% endif %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ inquiry.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="inbox" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No inquiries yet</h3>
+                    <p class="text-gray-500 mb-4">Client inquiries will appear here when they submit requests.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="{% url 'dashboard_service_edit' service.pk %}" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i data-lucide="edit" class="h-5 w-5 text-blue-600 mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Edit Service</p>
+                        <p class="text-sm text-gray-500">Update service details</p>
+                    </div>
+                </a>
+
+                <a href="{% url 'dashboard_service_preview' service.pk %}" 
+                   class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                   target="_blank">
+                    <i data-lucide="external-link" class="h-5 w-5 text-green-600 mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Preview Service</p>
+                        <p class="text-sm text-gray-500">See how clients view it</p>
+                    </div>
+                </a>
+
+                <a href="{% url 'dashboard_service_delete' service.pk %}" 
+                   class="flex items-center p-4 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
+                    <i data-lucide="trash-2" class="h-5 w-5 text-red-600 mr-3"></i>
+                    <div>
+                        <p class="font-medium text-red-900">Delete Service</p>
+                        <p class="text-sm text-red-500">Permanently remove</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

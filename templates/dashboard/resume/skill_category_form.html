@@ -1,0 +1,195 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+{% if object %}Edit Skill Category{% else %}Create Skill Category{% endif %} - Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Skill Category{% else %}Create Skill Category{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update the skill category details{% else %}Add a new skill category to organize your skills{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Categories
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Category Name -->
+                    <div>
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Category Name *
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.name.help_text }}</p>
+                        {% endif %}
+                        {% if form.name.errors %}
+                            {% for error in form.name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Slug -->
+                    <div>
+                        <label for="{{ form.slug.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Slug
+                        </label>
+                        {{ form.slug }}
+                        {% if form.slug.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.slug.help_text }}</p>
+                        {% endif %}
+                        {% if form.slug.errors %}
+                            {% for error in form.slug.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Icon -->
+                    <div>
+                        <label for="{{ form.icon.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Icon
+                        </label>
+                        {{ form.icon }}
+                        {% if form.icon.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.icon.help_text }}</p>
+                        {% endif %}
+                        <p class="mt-2 text-sm text-gray-500">
+                            Use Lucide icon names. Popular icons: <code>cpu</code>, <code>layers</code>, <code>briefcase</code>, <code>globe-2</code>, <code>code</code>, <code>zap</code>, <code>tool</code>
+                        </p>
+                        {% if form.icon.errors %}
+                            {% for error in form.icon.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Description
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.description.help_text }}</p>
+                        {% endif %}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Display Order -->
+                        <div>
+                            <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                                Display Order
+                            </label>
+                            {{ form.display_order }}
+                            {% if form.display_order.help_text %}
+                                <p class="mt-2 text-sm text-gray-500">{{ form.display_order.help_text }}</p>
+                            {% endif %}
+                            <p class="mt-2 text-sm text-gray-500">Lower numbers appear first on the resume</p>
+                            {% if form.display_order.errors %}
+                                {% for error in form.display_order.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Is Visible -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 mb-2">Visibility</label>
+                            <div class="flex items-center mt-4">
+                                {{ form.is_visible }}
+                                <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                    Show this category on resume
+                                </label>
+                            </div>
+                            {% if form.is_visible.errors %}
+                                {% for error in form.is_visible.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview Resume
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Category{% else %}Create Category{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Icon Preview -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i data-lucide="eye" class="h-5 w-5 text-blue-400"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">Icon Preview</h3>
+                <div class="mt-2 text-sm text-blue-700">
+                    <p>Icon preview will appear here: 
+                        <span id="icon-preview" class="inline-flex items-center ml-2">
+                            <i data-lucide="{% if object %}{{ object.icon }}{% else %}zap{% endif %}" class="h-5 w-5"></i>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Lucide icons
+    lucide.createIcons();
+    
+    // Live icon preview
+    const iconInput = document.getElementById('{{ form.icon.id_for_label }}');
+    const iconPreview = document.getElementById('icon-preview');
+    
+    if (iconInput && iconPreview) {
+        iconInput.addEventListener('input', function() {
+            const iconName = this.value || 'zap';
+            iconPreview.innerHTML = `<i data-lucide="${iconName}" class="h-5 w-5"></i>`;
+            lucide.createIcons();
+        });
+    }
+});
+</script>
+{% endblock %}

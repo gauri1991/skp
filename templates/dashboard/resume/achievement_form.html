@@ -1,0 +1,175 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Achievement{% else %}Add Achievement{% endif %} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Achievement{% else %}Add Achievement{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update achievement details{% else %}Add a new award or achievement{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_resume_achievement_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to Achievements
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Title -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Achievement Title *
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            {% for error in form.title.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Description *
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Date Achieved -->
+                    <div>
+                        <label for="{{ form.date_achieved.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Date Achieved *
+                        </label>
+                        {{ form.date_achieved }}
+                        {% if form.date_achieved.errors %}
+                            {% for error in form.date_achieved.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Category *
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            {% for error in form.category.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Organization -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.organization.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Organization/Institution
+                        </label>
+                        {{ form.organization }}
+                        {% if form.organization.errors %}
+                            {% for error in form.organization.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- URL -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.url.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            URL (Link to certificate or details)
+                        </label>
+                        {{ form.url }}
+                        {% if form.url.errors %}
+                            {% for error in form.url.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Order -->
+                    <div>
+                        <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Display Order
+                        </label>
+                        {{ form.display_order }}
+                        {% if form.display_order.errors %}
+                            {% for error in form.display_order.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Featured -->
+                    <div>
+                        <div class="flex items-center">
+                            {{ form.is_featured }}
+                            <label for="{{ form.is_featured.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Feature this achievement (show prominently)
+                            </label>
+                        </div>
+                        {% if form.is_featured.errors %}
+                            {% for error in form.is_featured.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Visible -->
+                    <div class="md:col-span-2">
+                        <div class="flex items-center">
+                            {{ form.is_visible }}
+                            <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Show on resume
+                            </label>
+                        </div>
+                        {% if form.is_visible.errors %}
+                            {% for error in form.is_visible.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_achievement_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Achievement{% else %}Add Achievement{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

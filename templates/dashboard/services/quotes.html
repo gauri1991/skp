@@ -1,0 +1,366 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Manage Quotes - {{ service.title }}{% endblock %}
+{% block page_title %}Service Quotes Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="settings" class="h-5 w-5"></i>
+                        <span class="sr-only">Services</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Services</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ service.title|truncatechars:20 }}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i data-lucide="chevron-right" class="h-5 w-5 text-gray-400"></i>
+                    <span class="ml-4 text-sm font-medium text-gray-900">Quotes</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Service Header -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
+                        <p class="text-sm text-gray-500">Generated Quotes Management</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <a href="{% url 'dashboard_service_detail' service.pk %}" 
+                       class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Service</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Quotes</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ quotes.count }}</p>
+                </div>
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="file-text" class="h-4 w-4 text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Value</p>
+                    <p class="text-2xl font-bold text-green-600">
+                        ₹{% if quotes %}{{ quotes|length|add:0 }}{% else %}0{% endif %}
+                    </p>
+                </div>
+                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="dollar-sign" class="h-4 w-4 text-green-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Avg. Quote</p>
+                    <p class="text-2xl font-bold text-purple-600">
+                        ₹{% if quotes %}{{ quotes.0.quote_amount|default:0|floatformat:0 }}{% else %}0{% endif %}
+                    </p>
+                </div>
+                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="trending-up" class="h-4 w-4 text-purple-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Conversion Rate</p>
+                    <p class="text-2xl font-bold text-orange-600">
+                        {% if quotes %}{{ quotes|length }}%{% else %}0%{% endif %}
+                    </p>
+                </div>
+                <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="target" class="h-4 w-4 text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quotes List -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Generated Quotes</h2>
+                    <p class="text-sm text-gray-500">View and manage all quotes generated for this service</p>
+                </div>
+            </div>
+
+            {% if quotes %}
+            <div class="space-y-4">
+                {% for quote in quotes %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                     x-data="{ expanded: false }">
+                    <!-- Quote Header -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="calculator" class="h-5 w-5 text-green-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center space-x-3">
+                                    <h3 class="text-sm font-medium text-gray-900">
+                                        Quote for {{ quote.inquiry.project_title }}
+                                    </h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Generated
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <p class="text-sm text-gray-600">{{ quote.inquiry.client_name }}</p>
+                                    <p class="text-sm text-gray-500">{{ quote.inquiry.client_email }}</p>
+                                    <p class="text-sm text-gray-500">{{ quote.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <p class="text-lg font-bold text-gray-900">₹{{ quote.quote_amount|floatformat:0 }}</p>
+                                <p class="text-xs text-gray-500">Quote Amount</p>
+                            </div>
+                            <button @click="expanded = !expanded" 
+                                    class="text-gray-400 hover:text-gray-600">
+                                <i data-lucide="chevron-down" class="h-4 w-4 transition-transform" :class="{ 'rotate-180': expanded }"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Expanded Quote Details -->
+                    <div x-show="expanded" x-transition class="mt-4 border-t border-gray-200 pt-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Quote Information -->
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900 mb-3">Quote Details</h4>
+                                <dl class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Quote ID:</dt>
+                                        <dd class="text-sm text-gray-900">#{{ quote.id }}</dd>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Amount:</dt>
+                                        <dd class="text-sm font-semibold text-gray-900">₹{{ quote.quote_amount|floatformat:0 }}</dd>
+                                    </div>
+                                    {% if quote.breakdown %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Breakdown Available:</dt>
+                                        <dd class="text-sm text-green-600">Yes</dd>
+                                    </div>
+                                    {% endif %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Generated:</dt>
+                                        <dd class="text-sm text-gray-900">{{ quote.created_at|date:"F j, Y \a\t g:i A" }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+
+                            <!-- Client Information -->
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900 mb-3">Client Information</h4>
+                                <dl class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Name:</dt>
+                                        <dd class="text-sm text-gray-900">{{ quote.inquiry.client_name }}</dd>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Email:</dt>
+                                        <dd class="text-sm text-gray-900">
+                                            <a href="mailto:{{ quote.inquiry.client_email }}" class="text-primary-600 hover:text-primary-700">
+                                                {{ quote.inquiry.client_email }}
+                                            </a>
+                                        </dd>
+                                    </div>
+                                    {% if quote.inquiry.client_phone %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Phone:</dt>
+                                        <dd class="text-sm text-gray-900">{{ quote.inquiry.client_phone }}</dd>
+                                    </div>
+                                    {% endif %}
+                                    <div class="flex justify-between">
+                                        <dt class="text-sm text-gray-500">Project:</dt>
+                                        <dd class="text-sm text-gray-900">{{ quote.inquiry.project_title }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <!-- Quote Breakdown -->
+                        {% if quote.breakdown %}
+                        <div class="mt-6">
+                            <h4 class="text-sm font-medium text-gray-900 mb-3">Cost Breakdown</h4>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="space-y-3">
+                                    {% for key, value in quote.breakdown.items %}
+                                    <div class="flex justify-between">
+                                        <span class="text-sm text-gray-600">{{ key|title }}:</span>
+                                        <span class="text-sm font-medium text-gray-900">₹{{ value|floatformat:0 }}</span>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="border-t border-gray-200 pt-2 mt-3">
+                                        <div class="flex justify-between">
+                                            <span class="text-sm font-semibold text-gray-900">Total:</span>
+                                            <span class="text-sm font-bold text-gray-900">₹{{ quote.quote_amount|floatformat:0 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Quote Notes -->
+                        {% if quote.notes %}
+                        <div class="mt-6">
+                            <h4 class="text-sm font-medium text-gray-900 mb-2">Notes</h4>
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                <p class="text-sm text-blue-800">{{ quote.notes }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Action Buttons -->
+                        <div class="mt-6 flex items-center justify-end space-x-3">
+                            <a href="mailto:{{ quote.inquiry.client_email }}?subject=Quote for {{ quote.inquiry.project_title }}&body=Hi {{ quote.inquiry.client_name }},%0A%0AThank you for your inquiry regarding {{ quote.inquiry.project_title }}. We have prepared a detailed quote for you:%0A%0AQuote Amount: ₹{{ quote.quote_amount|floatformat:0 }}%0A%0A{% if quote.breakdown %}Cost Breakdown:%0A{% for key, value in quote.breakdown.items %}- {{ key|title }}: ₹{{ value|floatformat:0 }}%0A{% endfor %}{% endif %}%0APlease let us know if you have any questions or need any modifications.%0A%0ABest regards,%0ASumithra KP" 
+                               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                <i data-lucide="mail" class="h-4 w-4"></i>
+                                <span>Send Quote</span>
+                            </a>
+                            <button onclick="exportQuotePDF({{ quote.id }})"
+                                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                <i data-lucide="download" class="h-4 w-4"></i>
+                                <span>Export PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-12">
+                <i data-lucide="calculator" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No quotes generated yet</h3>
+                <p class="text-gray-500 mb-4">Quotes will appear here when clients submit inquiries and estimates are calculated.</p>
+                <div class="flex justify-center space-x-3">
+                    <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
+                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        View Inquiries
+                    </a>
+                    <a href="{% url 'service_detail' service.slug %}" target="_blank"
+                       class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium">
+                        View Service Page
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quote Analytics -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Quote Analytics & Tips</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Quote Performance</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Track which quotes convert to actual projects</li>
+                        <li>• Analyze pricing patterns and client feedback</li>
+                        <li>• Monitor average quote values over time</li>
+                        <li>• Identify most profitable service combinations</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Follow-up Strategy</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Send quotes promptly after inquiry</li>
+                        <li>• Follow up after 3-5 days if no response</li>
+                        <li>• Offer to discuss or modify quotes</li>
+                        <li>• Archive quotes after 30 days of inactivity</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Quote Quality</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Include detailed breakdown when possible</li>
+                        <li>• Add explanatory notes for complex quotes</li>
+                        <li>• Ensure accuracy in calculations</li>
+                        <li>• Consider market rates and competition</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">Client Communication</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Use professional email templates</li>
+                        <li>• Explain value proposition clearly</li>
+                        <li>• Be transparent about inclusions/exclusions</li>
+                        <li>• Offer consultation calls for high-value quotes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function exportQuotePDF(quoteId) {
+    // This would integrate with a PDF generation service
+    // For now, we'll show a placeholder
+    alert('PDF export functionality will be implemented. Quote ID: ' + quoteId);
+    
+    // Future implementation could use libraries like jsPDF or server-side PDF generation
+    // window.open('/dashboard/quotes/' + quoteId + '/pdf/', '_blank');
+}
+
+// Optional: Add chart for quote analytics if Chart.js is available
+document.addEventListener('DOMContentLoaded', function() {
+    // Chart initialization would go here
+});
+</script>
+{% endblock %}

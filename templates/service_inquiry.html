@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.title }} Inquiry - Sumithra KP{% endblock %}
+{% block description %}Submit your requirements for {{ service.title }} and get a detailed quote from Sumithra KP.{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="text-white py-12" style="background: linear-gradient(135deg, {{ theme_colors.primary }} 0%, {{ theme_colors.accent }} 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <div class="flex items-center justify-center mb-4">
+                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
+                    <i data-lucide="{{ service.icon }}" class="h-8 w-8 text-white"></i>
+                </div>
+                <div class="text-left">
+                    <h1 class="text-3xl md:text-4xl font-bold">{{ service.title }}</h1>
+                    <p class="text-lg" style="color: rgba(255, 255, 255, 0.9);">Project Requirements & Quote Request</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inquiry Form Section -->
+<section class="py-12 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-lg">
+            
+            <!-- Service Info Header -->
+            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-blue-50">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Service Information</h2>
+                        <p class="text-gray-600 mt-1">{{ service.short_description }}</p>
+                        <div class="flex items-center space-x-4 mt-3">
+                            {% if service.timeline %}
+                            <span class="text-sm text-gray-600">
+                                <i data-lucide="clock" class="h-4 w-4 inline mr-1"></i>
+                                {{ service.timeline }}
+                            </span>
+                            {% endif %}
+                            {% if service.base_price %}
+                            <span class="text-sm font-semibold text-primary-600">
+                                Starting at ₹{{ service.base_price|floatformat:0 }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'services' %}#service-{{ service.id }}" 
+                       class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="arrow-left" class="h-5 w-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Form -->
+            <form method="post" enctype="multipart/form-data" class="p-6 space-y-6" 
+                  x-data="{
+                      estimatedCost: {{ service.base_price|default:0 }},
+                      calculating: false,
+                      
+                      async calculateCost() {
+                          this.calculating = true;
+                          try {
+                              const formData = new FormData(this.$el);
+                              const requirements = {};
+                              for (let [key, value] of formData.entries()) {
+                                  if (!['csrfmiddlewaretoken', 'client_name', 'client_email', 'client_phone', 'company', 'project_title'].includes(key)) {
+                                      requirements[key] = value;
+                                  }
+                              }
+                              
+                              const response = await fetch('{% url 'ajax_service_calculate_quote' %}', {
+                                  method: 'POST',
+                                  headers: {
+                                      'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                      service_id: {{ service.id }},
+                                      requirements: requirements
+                                  })
+                              });
+                              
+                              const data = await response.json();
+                              if (data.success) {
+                                  this.estimatedCost = data.estimated_cost;
+                              }
+                          } catch (error) {
+                              console.error('Error calculating cost:', error);
+                          } finally {
+                              this.calculating = false;
+                          }
+                      }
+                  }">
+                {% csrf_token %}
+                
+                <!-- Client Information -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ form.client_name.label }} <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.client_name }}
+                            {% if form.client_name.errors %}
+                                {% for error in form.client_name.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ form.client_email.label }} <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.client_email }}
+                            {% if form.client_email.errors %}
+                                {% for error in form.client_email.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ form.client_phone.label }}
+                            </label>
+                            {{ form.client_phone }}
+                            {% if form.client_phone.errors %}
+                                {% for error in form.client_phone.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ form.company.label }}
+                            </label>
+                            {{ form.company }}
+                            {% if form.company.errors %}
+                                {% for error in form.company.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.project_title.label }} <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.project_title }}
+                        {% if form.project_title.errors %}
+                            {% for error in form.project_title.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Service-Specific Requirements -->
+                {% if service.requirements.all %}
+                <div class="border-b border-gray-200 pb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Project Requirements</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for field_name, field in form %}
+                            {% if not field_name in 'client_name,client_email,client_phone,company,project_title' %}
+                            <div {% if field.field.widget.input_type == 'textarea' %}class="md:col-span-2"{% endif %}>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                    <span class="text-red-500">*</span>
+                                    {% endif %}
+                                </label>
+                                {% if field.help_text %}
+                                <p class="text-xs text-gray-600 mb-1">{{ field.help_text }}</p>
+                                {% endif %}
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Real-time Cost Calculator -->
+                    <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Estimated Cost</h4>
+                                <p class="text-sm text-gray-600">Based on your requirements</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-primary-600" x-text="'₹' + estimatedCost.toLocaleString()"></div>
+                                <button type="button" @click="calculateCost()" 
+                                        :disabled="calculating"
+                                        class="text-sm text-primary-600 hover:text-primary-700 disabled:opacity-50">
+                                    <span x-show="!calculating">Recalculate</span>
+                                    <span x-show="calculating">Calculating...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Additional Information -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Additional Information</h3>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-900 mb-2">What happens next?</h4>
+                        <ul class="text-sm text-blue-800 space-y-1">
+                            <li class="flex items-center">
+                                <i data-lucide="check" class="h-4 w-4 mr-2"></i>
+                                We'll review your requirements within 24-48 hours
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check" class="h-4 w-4 mr-2"></i>
+                                Receive a detailed quote with timeline and deliverables
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="check" class="h-4 w-4 mr-2"></i>
+                                Schedule a consultation to discuss your project
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <i data-lucide="shield-check" class="h-4 w-4"></i>
+                        <span>Your information is secure and will only be used for this quote</span>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="pt-6">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="submit" 
+                                class="flex-1 bg-primary-600 text-white py-3 px-6 rounded-lg hover:bg-primary-700 transition-colors font-semibold">
+                            Submit Requirements & Get Quote
+                        </button>
+                        <a href="{% url 'services' %}" 
+                           class="flex-1 sm:flex-none border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-center">
+                            Back to Services
+                        </a>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-gray-600">
+                            Need help or have questions? 
+                            <a href="{% url 'contact' %}" class="text-primary-600 hover:text-primary-700 font-semibold">Contact us directly</a>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    lucide.createIcons();
+    
+    // Auto-calculate cost when form fields change
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('change', function() {
+                // Trigger recalculation after a short delay
+                setTimeout(() => {
+                    const event = new Event('click');
+                    const calculateBtn = document.querySelector('[\\@click="calculateCost()"]');
+                    if (calculateBtn) {
+                        calculateBtn.dispatchEvent(event);
+                    }
+                }, 500);
+            });
+        });
+    });
+</script>
+{% endblock %}

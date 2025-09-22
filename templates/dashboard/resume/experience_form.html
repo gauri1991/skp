@@ -1,0 +1,242 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}{% if object %}Edit Experience{% else %}Add Experience{% endif %} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}Edit Experience{% else %}Add Experience{% endif %}
+                </h1>
+                <p class="mt-2 text-gray-600">
+                    {% if object %}Update your work experience details{% else %}Add a new work experience entry{% endif %}
+                </p>
+            </div>
+            <a href="{% url 'dashboard_resume_experience_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                Back to List
+            </a>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg">
+        <form method="post" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Position Title -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.position_title.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Position Title *
+                        </label>
+                        {{ form.position_title }}
+                        {% if form.position_title.errors %}
+                            {% for error in form.position_title.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Company Name -->
+                    <div>
+                        <label for="{{ form.company_name.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Company Name *
+                        </label>
+                        {{ form.company_name }}
+                        {% if form.company_name.errors %}
+                            {% for error in form.company_name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Location -->
+                    <div>
+                        <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Location
+                        </label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            {% for error in form.location.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Start Date -->
+                    <div>
+                        <label for="{{ form.start_date.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Start Date *
+                        </label>
+                        {{ form.start_date }}
+                        {% if form.start_date.errors %}
+                            {% for error in form.start_date.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- End Date -->
+                    <div>
+                        <label for="{{ form.end_date.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            End Date
+                        </label>
+                        {{ form.end_date }}
+                        {% if form.end_date.errors %}
+                            {% for error in form.end_date.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Current Position -->
+                    <div class="md:col-span-2">
+                        <div class="flex items-center">
+                            {{ form.is_current }}
+                            <label for="{{ form.is_current.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                This is my current position
+                            </label>
+                        </div>
+                        {% if form.is_current.errors %}
+                            {% for error in form.is_current.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Job Description
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Key Responsibilities -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.key_responsibilities.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Key Responsibilities
+                        </label>
+                        {{ form.key_responsibilities }}
+                        {% if form.key_responsibilities.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.key_responsibilities.help_text }}</p>
+                        {% endif %}
+                        {% if form.key_responsibilities.errors %}
+                            {% for error in form.key_responsibilities.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.achievements.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Key Achievements
+                        </label>
+                        {{ form.achievements }}
+                        {% if form.achievements.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.achievements.help_text }}</p>
+                        {% endif %}
+                        {% if form.achievements.errors %}
+                            {% for error in form.achievements.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Technologies Used -->
+                    <div class="md:col-span-2">
+                        <label for="{{ form.technologies_used.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Technologies Used
+                        </label>
+                        {{ form.technologies_used }}
+                        {% if form.technologies_used.help_text %}
+                            <p class="mt-2 text-sm text-gray-500">{{ form.technologies_used.help_text }}</p>
+                        {% endif %}
+                        {% if form.technologies_used.errors %}
+                            {% for error in form.technologies_used.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Display Order -->
+                    <div>
+                        <label for="{{ form.display_order.id_for_label }}" class="block text-sm font-medium text-gray-900 mb-2">
+                            Display Order
+                        </label>
+                        {{ form.display_order }}
+                        {% if form.display_order.errors %}
+                            {% for error in form.display_order.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <!-- Is Visible -->
+                    <div>
+                        <div class="flex items-center">
+                            {{ form.is_visible }}
+                            <label for="{{ form.is_visible.id_for_label }}" class="ml-2 block text-sm text-gray-900">
+                                Show on resume
+                            </label>
+                        </div>
+                        {% if form.is_visible.errors %}
+                            {% for error in form.is_visible.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <a href="{% url 'dashboard_resume_experience_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                </a>
+                <div class="flex space-x-3">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
+                        Preview
+                    </a>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                        <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                        {% if object %}Update Experience{% else %}Add Experience{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const currentCheckbox = document.getElementById('{{ form.is_current.id_for_label }}');
+    const endDateField = document.getElementById('{{ form.end_date.id_for_label }}');
+    
+    function toggleEndDate() {
+        if (currentCheckbox.checked) {
+            endDateField.disabled = true;
+            endDateField.value = '';
+        } else {
+            endDateField.disabled = false;
+        }
+    }
+    
+    currentCheckbox.addEventListener('change', toggleEndDate);
+    toggleEndDate(); // Run on page load
+});
+</script>
+{% endblock %}

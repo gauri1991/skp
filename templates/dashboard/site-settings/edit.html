@@ -1,0 +1,762 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="p-6">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">Site Settings</h1>
+            <p class="text-gray-600 mt-1">Manage header, footer, and SEO settings for your website</p>
+        </div>
+
+        <form method="post" class="space-y-8">
+            {% csrf_token %}
+            
+            <!-- SEO & Meta Tags Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="search" class="h-5 w-5 mr-2"></i>
+                    SEO & Meta Tags
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.site_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Site Title
+                        </label>
+                        {{ form.site_title }}
+                        {% if form.site_title.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.site_title.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.og_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Open Graph URL
+                        </label>
+                        {{ form.og_url }}
+                        {% if form.og_url.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.og_url.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.meta_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Meta Description
+                        </label>
+                        {{ form.meta_description }}
+                        {% if form.meta_description.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.meta_description.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.meta_keywords.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Meta Keywords
+                        </label>
+                        {{ form.meta_keywords }}
+                        {% if form.meta_keywords.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.meta_keywords.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo Settings Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="image" class="h-5 w-5 mr-2"></i>
+                    Logo Settings
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.logo_alt_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Logo Alt Text
+                        </label>
+                        {{ form.logo_alt_text }}
+                        {% if form.logo_alt_text.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.logo_alt_text.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.logo_fallback_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Logo Fallback Text
+                        </label>
+                        {{ form.logo_fallback_text }}
+                        {% if form.logo_fallback_text.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.logo_fallback_text.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Company Information Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="building" class="h-5 w-5 mr-2"></i>
+                    Footer Company Information
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.footer_company_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Company Name
+                        </label>
+                        {{ form.footer_company_name }}
+                        {% if form.footer_company_name.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.footer_company_name.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="{{ form.footer_copyright_year.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Copyright Year
+                            </label>
+                            {{ form.footer_copyright_year }}
+                            {% if form.footer_copyright_year.help_text %}
+                                <p class="text-sm text-gray-500 mt-1">{{ form.footer_copyright_year.help_text }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="{{ form.footer_copyright_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Copyright Text
+                            </label>
+                            {{ form.footer_copyright_text }}
+                            {% if form.footer_copyright_text.help_text %}
+                                <p class="text-sm text-gray-500 mt-1">{{ form.footer_copyright_text.help_text }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.footer_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Company Description
+                        </label>
+                        {{ form.footer_description }}
+                        {% if form.footer_description.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.footer_description.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media Links Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="share-2" class="h-5 w-5 mr-2"></i>
+                    Social Media & Contact Links
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.linkedin_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            LinkedIn URL
+                        </label>
+                        {{ form.linkedin_url }}
+                        {% if form.linkedin_url.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.linkedin_url.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.email_address.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address
+                        </label>
+                        {{ form.email_address }}
+                        {% if form.email_address.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.email_address.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number
+                        </label>
+                        {{ form.phone_number }}
+                        {% if form.phone_number.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.phone_number.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.twitter_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Twitter URL
+                        </label>
+                        {{ form.twitter_url }}
+                        {% if form.twitter_url.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.twitter_url.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.instagram_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Instagram URL
+                        </label>
+                        {{ form.instagram_url }}
+                        {% if form.instagram_url.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.instagram_url.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Services Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="briefcase" class="h-5 w-5 mr-2"></i>
+                    Footer Services List
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="{{ form.footer_service1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Service 1
+                        </label>
+                        {{ form.footer_service1 }}
+                        {% if form.footer_service1.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.footer_service1.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.footer_service2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Service 2
+                        </label>
+                        {{ form.footer_service2 }}
+                        {% if form.footer_service2.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.footer_service2.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.footer_service3.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Service 3
+                        </label>
+                        {{ form.footer_service3 }}
+                        {% if form.footer_service3.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.footer_service3.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Contact Information Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="map-pin" class="h-5 w-5 mr-2"></i>
+                    Business Contact Information
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.business_phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Business Phone
+                        </label>
+                        {{ form.business_phone }}
+                        {% if form.business_phone.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.business_phone.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.business_email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Business Email
+                        </label>
+                        {{ form.business_email }}
+                        {% if form.business_email.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.business_email.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.business_address.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Business Address
+                        </label>
+                        {{ form.business_address }}
+                        {% if form.business_address.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.business_address.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="link" class="h-5 w-5 mr-2"></i>
+                    Footer Quick Links
+                </h2>
+                <p class="text-gray-600 mb-6">Manage the navigation links displayed in the footer section. Up to 6 links are supported.</p>
+                
+                <div class="space-y-6">
+                    <!-- Link 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 1 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_1_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_1_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_1_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_1_url }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 2 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_2_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_2_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_2_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_2_url }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link 3 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 3 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_3_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_3_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_3_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_3_url }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link 4 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 4 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_4_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_4_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_4_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_4_url }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link 5 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 5 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_5_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_5_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_5_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_5_url }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Link 6 (Optional) -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Link 6 <span class="text-sm text-gray-500">(Optional)</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="{{ form.quick_link_6_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link Text
+                                </label>
+                                {{ form.quick_link_6_text }}
+                            </div>
+                            <div>
+                                <label for="{{ form.quick_link_6_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Link URL
+                                </label>
+                                {{ form.quick_link_6_url }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <div class="flex items-start">
+                        <i data-lucide="info" class="h-5 w-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0"></i>
+                        <div class="text-sm text-blue-800">
+                            <p class="font-medium mb-1">Quick Links Guidelines:</p>
+                            <ul class="list-disc list-inside space-y-1 text-blue-700">
+                                <li>Use relative URLs (e.g., "/services") for internal pages</li>
+                                <li>Use absolute URLs (e.g., "https://example.com") for external links</li>
+                                <li>Empty links will not be displayed in the footer</li>
+                                <li>Links are displayed in order (Link 1 first, Link 6 last)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page Content Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="phone" class="h-5 w-5 mr-2"></i>
+                    Contact Page Content
+                </h2>
+                <div class="grid grid-cols-1 gap-6">
+                    <div>
+                        <label for="{{ form.contact_page_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Contact Page Title
+                        </label>
+                        {{ form.contact_page_title }}
+                        {% if form.contact_page_title.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.contact_page_title.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_page_subtitle.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Contact Page Subtitle
+                        </label>
+                        {{ form.contact_page_subtitle }}
+                        {% if form.contact_page_subtitle.help_text %}
+                            <p class="text-sm text-gray-500 mt-1">{{ form.contact_page_subtitle.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="message-square" class="h-5 w-5 mr-2"></i>
+                    Contact Form Settings
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.contact_form_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Form Title
+                        </label>
+                        {{ form.contact_form_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_info_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Contact Info Title
+                        </label>
+                        {{ form.contact_info_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_success_message.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Success Message
+                        </label>
+                        {{ form.contact_success_message }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_success_note.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Success Note
+                        </label>
+                        {{ form.contact_success_note }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="contact" class="h-5 w-5 mr-2"></i>
+                    Contact Information Display
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.contact_primary_email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Primary Email
+                        </label>
+                        {{ form.contact_primary_email }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_primary_phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Primary Phone
+                        </label>
+                        {{ form.contact_primary_phone }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_location.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Location
+                        </label>
+                        {{ form.contact_location }}
+                    </div>
+                    <div>
+                        <label for="{{ form.contact_company.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Current Company
+                        </label>
+                        {{ form.contact_company }}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.contact_response_time.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Response Time Description
+                        </label>
+                        {{ form.contact_response_time }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services & Availability Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="calendar-check" class="h-5 w-5 mr-2"></i>
+                    Services & Availability
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.services_availability_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Section Title
+                        </label>
+                        {{ form.services_availability_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.professional_services_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Professional Services Title
+                        </label>
+                        {{ form.professional_services_title }}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.services_availability_subtitle.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Section Subtitle
+                        </label>
+                        {{ form.services_availability_subtitle }}
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Service Items</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="{{ form.service_item_1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service 1
+                            </label>
+                            {{ form.service_item_1 }}
+                        </div>
+                        <div>
+                            <label for="{{ form.service_item_2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service 2
+                            </label>
+                            {{ form.service_item_2 }}
+                        </div>
+                        <div>
+                            <label for="{{ form.service_item_3.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service 3
+                            </label>
+                            {{ form.service_item_3 }}
+                        </div>
+                        <div>
+                            <label for="{{ form.service_item_4.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service 4
+                            </label>
+                            {{ form.service_item_4 }}
+                        </div>
+                        <div>
+                            <label for="{{ form.service_item_5.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Service 5
+                            </label>
+                            {{ form.service_item_5 }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Availability & Response Time</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.availability_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Availability Title
+                            </label>
+                            {{ form.availability_title }}
+                        </div>
+                        <div>
+                            <label for="{{ form.response_time_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Response Time Title
+                            </label>
+                            {{ form.response_time_title }}
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="{{ form.availability_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Availability Description
+                            </label>
+                            {{ form.availability_description }}
+                        </div>
+                        <div>
+                            <label for="{{ form.availability_note.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Availability Note
+                            </label>
+                            {{ form.availability_note }}
+                        </div>
+                        <div>
+                            <label for="{{ form.response_time_hours.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Response Time Hours
+                            </label>
+                            {{ form.response_time_hours }}
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="{{ form.response_time_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Response Time Description
+                            </label>
+                            {{ form.response_time_description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="help-circle" class="h-5 w-5 mr-2"></i>
+                    FAQ Section
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="{{ form.faq_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            FAQ Title
+                        </label>
+                        {{ form.faq_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.faq_subtitle.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            FAQ Subtitle
+                        </label>
+                        {{ form.faq_subtitle }}
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">FAQ 1</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label for="{{ form.faq_question_1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Question
+                                </label>
+                                {{ form.faq_question_1 }}
+                            </div>
+                            <div>
+                                <label for="{{ form.faq_answer_1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Answer
+                                </label>
+                                {{ form.faq_answer_1 }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">FAQ 2</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label for="{{ form.faq_question_2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Question
+                                </label>
+                                {{ form.faq_question_2 }}
+                            </div>
+                            <div>
+                                <label for="{{ form.faq_answer_2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Answer
+                                </label>
+                                {{ form.faq_answer_2 }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">FAQ 3</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label for="{{ form.faq_question_3.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Question
+                                </label>
+                                {{ form.faq_question_3 }}
+                            </div>
+                            <div>
+                                <label for="{{ form.faq_answer_3.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Answer
+                                </label>
+                                {{ form.faq_answer_3 }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">FAQ 4</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label for="{{ form.faq_question_4.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Question
+                                </label>
+                                {{ form.faq_question_4 }}
+                            </div>
+                            <div>
+                                <label for="{{ form.faq_answer_4.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Answer
+                                </label>
+                                {{ form.faq_answer_4 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action Section -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="zap" class="h-5 w-5 mr-2"></i>
+                    Call to Action Section
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.cta_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            CTA Title
+                        </label>
+                        {{ form.cta_title }}
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="{{ form.cta_email_button_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email Button
+                            </label>
+                            {{ form.cta_email_button_text }}
+                        </div>
+                        <div>
+                            <label for="{{ form.cta_phone_button_text.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Phone Button
+                            </label>
+                            {{ form.cta_phone_button_text }}
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="{{ form.cta_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            CTA Description
+                        </label>
+                        {{ form.cta_description }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-end space-x-4">
+                    <a href="{% url 'dashboard_home' %}" 
+                       class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Save Settings
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

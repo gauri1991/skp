@@ -1,0 +1,291 @@
+{% extends 'client/base.html' %}
+
+{% block title %}Dashboard Overview - Client Portal{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Welcome Section -->
+    <div class="bg-gradient-to-r from-primary-600 to-blue-600 rounded-lg shadow-lg">
+        <div class="px-6 py-8 sm:p-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">
+                        Welcome back, {{ user.get_full_name|default:user.username }}!
+                    </h1>
+                    <p class="text-primary-100 text-lg">
+                        Track your orders, access deliverables, and manage your account from your personal dashboard.
+                    </p>
+                </div>
+                <div class="hidden sm:block">
+                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i data-lucide="user-check" class="h-10 w-10 text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Orders -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                    <p class="text-3xl font-bold text-blue-600">{{ total_orders }}</p>
+                    <p class="text-xs text-gray-500 mt-1">All time orders</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="h-6 w-6 text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Orders -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Active Orders</p>
+                    <p class="text-3xl font-bold text-orange-600">{{ active_orders }}</p>
+                    <p class="text-xs text-gray-500 mt-1">In progress</p>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="clock" class="h-6 w-6 text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ready Downloads -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Ready Downloads</p>
+                    <p class="text-3xl font-bold text-green-600">{{ ready_deliverables_count }}</p>
+                    <p class="text-xs text-gray-500 mt-1">Available now</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="download" class="h-6 w-6 text-green-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Due -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Payment Due</p>
+                    <p class="text-3xl font-bold {% if payment_due > 0 %}text-red-600{% else %}text-gray-400{% endif %}">
+                        ₹{{ payment_due|floatformat:0 }}
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">Outstanding amount</p>
+                </div>
+                <div class="w-12 h-12 {% if payment_due > 0 %}bg-red-100{% else %}bg-gray-100{% endif %} rounded-full flex items-center justify-center">
+                    <i data-lucide="credit-card" class="h-6 w-6 {% if payment_due > 0 %}text-red-600{% else %}text-gray-400{% endif %}"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="{% url 'services' %}" 
+                   class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-primary-200">
+                        <i data-lucide="plus" class="h-5 w-5 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">New Service Request</h3>
+                        <p class="text-sm text-gray-500">Request a new service</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i data-lucide="message-circle" class="h-5 w-5 text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Contact Support</h3>
+                        <p class="text-sm text-gray-500">Get help and support</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i data-lucide="calendar" class="h-5 w-5 text-green-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Schedule Meeting</h3>
+                        <p class="text-sm text-gray-500">Book a consultation</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i data-lucide="credit-card" class="h-5 w-5 text-purple-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Make Payment</h3>
+                        <p class="text-sm text-gray-500">Pay outstanding bills</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Orders -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                    <a href="{% url 'client_orders' %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View All →</a>
+                </div>
+            </div>
+            <div class="p-6">
+                {% if recent_orders %}
+                <div class="space-y-4">
+                    {% for order in recent_orders %}
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                {% include 'includes/service_icon.html' with service=order.service_inquiry.service icon_class="h-4 w-4" %}
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ order.order_number }}</p>
+                                <p class="text-xs text-gray-500">{{ order.service_inquiry.service.title }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                                {% if order.status == 'requested' %}bg-yellow-100 text-yellow-800
+                                {% elif order.status == 'quoted' %}bg-blue-100 text-blue-800
+                                {% elif order.status == 'approved' %}bg-purple-100 text-purple-800
+                                {% elif order.status == 'in_progress' %}bg-orange-100 text-orange-800
+                                {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                                {% elif order.status == 'delivered' %}bg-green-100 text-green-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ order.get_status_display }}
+                            </span>
+                            <p class="text-xs text-gray-500 mt-1">{{ order.created_at|timesince }} ago</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="shopping-bag" class="h-8 w-8 text-gray-400 mx-auto mb-2"></i>
+                    <p class="text-gray-500 text-sm">No orders yet</p>
+                    <a href="{% url 'services' %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">Browse Services →</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Ready Downloads -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900">Ready for Download</h2>
+                    <a href="{% url 'client_deliverables' %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View All →</a>
+                </div>
+            </div>
+            <div class="p-6">
+                {% if ready_deliverables %}
+                <div class="space-y-4">
+                    {% for deliverable in ready_deliverables %}
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <i data-lucide="file" class="h-4 w-4 text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ deliverable.title }}</p>
+                                <p class="text-xs text-gray-500">{{ deliverable.order.order_number }} • {{ deliverable.file_size_mb }} MB</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <a href="#" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full text-green-700 bg-green-100 hover:bg-green-200">
+                                <i data-lucide="download" class="h-3 w-3 mr-1"></i>
+                                Download
+                            </a>
+                            <p class="text-xs text-gray-500 mt-1">Ready {{ deliverable.created_at|timesince }} ago</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <i data-lucide="download" class="h-8 w-8 text-gray-400 mx-auto mb-2"></i>
+                    <p class="text-gray-500 text-sm">No deliverables ready yet</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Messages -->
+    <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-900">Recent Messages</h2>
+                <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">View All →</a>
+            </div>
+        </div>
+        <div class="p-6">
+            {% if unread_messages %}
+            <div class="space-y-4">
+                {% for message in unread_messages %}
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i data-lucide="message-circle" class="h-4 w-4 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">{{ message.subject }}</p>
+                            <p class="text-xs text-gray-500">{{ message.get_message_type_display }} • {{ message.created_at|timesince }} ago</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                            {% if message.status == 'open' %}bg-red-100 text-red-800
+                            {% elif message.status == 'in_progress' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-green-100 text-green-800{% endif %}">
+                            {{ message.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <i data-lucide="message-circle" class="h-8 w-8 text-gray-400 mx-auto mb-2"></i>
+                <p class="text-gray-500 text-sm">No recent messages</p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">Send a Message →</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-refresh dashboard data every 5 minutes
+    setInterval(function() {
+        // In a real implementation, you might want to fetch updated data via AJAX
+        // location.reload();
+    }, 300000);
+    
+    // Initialize any dashboard-specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        lucide.createIcons();
+    });
+</script>
+{% endblock %}

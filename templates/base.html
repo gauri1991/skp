@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_settings.site_title }}{% endblock %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block description %}{{ site_settings.meta_description }}{% endblock %}">
+    <meta name="keywords" content="{{ site_settings.meta_keywords }}">
+    <meta name="author" content="Sumithra KP">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}{{ site_settings.site_title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ site_settings.meta_description }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site_settings.og_url }}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '{{ theme_colors.primary }}',
+                        'secondary': '{{ theme_colors.secondary }}',
+                        'accent': '{{ theme_colors.accent }}',
+                        'surface': '{{ theme_colors.surface }}',
+                        'navy': {
+                            DEFAULT: '{{ theme_colors.primary }}',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --color-primary: {{ theme_colors.primary }};
+            --color-secondary: {{ theme_colors.secondary }};
+            --color-accent: {{ theme_colors.accent }};
+            --color-background: {{ theme_colors.background }};
+            --color-surface: {{ theme_colors.surface }};
+            --color-success: {{ theme_colors.success }};
+            --color-warning: {{ theme_colors.warning }};
+            --color-error: {{ theme_colors.error }};
+            --color-info: {{ theme_colors.info }};
+        }
+        
+        body {
+            background-color: {{ theme_colors.background }};
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, {{ theme_colors.primary }} 0%, {{ theme_colors.accent }} 100%);
+        }
+        
+        .text-primary { color: {{ theme_colors.primary }}; }
+        .bg-primary { background-color: {{ theme_colors.primary }}; }
+        .border-primary { border-color: {{ theme_colors.primary }}; }
+        
+        .text-accent { color: {{ theme_colors.accent }}; }
+        .bg-accent { background-color: {{ theme_colors.accent }}; }
+        
+        .hover\:text-primary:hover { color: {{ theme_colors.primary }}; }
+        .hover\:bg-primary:hover { background-color: {{ theme_colors.primary }}; }
+    </style>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Custom CSS -->
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Custom Scrollbar Styles for Main Site */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: {{ theme_colors.background }};
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: {{ theme_colors.secondary }};
+            border-radius: 4px;
+            border: 1px solid {{ theme_colors.background }};
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: {{ theme_colors.primary }};
+        }
+        
+        ::-webkit-scrollbar-corner {
+            background: {{ theme_colors.background }};
+        }
+        
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: {{ theme_colors.secondary }} {{ theme_colors.background }};
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav x-data="{ open: false }" class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        {% load static %}
+                        <img src="{% static 'images/logo/sumithrakp-logo.png' %}" 
+                             alt="{{ site_settings.logo_alt_text }}" 
+                             class="h-8 md:h-10 w-auto"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="text-2xl font-bold gradient-bg bg-clip-text text-transparent hidden" style="display: none;">
+                            {{ site_settings.logo_fallback_text }}
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                    <a href="/resume" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Resume</a>
+                    <a href="/portfolio" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portfolio</a>
+                    <a href="/services" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Services</a>
+                    <a href="/contact" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
+                    
+                    <!-- Authentication Button -->
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard_home' %}" class="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2">
+                            <i data-lucide="layout-dashboard" class="h-4 w-4"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    {% else %}
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2">
+                                <i data-lucide="log-in" class="h-4 w-4"></i>
+                                <span>Login</span>
+                                <i data-lucide="chevron-down" class="h-3 w-3 ml-1"></i>
+                            </button>
+                            
+                            <div x-show="open" @click.away="open = false" x-transition
+                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200">
+                                <div class="py-1">
+                                    <a href="{% url 'client_login' %}?type=client" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <div class="flex items-center">
+                                            <i data-lucide="user" class="h-4 w-4 mr-2"></i>
+                                            Client Portal
+                                        </div>
+                                    </a>
+                                    <a href="{% url 'dashboard_login' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <div class="flex items-center">
+                                            <i data-lucide="settings" class="h-4 w-4 mr-2"></i>
+                                            Admin Dashboard
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="open = !open" class="text-gray-700 hover:text-gray-900 focus:outline-none focus:text-gray-900">
+                        <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                            <path x-show="!open" d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path x-show="open" d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="open" x-transition class="md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+                <a href="/" class="text-gray-700 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="/resume" class="text-gray-700 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium">Resume</a>
+                <a href="/portfolio" class="text-gray-700 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium">Portfolio</a>
+                <a href="/services" class="text-gray-700 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="/contact" class="text-gray-700 hover:text-primary-600 block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                
+                <!-- Mobile Authentication Button -->
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard_home' %}" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2 mx-3 mt-3">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i>
+                        <span>Dashboard</span>
+                    </a>
+                {% else %}
+                    <div class="mx-3 mt-3 space-y-2">
+                        <a href="{% url 'client_login' %}?type=client" class="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2">
+                            <i data-lucide="user" class="h-5 w-5"></i>
+                            <span>Client Portal</span>
+                        </a>
+                        <a href="{% url 'dashboard_login' %}" class="bg-gray-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition-all duration-200 flex items-center space-x-2">
+                            <i data-lucide="settings" class="h-5 w-5"></i>
+                            <span>Admin Dashboard</span>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-{% if site_settings.business_address or site_settings.business_phone or site_settings.business_email %}4{% else %}3{% endif %} gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">{{ site_settings.footer_company_name }}</h3>
+                    <p class="text-gray-400 mb-4">{{ site_settings.footer_description }}</p>
+                    <div class="flex space-x-4">
+                        {% if site_settings.linkedin_url %}
+                        <a href="{{ site_settings.linkedin_url }}" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="linkedin" class="h-5 w-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if site_settings.email_address %}
+                        <a href="mailto:{{ site_settings.email_address }}" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="mail" class="h-5 w-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if site_settings.phone_number %}
+                        <a href="tel:{{ site_settings.phone_number }}" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="phone" class="h-5 w-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if site_settings.twitter_url %}
+                        <a href="{{ site_settings.twitter_url }}" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="h-5 w-5"></i>
+                        </a>
+                        {% endif %}
+                        {% if site_settings.instagram_url %}
+                        <a href="{{ site_settings.instagram_url }}" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="instagram" class="h-5 w-5"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        {% if site_settings.quick_link_1_text and site_settings.quick_link_1_url %}
+                        <li><a href="{{ site_settings.quick_link_1_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_1_text }}</a></li>
+                        {% endif %}
+                        {% if site_settings.quick_link_2_text and site_settings.quick_link_2_url %}
+                        <li><a href="{{ site_settings.quick_link_2_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_2_text }}</a></li>
+                        {% endif %}
+                        {% if site_settings.quick_link_3_text and site_settings.quick_link_3_url %}
+                        <li><a href="{{ site_settings.quick_link_3_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_3_text }}</a></li>
+                        {% endif %}
+                        {% if site_settings.quick_link_4_text and site_settings.quick_link_4_url %}
+                        <li><a href="{{ site_settings.quick_link_4_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_4_text }}</a></li>
+                        {% endif %}
+                        {% if site_settings.quick_link_5_text and site_settings.quick_link_5_url %}
+                        <li><a href="{{ site_settings.quick_link_5_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_5_text }}</a></li>
+                        {% endif %}
+                        {% if site_settings.quick_link_6_text and site_settings.quick_link_6_url %}
+                        <li><a href="{{ site_settings.quick_link_6_url }}" class="text-gray-400 hover:text-white transition-colors">{{ site_settings.quick_link_6_text }}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">{{ site_settings.footer_service1 }}</li>
+                        <li class="text-gray-400">{{ site_settings.footer_service2 }}</li>
+                        <li class="text-gray-400">{{ site_settings.footer_service3 }}</li>
+                    </ul>
+                </div>
+                
+                {% if site_settings.business_address or site_settings.business_phone or site_settings.business_email %}
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Info</h3>
+                    <ul class="space-y-2">
+                        {% if site_settings.business_address %}
+                        <li class="text-gray-400">
+                            <i data-lucide="map-pin" class="h-4 w-4 inline mr-2"></i>
+                            {{ site_settings.business_address }}
+                        </li>
+                        {% endif %}
+                        {% if site_settings.business_phone %}
+                        <li class="text-gray-400">
+                            <i data-lucide="phone" class="h-4 w-4 inline mr-2"></i>
+                            <a href="tel:{{ site_settings.business_phone }}" class="hover:text-white transition-colors">{{ site_settings.business_phone }}</a>
+                        </li>
+                        {% endif %}
+                        {% if site_settings.business_email %}
+                        <li class="text-gray-400">
+                            <i data-lucide="mail" class="h-4 w-4 inline mr-2"></i>
+                            <a href="mailto:{{ site_settings.business_email }}" class="hover:text-white transition-colors">{{ site_settings.business_email }}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; {{ site_settings.footer_copyright_year }} {{ site_settings.footer_company_name }}. {{ site_settings.footer_copyright_text }}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
