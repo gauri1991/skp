@@ -1206,6 +1206,7 @@ class SiteSettingsForm(forms.ModelForm):
             'service_item_3', 'service_item_4', 'service_item_5',
             'availability_title', 'availability_description', 'availability_note',
             'response_time_title', 'response_time_hours', 'response_time_description',
+            'response_feature_1', 'response_feature_2', 'response_feature_3', 'response_feature_4', 'response_feature_5',
             # FAQ Section
             'faq_title', 'faq_subtitle',
             'faq_question_1', 'faq_answer_1', 'faq_question_2', 'faq_answer_2',
@@ -1422,6 +1423,28 @@ class SiteSettingsForm(forms.ModelForm):
                 'placeholder': 'Response time description'
             }),
             
+            # Response Time Features
+            'response_feature_1': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder': 'First response feature'
+            }),
+            'response_feature_2': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder': 'Second response feature'
+            }),
+            'response_feature_3': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder': 'Third response feature'
+            }),
+            'response_feature_4': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder': 'Fourth response feature'
+            }),
+            'response_feature_5': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                'placeholder': 'Fifth response feature'
+            }),
+            
             # FAQ Section
             'faq_title': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
@@ -1544,7 +1567,7 @@ class ContactMessageForm(forms.ModelForm):
     
     class Meta:
         model = ContactMessage
-        fields = ['name', 'email', 'subject', 'message', 'phone', 'company']
+        fields = ['name', 'email', 'phone', 'company', 'subject', 'message']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
@@ -1555,6 +1578,15 @@ class ContactMessageForm(forms.ModelForm):
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
                 'placeholder': 'Enter your email address',
                 'required': True
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Enter your phone number',
+                'required': True
+            }),
+            'company': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Your company (optional)'
             }),
             'subject': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
@@ -1567,28 +1599,20 @@ class ContactMessageForm(forms.ModelForm):
                 'rows': 6,
                 'required': True
             }),
-            'phone': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
-                'placeholder': 'Your phone number (optional)'
-            }),
-            'company': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
-                'placeholder': 'Your company (optional)'
-            }),
         }
         labels = {
             'name': 'Full Name',
             'email': 'Email Address',
-            'subject': 'Subject',
-            'message': 'Message',
             'phone': 'Phone Number',
-            'company': 'Company'
+            'company': 'Company',
+            'subject': 'Subject',
+            'message': 'Message'
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Make required fields more prominent
-        for field_name in ['name', 'email', 'subject', 'message']:
+        for field_name in ['name', 'email', 'phone', 'subject', 'message']:
             self.fields[field_name].required = True
             self.fields[field_name].label = f"{self.fields[field_name].label} *"
 

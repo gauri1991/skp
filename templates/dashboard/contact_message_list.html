@@ -270,7 +270,7 @@
                                         title="{% if message.is_replied %}Mark as Not Replied{% else %}Mark as Replied{% endif %}">
                                     <i data-lucide="reply" class="h-4 w-4"></i>
                                 </button>
-                                <a href="mailto:{{ message.email }}?subject=Re: {{ message.subject }}"
+                                <a href="{% url 'dashboard_contact_send_email' message.pk %}"
                                    class="text-indigo-600 hover:text-indigo-900" title="Reply via Email">
                                     <i data-lucide="send" class="h-4 w-4"></i>
                                 </a>

@@ -93,13 +93,24 @@
                         <p class="mb-2"><strong>Current Professional Summary:</strong></p>
                         <p class="text-sm bg-white p-2 rounded border">{{ current_data.current_summary|truncatewords:30 }}</p>
                     {% elif section_type == 'skills' and current_data.available_skills %}
-                        <p class="mb-2"><strong>Available Skills:</strong> {{ current_data.total_skills }} skills</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <p><strong>Available Skills:</strong> {{ current_data.total_skills }} skills</p>
+                            <a href="{% url 'dashboard_resume_skill_list' %}" 
+                               class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="plus" class="h-3 w-3 mr-1"></i>
+                                Manage Skills
+                            </a>
+                        </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             {% for skill in current_data.available_skills %}
                                 <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ skill.name }}
+                                    {{ skill.name }} ({{ skill.percentage }}%)
                                 </span>
                             {% endfor %}
+                        </div>
+                        <div class="mt-2 text-xs text-blue-600">
+                            <i data-lucide="info" class="h-3 w-3 inline mr-1"></i>
+                            Click "Manage Skills" to add, edit, reorder, or delete skills
                         </div>
                     {% endif %}
                 </div>

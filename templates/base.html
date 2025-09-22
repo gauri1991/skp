@@ -267,7 +267,7 @@
             <div class="grid grid-cols-1 md:grid-cols-{% if site_settings.business_address or site_settings.business_phone or site_settings.business_email %}4{% else %}3{% endif %} gap-8">
                 <div>
                     <h3 class="text-lg font-semibold mb-4">{{ site_settings.footer_company_name }}</h3>
-                    <p class="text-gray-400 mb-4">{{ site_settings.footer_description }}</p>
+                    <p class="text-gray-400 mb-4">{{ site_settings.footer_description|linebreaksbr }}</p>
                     <div class="flex space-x-4">
                         {% if site_settings.linkedin_url %}
                         <a href="{{ site_settings.linkedin_url }}" target="_blank" class="text-gray-400 hover:text-white transition-colors">

@@ -1140,6 +1140,13 @@ class SiteSettings(models.Model):
     response_time_hours = models.CharField(max_length=10, default="24-48", help_text="Response time in hours")
     response_time_description = models.CharField(max_length=200, default="I typically respond to all inquiries within 24-48 hours.", help_text="Response time description")
     
+    # Response Time Features
+    response_feature_1 = models.CharField(max_length=100, default="Quick response within 24-48 hours", help_text="First response feature")
+    response_feature_2 = models.CharField(max_length=100, default="Professional consultation guaranteed", help_text="Second response feature")
+    response_feature_3 = models.CharField(max_length=100, default="Detailed project analysis provided", help_text="Third response feature")
+    response_feature_4 = models.CharField(max_length=100, default="Free initial consultation call", help_text="Fourth response feature")
+    response_feature_5 = models.CharField(max_length=100, default="Transparent pricing and timelines", help_text="Fifth response feature")
+    
     # FAQ Section
     faq_title = models.CharField(max_length=50, default="Frequently Asked Questions", help_text="FAQ section title")
     faq_subtitle = models.CharField(max_length=200, default="Common questions about my services and process", help_text="FAQ section subtitle")

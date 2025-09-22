@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -601,6 +601,33 @@ class ResumeSkillDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(request, 'Skill deleted successfully!')
         return super().delete(request, *args, **kwargs)
+
+# Skill Reorder View
+@login_required
+@require_http_methods(["POST"])
+def resume_skill_reorder(request):
+    import json
+    from django.http import JsonResponse
+    
+    try:
+        data = json.loads(request.body)
+        category_id = data.get('category_id')
+        skills = data.get('skills', [])
+        
+        # Update display order for each skill
+        for skill_data in skills:
+            skill_id = skill_data['id']
+            new_order = skill_data['order']
+            
+            ResumeSkill.objects.filter(
+                id=skill_id,
+                category_id=category_id
+            ).update(display_order=new_order)
+        
+        return JsonResponse({'success': True})
+    
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
 
 # Skill Category Management Views
 class SkillCategoryListView(LoginRequiredMixin, ListView):

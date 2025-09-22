@@ -53,6 +53,7 @@ urlpatterns = [
     path('dashboard/resume/skills/create/', views.ResumeSkillCreateView.as_view(), name='dashboard_resume_skill_create'),
     path('dashboard/resume/skills/<int:pk>/edit/', views.ResumeSkillUpdateView.as_view(), name='dashboard_resume_skill_edit'),
     path('dashboard/resume/skills/<int:pk>/delete/', views.ResumeSkillDeleteView.as_view(), name='dashboard_resume_skill_delete'),
+    path('dashboard/resume/skills/reorder/', views.resume_skill_reorder, name='dashboard_resume_skill_reorder'),
     
     # Skill Category Management
     path('dashboard/resume/skill-categories/', views.SkillCategoryListView.as_view(), name='dashboard_skill_category_list'),

@@ -28,12 +28,12 @@
                     {{ sections_data.hero.content.hero_description|default:"Specializing in innovative civil engineering design, professional patent illustrations, and sustainable environmental engineering solutions." }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{% if sections_data.hero.content.hero_cta_primary_url %}/{{ sections_data.hero.content.hero_cta_primary_url }}{% else %}/contact{% endif %}" 
+                    <a href="{% if sections_data.hero.content.hero_cta_primary_url %}{{ sections_data.hero.content.hero_cta_primary_url }}{% else %}/contact{% endif %}" 
                        class="bg-white px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
                        style="color: {{ theme_colors.primary }};">
                         {{ sections_data.hero.content.hero_cta_primary_text|default:"Get In Touch" }}
                     </a>
-                    <a href="{% if sections_data.hero.content.hero_cta_secondary_url %}/{{ sections_data.hero.content.hero_cta_secondary_url }}{% else %}/portfolio{% endif %}" 
+                    <a href="{% if sections_data.hero.content.hero_cta_secondary_url %}{{ sections_data.hero.content.hero_cta_secondary_url }}{% else %}/portfolio{% endif %}" 
                        class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white transition-all duration-300"
                        style="border-color: white;" 
                        onmouseover="this.style.backgroundColor='white'; this.style.color='{{ theme_colors.primary }}';" 
