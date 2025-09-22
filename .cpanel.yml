@@ -1,0 +1,33 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/meenvstf/public_html/sumithrakp/
+    
+    # Remove existing files except important ones
+    - /bin/rm -Rf $DEPLOYPATH/.git
+    - /bin/rm -Rf $DEPLOYPATH/venv
+    - /bin/rm -f $DEPLOYPATH/db.sqlite3
+    
+    # Copy all files from repository to deployment path
+    - /bin/cp -R * $DEPLOYPATH
+    
+    # Copy hidden files (like .gitignore, .env.example)
+    - /bin/cp .gitignore $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp .env.example $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp .env.production $DEPLOYPATH 2>/dev/null || true
+    
+    # Set proper permissions
+    - /bin/chmod 755 $DEPLOYPATH
+    - /bin/chmod 755 $DEPLOYPATH/deploy.sh 2>/dev/null || true
+    - /bin/chmod 755 $DEPLOYPATH/manage.py
+    - /bin/chmod -R 755 $DEPLOYPATH/static
+    - /bin/chmod -R 755 $DEPLOYPATH/media 2>/dev/null || true
+    
+    # Create media directory if it doesn't exist
+    - /bin/mkdir -p $DEPLOYPATH/media
+    
+    # Create staticfiles directory if it doesn't exist
+    - /bin/mkdir -p $DEPLOYPATH/staticfiles
+    
+    # Touch passenger_wsgi.py to restart the application
+    - /bin/touch $DEPLOYPATH/passenger_wsgi.py
