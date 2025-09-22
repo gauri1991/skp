@@ -13,6 +13,49 @@
         /* Fallback gradient if image doesn't load */
         background: linear-gradient(135deg, #1e3a5f 0%, #0891b2 100%);
     }
+    
+    /* Slow testimonials animation */
+    .testimonials-slow-scroll {
+        animation: testimonials-scroll 60s linear infinite;
+    }
+    
+    @keyframes testimonials-scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+    
+    /* Responsive adjustments for testimonials */
+    @media (max-width: 640px) {
+        .testimonials-slow-scroll {
+            animation-duration: 40s; /* Faster on mobile for better UX */
+        }
+    }
+    
+    /* Fixed testimonial card sizing */
+    .testimonial-card {
+        height: 280px; /* Fixed height for all cards */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .testimonial-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .testimonial-text {
+        flex: 1;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
     </style>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -83,7 +126,7 @@
 <section id="about" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="animate-slide-up">
+            <div class="animate-slide-up bg-gradient-to-br from-amber-50 to-orange-100 rounded-lg p-8 shadow-sm">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                     {{ sections_data.about.content.about_title|default:"About Me" }}
                 </h2>
@@ -118,7 +161,7 @@
                 </div>
             </div>
             <div class="animate-slide-up">
-                <div class="bg-gray-100 rounded-lg p-8">
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-8 shadow-sm">
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Facts</h3>
                     <div class="space-y-3">
                         {% if sections_data.about.content.about_fact1_label %}
@@ -168,7 +211,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Civil Engineering Design -->
-            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
                 <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="building" class="h-8 w-8 text-primary-600"></i>
                 </div>
@@ -194,7 +237,7 @@
             </div>
             
             <!-- Patent Illustrations -->
-            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
                 <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="pen-tool" class="h-8 w-8 text-primary-600"></i>
                 </div>
@@ -220,7 +263,7 @@
             </div>
             
             <!-- Environmental Engineering -->
-            <div class="bg-white rounded-lg p-8 shadow-lg card-hover animate-slide-up">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
                 <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="leaf" class="h-8 w-8 text-primary-600"></i>
                 </div>
@@ -264,33 +307,182 @@
         
         {% if sections_data.skills.content.featured_skills.all %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {% for skill in sections_data.skills.content.featured_skills.all %}
-                {% if forloop.counter0|divisibleby:3 and forloop.counter0 == 0 %}
-                <div class="animate-slide-up">
-                    <div class="space-y-6">
-                {% elif forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
-                    </div>
+            <!-- Left Column -->
+            <div class="animate-slide-up">
+                <div class="space-y-6" id="left-skills">
                 </div>
-                <div class="animate-slide-up">
-                    <div class="space-y-6">
-                {% endif %}
-                
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-semibold text-gray-900">{{ skill.name }}</span>
-                                <span class="text-primary-600 font-semibold">{{ skill.percentage }}%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-primary-600 h-3 rounded-full" style="width: {{ skill.percentage }}%"></div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="animate-slide-up">
+                <div class="space-y-6" id="right-skills">
+                </div>
+            </div>
+        </div>
+        
+        <!-- JavaScript to equally divide skills with animation -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all skills and divide them equally
+            const allSkills = [
+                {% for skill in sections_data.skills.content.featured_skills.all %}
+                {
+                    name: "{{ skill.name|escapejs }}",
+                    percentage: {{ skill.percentage }}
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ];
+            
+            const leftContainer = document.getElementById('left-skills');
+            const rightContainer = document.getElementById('right-skills');
+            const half = Math.ceil(allSkills.length / 2);
+            
+            // Function to create skill HTML with animation
+            function createSkillHTML(skill, index) {
+                return `
+                    <div class="skill-item" style="opacity: 0; transform: translateY(20px);">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-900">${skill.name}</span>
+                            <span class="text-primary-600 font-semibold skill-percentage">${skill.percentage}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                            <div class="skill-bar h-3 rounded-full transition-all duration-1000 ease-out" 
+                                 style="width: 0%; background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%); position: relative; overflow: hidden;" 
+                                 data-target="${skill.percentage}">
+                                <div class="skill-bar-fill absolute top-0 left-0 h-full w-0 rounded-full"
+                                     style="background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.3) 100%); 
+                                            animation: fillWave 2s ease-in-out infinite;
+                                            transition: width 1200ms ease-out;">
+                                </div>
                             </div>
                         </div>
-                
-                {% if forloop.last %}
                     </div>
-                </div>
-                {% endif %}
-            {% endfor %}
-        </div>
+                `;
+            }
+            
+            // Add skills to left column (first half)
+            for (let i = 0; i < half; i++) {
+                if (allSkills[i]) {
+                    leftContainer.innerHTML += createSkillHTML(allSkills[i], i);
+                }
+            }
+            
+            // Add skills to right column (second half)
+            for (let i = half; i < allSkills.length; i++) {
+                rightContainer.innerHTML += createSkillHTML(allSkills[i], i);
+            }
+            
+            // Animate skills on scroll or page load
+            function animateSkills() {
+                const skillItems = document.querySelectorAll('.skill-item');
+                const skillBars = document.querySelectorAll('.skill-bar');
+                const skillPercentages = document.querySelectorAll('.skill-percentage');
+                
+                skillItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        // Fade in the skill item
+                        item.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, index * 150);
+                });
+                
+                // Animate progress bars after items appear
+                setTimeout(() => {
+                    skillBars.forEach((bar, index) => {
+                        const targetWidth = bar.getAttribute('data-target');
+                        const fillElement = bar.querySelector('.skill-bar-fill');
+                        
+                        // Animate the bar
+                        setTimeout(() => {
+                            bar.style.width = targetWidth + '%';
+                            // Animate the color fill effect
+                            if (fillElement) {
+                                setTimeout(() => {
+                                    fillElement.style.width = '100%';
+                                }, 200); // Start fill animation after bar starts expanding
+                            }
+                        }, index * 100);
+                        
+                        // Animate the percentage counter
+                        const percentageElement = skillPercentages[index];
+                        let currentPercentage = 0;
+                        const increment = targetWidth / 50; // 50 steps for smooth animation
+                        
+                        const counterInterval = setInterval(() => {
+                            currentPercentage += increment;
+                            if (currentPercentage >= targetWidth) {
+                                currentPercentage = targetWidth;
+                                clearInterval(counterInterval);
+                            }
+                            percentageElement.textContent = Math.round(currentPercentage) + '%';
+                        }, 20);
+                    });
+                }, 800); // Wait for skill items to appear first
+            }
+            
+            // Check if skills section is in viewport and animate
+            function checkViewport() {
+                const skillsSection = document.querySelector('#left-skills').closest('section') || 
+                                    document.querySelector('#left-skills').parentElement;
+                const rect = skillsSection.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isVisible && !skillsSection.classList.contains('animated')) {
+                    skillsSection.classList.add('animated');
+                    animateSkills();
+                }
+            }
+            
+            // Animate immediately if skills are visible, or on scroll
+            setTimeout(checkViewport, 500);
+            window.addEventListener('scroll', checkViewport);
+        });
+        </script>
+        
+        <!-- CSS for progress bar animations -->
+        <style>
+        @keyframes fillWave {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0.8;
+            }
+        }
+        
+        .skill-bar {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .skill-bar-fill {
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0.4) 0%, 
+                rgba(255,255,255,0.8) 50%, 
+                rgba(255,255,255,0.4) 100%) !important;
+            animation: fillWave 2.5s ease-in-out infinite;
+        }
+        
+        /* Enhanced progress bar styling */
+        .skill-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0.2) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0.2) 100%);
+            border-radius: inherit;
+        }
+        </style>
         {% else %}
         <!-- Fallback skills if no featured skills are selected -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -355,30 +547,34 @@
                 <div class="testimonials-track flex transition-transform duration-500 ease-in-out">
                     {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
                     <div class="testimonial-slide min-w-full md:min-w-1/2 lg:min-w-1/3 px-4">
-                        <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
-                            <div class="flex items-center mb-4">
-                                <div class="flex text-yellow-400">
-                                    {% for i in "12345"|make_list %}
-                                        {% if forloop.counter <= testimonial.rating %}
-                                            <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                                        {% else %}
-                                            <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <p class="text-gray-600 mb-4">
-                                "{{ testimonial.content }}"
-                            </p>
-                            <div class="flex items-center">
-                                {% if testimonial.image %}
-                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                                {% else %}
-                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                                {% endif %}
+                        <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up testimonial-card">
+                            <div class="testimonial-content">
                                 <div>
-                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    <div class="flex items-center mb-4">
+                                        <div class="flex text-yellow-400">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= testimonial.rating %}
+                                                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                                {% else %}
+                                                    <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 mb-4 testimonial-text">
+                                        "{{ testimonial.content }}"
+                                    </p>
+                                </div>
+                                <div class="flex items-center">
+                                    {% if testimonial.image %}
+                                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                    {% else %}
+                                        <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                                    {% endif %}
+                                    <div>
+                                        <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                        <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -403,33 +599,37 @@
         {% elif sections_data.testimonials.content.testimonials_display_mode == 'continuous' %}
         <!-- Continuous Scroll Mode -->
         <div class="testimonials-continuous-container relative overflow-hidden">
-            <div class="testimonials-continuous-track flex animate-scroll">
+            <div class="testimonials-continuous-track flex testimonials-slow-scroll">
                 {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-                <div class="testimonial-continuous-item min-w-80 mx-4 flex-shrink-0">
-                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover">
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400">
-                                {% for i in "12345"|make_list %}
-                                    {% if forloop.counter <= testimonial.rating %}
-                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                                    {% else %}
-                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            "{{ testimonial.content }}"
-                        </p>
-                        <div class="flex items-center">
-                            {% if testimonial.image %}
-                                <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                            {% else %}
-                                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                            {% endif %}
+                <div class="testimonial-continuous-item w-72 sm:w-80 lg:w-96 mx-4 flex-shrink-0">
+                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover testimonial-card">
+                        <div class="testimonial-content">
                             <div>
-                                <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                <div class="flex items-center mb-4">
+                                    <div class="flex text-yellow-400">
+                                        {% for i in "12345"|make_list %}
+                                            {% if forloop.counter <= testimonial.rating %}
+                                                <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                            {% else %}
+                                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 mb-4 testimonial-text">
+                                    "{{ testimonial.content }}"
+                                </p>
+                            </div>
+                            <div class="flex items-center">
+                                {% if testimonial.image %}
+                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                {% else %}
+                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                                {% endif %}
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -437,31 +637,35 @@
                 {% endfor %}
                 <!-- Duplicate for seamless loop -->
                 {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-                <div class="testimonial-continuous-item min-w-80 mx-4 flex-shrink-0">
-                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover">
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400">
-                                {% for i in "12345"|make_list %}
-                                    {% if forloop.counter <= testimonial.rating %}
-                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                                    {% else %}
-                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            "{{ testimonial.content }}"
-                        </p>
-                        <div class="flex items-center">
-                            {% if testimonial.image %}
-                                <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                            {% else %}
-                                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                            {% endif %}
+                <div class="testimonial-continuous-item w-72 sm:w-80 lg:w-96 mx-4 flex-shrink-0">
+                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover testimonial-card">
+                        <div class="testimonial-content">
                             <div>
-                                <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                <div class="flex items-center mb-4">
+                                    <div class="flex text-yellow-400">
+                                        {% for i in "12345"|make_list %}
+                                            {% if forloop.counter <= testimonial.rating %}
+                                                <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                            {% else %}
+                                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 mb-4 testimonial-text">
+                                    "{{ testimonial.content }}"
+                                </p>
+                            </div>
+                            <div class="flex items-center">
+                                {% if testimonial.image %}
+                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                {% else %}
+                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                                {% endif %}
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -474,30 +678,34 @@
         <!-- Default Grid Mode -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
-                <div class="flex items-center mb-4">
-                    <div class="flex text-yellow-400">
-                        {% for i in "12345"|make_list %}
-                            {% if forloop.counter <= testimonial.rating %}
-                                <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                            {% else %}
-                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <p class="text-gray-600 mb-4">
-                    "{{ testimonial.content }}"
-                </p>
-                <div class="flex items-center">
-                    {% if testimonial.image %}
-                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                    {% else %}
-                        <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                    {% endif %}
+            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up testimonial-card">
+                <div class="testimonial-content">
                     <div>
-                        <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                        <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                                    {% else %}
+                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 testimonial-text">
+                            "{{ testimonial.content }}"
+                        </p>
+                    </div>
+                    <div class="flex items-center">
+                        {% if testimonial.image %}
+                            <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
+                        {% else %}
+                            <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                        {% endif %}
+                        <div>
+                            <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
+                            <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                        </div>
                     </div>
                 </div>
             </div>
