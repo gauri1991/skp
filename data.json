@@ -1,0 +1,3391 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$MjMsMJiwGxSGRJf5jhLQ9X$MU1RP+UFoIlBV/oNqxXPlENLWLnMkKex/ukcf99WpGs=",
+    "last_login": "2025-09-22T04:58:30.442Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@sumithrakp.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-22T17:08:30.821Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$c3BmMJ0LViN3KklmJqzg3o$joeTzxbvSTJdCNdk4uSoDmSVoENvhgd+DOmGsYk3hGA=",
+    "last_login": "2025-08-23T13:54:48.313Z",
+    "is_superuser": false,
+    "username": "testclient@example.com",
+    "first_name": "Test",
+    "last_name": "Client",
+    "email": "testclient@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-23T09:41:43.522Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1rka8ahebr1ojolh9wfmpuu3wv50mhbh",
+  "fields": {
+    "session_data": ".eJxVi0sKwjAQQO-StZR8WpJxKbj0DGFmMiXBmoJNV-LdTcGFbt_npSLuLcd9k2csSZ2VUadfRsh3qYd4YKnDIaS2wtjKWodrh8ttpbLI5Rv-3Rm33FeG5LULYIL3FNDNKHYMMwMYT0w4ejAGnJkc9CIxTdpSIA7JkhWd1PsDNng23Q:1upmc5:TTntc-97GBd8wiVhF6Mwjq9jybsvbYEu1kdQT81fuCw",
+    "expire_date": "2025-09-06T11:40:49.717Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6lvcm5k10nrp611rhd66yt57i1g4jsc5",
+  "fields": {
+    "session_data": ".eJxVjMsOgyAUBf-FdUMENHC77L7fQO4Di20DiejK9N-riYt2e2bmbCriuuS4tjTHSdRVGXX53Qj5lcoB5InlUTXXsswT6UPRJ236XiW9b6f7d5Cx5b1mEN-5ACZ4TwHdiMn2YWQA44kJew_GgDODg90QpqGzFIiDWLKpE_X5AtT8N7Y:1uphK6:jmxtSblDCQUErWt2igr0YpcVEZs66rU60mDVI36P7f8",
+    "expire_date": "2025-09-06T06:01:54.177Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7620g4npr5wtl0lid0usnfo33zofk3p6",
+  "fields": {
+    "session_data": ".eJxVi0sKwjAQQO-StZR8WpJxKbj0DGFmMiXBmoJNV-LdTcGFbt_npSLuLcd9k2csSZ2VUadfRsh3qYd4YKnDIaS2wtjKWodrh8ttpbLI5Rv-3Rm33FeG5LULYIL3FNDNKHYMMwMYT0w4ejAGnJkc9CIxTdpSIA7JkhWd1PsDNng23Q:1uptYj:-49Vj0V4Vyo2ep2su0B52Pywfbn1Yas4BEJcDrevo64",
+    "expire_date": "2025-09-06T19:05:49.025Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8hfb6kyeuwmpmjxttsvsluzr9byexysm",
+  "fields": {
+    "session_data": ".eJxVi0sKwjAQQO-StZR8WpJxKbj0DGFmMiXBmoJNV-LdTcGFbt_npSLuLcd9k2csSZ2VUadfRsh3qYd4YKnDIaS2wtjKWodrh8ttpbLI5Rv-3Rm33FeG5LULYIL3FNDNKHYMMwMYT0w4ejAGnJkc9CIxTdpSIA7JkhWd1PsDNng23Q:1v0YdC:z0YcacL19oU0TdT4UAeejI9OPo87TP4cKGHbgORmurs",
+    "expire_date": "2025-10-06T04:58:30.457Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9dvgqgx6th4yemehcfxow34ypl2omkuy",
+  "fields": {
+    "session_data": ".eJxVjMsOgyAUBf-FdUMENHC77L7fQO4Di20DiejK9N-riYt2e2bmbCriuuS4tjTHSdRVGXX53Qj5lcoB5InlUTXXsswT6UPRJ236XiW9b6f7d5Cx5b1mEN-5ACZ4TwHdiMn2YWQA44kJew_GgDODg90QpqGzFIiDWLKpE_X5AtT8N7Y:1upVKa:5tOB0zrR6KtLP4b5MndhWIxgNTAuyuUEbFuWvG2Heus",
+    "expire_date": "2025-09-05T17:13:36.613Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hxgr0f6zwd0nevt6inobnzwnomludhx2",
+  "fields": {
+    "session_data": ".eJxVi70OwiAQgN-F2TQcLUdxNHH0GcgBRyBWmlg6Gd9dmjjo-v28hKO9Zbdv_HQlirNQ4vTLPIU710M8qNThEFxbCdTKWodrh8tt9WXhyzf8uzNtua8BE87WjyHaFIHMSNpgipYlSU4Ak0c9aSUxGOVxnBVoQBuVN8ZAH8T7A02pNpw:1upohk:UFdOVB1Uv1jDkYnqsYtvF4nxk21pIE2iLqpVspspeOM",
+    "expire_date": "2025-09-06T13:54:48.320Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ldhj9qao3qtbhxugsjflyr7sp7kwn2xr",
+  "fields": {
+    "session_data": ".eJxVi0sKwjAQQO-StZR8WpJxKbj0DGFmMiXBmoJNV-LdTcGFbt_npSLuLcd9k2csSZ2VUadfRsh3qYd4YKnDIaS2wtjKWodrh8ttpbLI5Rv-3Rm33FeG5LULYIL3FNDNKHYMMwMYT0w4ejAGnJkc9CIxTdpSIA7JkhWd1PsDNng23Q:1upmZt:T77i9TgFBqQylOtsRp47s_FE3MNe33WbwFzgQ5oAwGY",
+    "expire_date": "2025-09-06T11:38:33.101Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "np2x2nzkyo4y56cjy5zgxa0a1emj4n5v",
+  "fields": {
+    "session_data": ".eJxVjMsOgyAUBf-FdUMENHC77L7fQO4Di20DiejK9N-riYt2e2bmbCriuuS4tjTHSdRVGXX53Qj5lcoB5InlUTXXsswT6UPRJ236XiW9b6f7d5Cx5b1mEN-5ACZ4TwHdiMn2YWQA44kJew_GgDODg90QpqGzFIiDWLKpE_X5AtT8N7Y:1upWu6:4z9AHMvKySiASwnONnxG2AewdI7QHS75zbJiThPFEpQ",
+    "expire_date": "2025-09-05T18:54:22.454Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "y7n24a1s4n4mfync8xu500ebhurawe2b",
+  "fields": {
+    "session_data": ".eJxVi70OwiAQgN-F2TQcLUdxNHH0GcgBRyBWmlg6Gd9dmjjo-v28hKO9Zbdv_HQlirNQ4vTLPIU710M8qNThEFxbCdTKWodrh8tt9WXhyzf8uzNtua8BE87WjyHaFIHMSNpgipYlSU4Ak0c9aSUxGOVxnBVoQBuVN8ZAH8T7A02pNpw:1upmIE:djyhrZBgKYy9k4ArfNPEpTzz8CoYW3KVpkM2WaAJG6s",
+    "expire_date": "2025-09-06T11:20:18.855Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 8,
+  "fields": {
+    "name": "Civil Engineering",
+    "slug": "civil-engineering",
+    "description": "Structural design and civil engineering projects",
+    "created_at": "2025-08-22T19:17:41.373Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 9,
+  "fields": {
+    "name": "Patent Illustrations",
+    "slug": "patent-illustrations",
+    "description": "Technical drawings for patent applications",
+    "created_at": "2025-08-22T19:17:41.383Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 10,
+  "fields": {
+    "name": "Environmental Engineering",
+    "slug": "environmental-engineering",
+    "description": "Sustainable and environmental engineering solutions",
+    "created_at": "2025-08-22T19:17:41.389Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 11,
+  "fields": {
+    "name": "Residential",
+    "slug": "residential",
+    "description": "Residential building design and planning",
+    "created_at": "2025-08-22T19:17:41.400Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 12,
+  "fields": {
+    "name": "Commercial",
+    "slug": "commercial",
+    "description": "Commercial building and infrastructure projects",
+    "created_at": "2025-08-22T19:17:41.409Z"
+  }
+},
+{
+  "model": "main.category",
+  "pk": 13,
+  "fields": {
+    "name": "Infrastructure",
+    "slug": "infrastructure",
+    "description": "Roads, bridges, and public infrastructure",
+    "created_at": "2025-08-22T19:17:41.419Z"
+  }
+},
+{
+  "model": "main.project",
+  "pk": 1,
+  "fields": {
+    "title": "USPTO Patent Illustrations - Mechanical Device",
+    "slug": "uspto-patent-illustrations-mechanical-device",
+    "description": "Created detailed technical illustrations for a mechanical device patent application submitted to the USPTO. The project required precise line drawings showing multiple views, exploded diagrams, and cross-sections to clearly communicate the invention's functionality and innovative features.",
+    "short_description": "Technical illustrations for US patent application",
+    "client": "US Law Firm",
+    "location": "Remote",
+    "year": 2024,
+    "featured": true,
+    "thumbnail": "",
+    "technologies": "AutoCAD, MS Visio, Adobe Illustrator",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.486Z",
+    "updated_at": "2025-08-22T17:50:22.486Z",
+    "categories": [
+      9
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 2,
+  "fields": {
+    "title": "Residential Complex Design - Green Valley",
+    "slug": "residential-complex-design-green-valley",
+    "description": "Complete architectural and structural design for a 50-unit residential complex incorporating sustainable design principles. The project included site planning, structural analysis, MEP coordination, and construction documentation. Special focus on rainwater harvesting and solar panel integration.",
+    "short_description": "Multi-unit residential complex with sustainable features",
+    "client": "Green Valley Developers",
+    "location": "Mysore, Karnataka",
+    "year": 2023,
+    "featured": true,
+    "thumbnail": "",
+    "technologies": "AutoCAD, Civil 3D, STAAD Pro, Revit",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.496Z",
+    "updated_at": "2025-08-22T17:50:22.496Z",
+    "categories": []
+  }
+},
+{
+  "model": "main.project",
+  "pk": 3,
+  "fields": {
+    "title": "Air Emission Modeling Study - Industrial Plant",
+    "slug": "air-emission-modeling-study-industrial-plant",
+    "description": "Conducted comprehensive air emission modeling study using AERMOD for an industrial manufacturing plant. The study included dispersion analysis, environmental impact assessment, and recommendations for emission control measures. Based on M.Tech research on oleoresin extraction emissions.",
+    "short_description": "AERMOD modeling for industrial emissions assessment",
+    "client": "Industrial Solutions Ltd",
+    "location": "Karnataka",
+    "year": 2023,
+    "featured": true,
+    "thumbnail": "",
+    "technologies": "AERMOD, GIS, Remote Sensing, Excel",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.514Z",
+    "updated_at": "2025-08-22T17:50:22.514Z",
+    "categories": []
+  }
+},
+{
+  "model": "main.project",
+  "pk": 4,
+  "fields": {
+    "title": "Urban Road Design Project - City Center",
+    "slug": "urban-road-design-project-city-center",
+    "description": "Designed 5km urban road including geometric design, pavement design, drainage systems, and traffic management solutions. The project incorporated pedestrian facilities, cycling lanes, and intelligent traffic signals for improved urban mobility.",
+    "short_description": "Comprehensive road design with traffic management",
+    "client": "City Municipal Corporation",
+    "location": "Mysore",
+    "year": 2023,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "Civil 3D, AutoCAD, MX Road",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.526Z",
+    "updated_at": "2025-08-22T17:50:22.526Z",
+    "categories": []
+  }
+},
+{
+  "model": "main.project",
+  "pk": 5,
+  "fields": {
+    "title": "Patent Illustrations - Electronic Circuit Device",
+    "slug": "patent-illustrations-electronic-circuit-device",
+    "description": "Produced detailed technical illustrations for an electronic circuit device patent application. Created schematic diagrams, PCB layouts, and component assembly drawings with precise annotations meeting USPTO requirements.",
+    "short_description": "Technical drawings for electronic patent filing",
+    "client": "Tech Innovations Inc",
+    "location": "Bangalore",
+    "year": 2024,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "MS Visio, AutoCAD Electrical, Adobe Illustrator",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.546Z",
+    "updated_at": "2025-08-22T17:50:22.546Z",
+    "categories": []
+  }
+},
+{
+  "model": "main.project",
+  "pk": 6,
+  "fields": {
+    "title": "Commercial Complex - Tech Park Phase II",
+    "slug": "commercial-complex-tech-park-phase-ii",
+    "description": "Structural design and analysis for a 10-story commercial complex with emphasis on green building principles. Included seismic analysis, foundation design, and coordination with architectural and MEP teams. Achieved preliminary LEED certification goals.",
+    "short_description": "Modern commercial complex with green building features",
+    "client": "Tech Park Developers",
+    "location": "Bangalore",
+    "year": 2022,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "ETABS, AutoCAD, Revit, SAP2000",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.569Z",
+    "updated_at": "2025-08-22T17:50:22.569Z",
+    "categories": [
+      8,
+      12
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 7,
+  "fields": {
+    "title": "Water Treatment Plant Design",
+    "slug": "water-treatment-plant-design",
+    "description": "Designed a compact water treatment plant serving 10,000 population with focus on low maintenance and energy efficiency. Incorporated natural treatment methods alongside conventional processes for sustainable operation.",
+    "short_description": "Sustainable water treatment facility for rural area",
+    "client": "Rural Development Board",
+    "location": "Karnataka",
+    "year": 2023,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "AutoCAD, EPANET, WaterCAD",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.586Z",
+    "updated_at": "2025-08-22T17:50:22.586Z",
+    "categories": [
+      10,
+      13
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 8,
+  "fields": {
+    "title": "Bridge Design - River Crossing Project",
+    "slug": "bridge-design-river-crossing-project",
+    "description": "Designed a 150m pre-stressed concrete bridge for river crossing including approach roads, foundation design for varying soil conditions, and hydraulic analysis for flood conditions.",
+    "short_description": "Pre-stressed concrete bridge design",
+    "client": "State Highway Department",
+    "location": "Karnataka",
+    "year": 2022,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "STAAD Pro, AutoCAD, MIDAS Civil",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T17:50:22.607Z",
+    "updated_at": "2025-08-22T17:50:22.607Z",
+    "categories": []
+  }
+},
+{
+  "model": "main.project",
+  "pk": 9,
+  "fields": {
+    "title": "Residential Complex - Green Valley Heights",
+    "slug": "residential-complex-green-valley-heights",
+    "description": "Complete architectural and structural design for a 150-unit residential complex featuring sustainable design elements, rainwater harvesting, and solar integration. The project included detailed planning from concept to construction documentation.",
+    "short_description": "Sustainable 150-unit residential complex with green building features",
+    "client": "Green Valley Developers",
+    "location": "Mysore, Karnataka",
+    "year": 2023,
+    "featured": true,
+    "thumbnail": "",
+    "technologies": "AutoCAD, Civil 3D, STAAD Pro, Green Building Design",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T19:17:41.434Z",
+    "updated_at": "2025-08-22T19:17:41.434Z",
+    "categories": [
+      8,
+      11
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 10,
+  "fields": {
+    "title": "Air Emission Modeling - Industrial Zone",
+    "slug": "air-emission-modeling-industrial-zone",
+    "description": "Advanced AERMOD modeling study for industrial emissions in a manufacturing zone. This project was based on M.Tech research and included comprehensive dispersion analysis, environmental impact assessment, and mitigation strategies for air quality management.",
+    "short_description": "AERMOD modeling of industrial emissions with environmental impact assessment",
+    "client": "Karnataka State Pollution Control Board",
+    "location": "Bangalore, Karnataka",
+    "year": 2023,
+    "featured": true,
+    "thumbnail": "",
+    "technologies": "AERMOD, GIS, Remote Sensing, Environmental Modeling Software",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T19:17:41.461Z",
+    "updated_at": "2025-08-22T19:17:41.461Z",
+    "categories": [
+      10
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 11,
+  "fields": {
+    "title": "Urban Road Design - City Bypass Project",
+    "slug": "urban-road-design-city-bypass-project",
+    "description": "Comprehensive road design for a 12km urban bypass including alignment planning, drainage systems, traffic management, and intersection design. The project aimed to reduce city center congestion while ensuring minimal environmental impact.",
+    "short_description": "12km urban bypass road design with complete infrastructure planning",
+    "client": "Public Works Department",
+    "location": "Mysore, Karnataka",
+    "year": 2023,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "Civil 3D, AutoCAD, MX Road, Traffic Analysis Software",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T19:17:41.478Z",
+    "updated_at": "2025-08-22T19:17:41.478Z",
+    "categories": [
+      8,
+      13
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 12,
+  "fields": {
+    "title": "Patent Illustrations - Electronic Device Interface",
+    "slug": "patent-illustrations-electronic-device-interface",
+    "description": "Detailed technical illustrations for an innovative electronic device interface patent. The project required precise representation of user interface elements, circuit layouts, and device architecture for patent documentation.",
+    "short_description": "Technical drawings for electronic device patent with UI and circuit details",
+    "client": "Tech Innovation Labs",
+    "location": "Bangalore, Karnataka",
+    "year": 2024,
+    "featured": false,
+    "thumbnail": "portfolio/thumbnails/Screenshot_from_2025-08-15_19-01-32.png",
+    "technologies": "MS Visio, AutoCAD, Technical Illustration Software",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T19:17:41.496Z",
+    "updated_at": "2025-08-22T19:52:19.545Z",
+    "categories": [
+      9
+    ]
+  }
+},
+{
+  "model": "main.project",
+  "pk": 13,
+  "fields": {
+    "title": "Affordable Housing Project",
+    "slug": "affordable-housing-project",
+    "description": "Design and planning for an affordable housing project with 200 units, focusing on cost-effective construction methods while maintaining quality and sustainability standards.",
+    "short_description": "200-unit affordable housing with sustainable design features",
+    "client": "State Housing Board",
+    "location": "Mysore, Karnataka",
+    "year": 2023,
+    "featured": false,
+    "thumbnail": "",
+    "technologies": "AutoCAD, Revit, Cost Estimation Software",
+    "project_url": "",
+    "github_url": "",
+    "created_at": "2025-08-22T19:17:41.537Z",
+    "updated_at": "2025-08-22T19:17:41.537Z",
+    "categories": [
+      8,
+      11
+    ]
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 1,
+  "fields": {
+    "name": "AutoCAD",
+    "percentage": 95,
+    "category": "software",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 2,
+  "fields": {
+    "name": "Structural Analysis",
+    "percentage": 90,
+    "category": "technical",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 3,
+  "fields": {
+    "name": "Technical Illustration",
+    "percentage": 92,
+    "category": "technical",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 4,
+  "fields": {
+    "name": "Project Management",
+    "percentage": 88,
+    "category": "professional",
+    "display_order": 4
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 5,
+  "fields": {
+    "name": "Environmental Design",
+    "percentage": 85,
+    "category": "professional",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 6,
+  "fields": {
+    "name": "3D Modeling",
+    "percentage": 87,
+    "category": "software",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 7,
+  "fields": {
+    "name": "MS Visio",
+    "percentage": 90,
+    "category": "software",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 8,
+  "fields": {
+    "name": "GIS",
+    "percentage": 82,
+    "category": "software",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 9,
+  "fields": {
+    "name": "AERMOD",
+    "percentage": 88,
+    "category": "software",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 10,
+  "fields": {
+    "name": "Civil 3D",
+    "percentage": 88,
+    "category": "software",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 11,
+  "fields": {
+    "name": "STAAD Pro",
+    "percentage": 85,
+    "category": "software",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 12,
+  "fields": {
+    "name": "Team Leadership",
+    "percentage": 85,
+    "category": "professional",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 13,
+  "fields": {
+    "name": "Client Communication",
+    "percentage": 90,
+    "category": "professional",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 14,
+  "fields": {
+    "name": "Environmental Engineering",
+    "percentage": 85,
+    "category": "technical",
+    "display_order": 5
+  }
+},
+{
+  "model": "main.skill",
+  "pk": 15,
+  "fields": {
+    "name": "Patent Documentation",
+    "percentage": 93,
+    "category": "professional",
+    "display_order": 6
+  }
+},
+{
+  "model": "main.experience",
+  "pk": 1,
+  "fields": {
+    "title": "Manager - Engineering Design",
+    "company": "SIGVITAS & Company",
+    "location": "Mysore, Karnataka",
+    "start_date": "2023-12-01",
+    "end_date": null,
+    "is_current": true,
+    "description": "Leading engineering design team for patent illustrations and technical documentation.",
+    "responsibilities": [
+      "Patent illustration work with precision and technical accuracy",
+      "Patent draft proofreading and quality assurance",
+      "Client meetings and patent data analytics",
+      "Team management and project coordination"
+    ]
+  }
+},
+{
+  "model": "main.experience",
+  "pk": 2,
+  "fields": {
+    "title": "Assistant Engineer",
+    "company": "KOUSHIK ENGINEERING SOLUTIONS",
+    "location": "Mysore, Karnataka",
+    "start_date": "2019-08-01",
+    "end_date": "2023-11-30",
+    "is_current": false,
+    "description": "Worked on various civil engineering projects including layout designs and structural analysis.",
+    "responsibilities": [
+      "Layout designs and comprehensive building plans",
+      "Road design and infrastructure planning",
+      "On-site inspections and detailed site reporting",
+      "Collaboration with cross-functional teams"
+    ]
+  }
+},
+{
+  "model": "main.education",
+  "pk": 1,
+  "fields": {
+    "degree": "Master of Technology (M.Tech)",
+    "institution": "Engineering Institute",
+    "location": "Karnataka, India",
+    "start_year": 2021,
+    "end_year": 2023,
+    "grade": "CGPA: 9.30/10.0",
+    "description": "Specialized in Environmental Engineering with research project on \"Monitoring and Modeling of Air Emissions from Oleoresin Extraction\""
+  }
+},
+{
+  "model": "main.education",
+  "pk": 2,
+  "fields": {
+    "degree": "Bachelor of Engineering (B.E.)",
+    "institution": "Engineering College",
+    "location": "Karnataka, India",
+    "start_year": 2014,
+    "end_year": 2018,
+    "grade": "68% (First Class)",
+    "description": "Civil Engineering with focus on structural design and construction management"
+  }
+},
+{
+  "model": "main.education",
+  "pk": 3,
+  "fields": {
+    "degree": "Master of Technology (M.Tech)",
+    "institution": "Visvesvaraya Technological University",
+    "location": "Karnataka, India",
+    "start_year": 2021,
+    "end_year": 2023,
+    "grade": "CGPA: 9.30/10.0",
+    "description": "Specialized in Environmental Engineering with research project on \"Monitoring and Modeling of Air Emissions from Oleoresin Extraction\""
+  }
+},
+{
+  "model": "main.education",
+  "pk": 4,
+  "fields": {
+    "degree": "Bachelor of Engineering (B.E.)",
+    "institution": "Visvesvaraya Technological University",
+    "location": "Karnataka, India",
+    "start_year": 2014,
+    "end_year": 2018,
+    "grade": "68% (First Class)",
+    "description": "Civil Engineering with focus on structural design and environmental engineering"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 1,
+  "fields": {
+    "name": "John Smith",
+    "position": "Construction Manager",
+    "company": "ABC Construction",
+    "content": "Excellent work on our structural design project. Professional, timely, and exceeded expectations. The attention to detail in the technical drawings was exceptional.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T17:50:22.741Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 2,
+  "fields": {
+    "name": "Sarah Johnson",
+    "position": "Patent Attorney",
+    "company": "Johnson & Associates",
+    "content": "The patent illustrations were exactly what we needed. Clear, detailed, and professionally executed.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T17:50:22.750Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 3,
+  "fields": {
+    "name": "Mike Davis",
+    "position": "Project Director",
+    "company": "Green Build Solutions",
+    "content": "Outstanding environmental engineering consultation. Helped us achieve our sustainability goals while maintaining cost efficiency. Highly recommended!",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T17:50:22.764Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 4,
+  "fields": {
+    "name": "John Smith",
+    "position": "Construction Manager",
+    "company": "BuildTech Solutions",
+    "content": "Excellent work on our structural design project. Sumithra's attention to detail and professional approach exceeded our expectations. The project was delivered on time with exceptional quality.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T19:17:41.605Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 5,
+  "fields": {
+    "name": "Sarah Johnson",
+    "position": "Patent Attorney",
+    "company": "IP Legal Associates",
+    "content": "The patent illustrations were exactly what we needed - clear, detailed, and professionally executed. Sumithra understood the technical requirements perfectly and delivered outstanding results.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T19:17:41.612Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 6,
+  "fields": {
+    "name": "Mike Davis",
+    "position": "Project Director",
+    "company": "Green Build Developers",
+    "content": "Outstanding environmental engineering consultation. Sumithra helped us achieve our sustainability goals while maintaining project feasibility. Highly recommended for green building projects.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-22T19:17:41.620Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 7,
+  "fields": {
+    "name": "John Smith",
+    "position": "Construction Manager",
+    "company": "ABC Construction Co.",
+    "content": "Excellent work on our structural design project. Professional, timely, and exceeded expectations.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-23T13:25:56.433Z"
+  }
+},
+{
+  "model": "main.testimonial",
+  "pk": 8,
+  "fields": {
+    "name": "Michael Chen",
+    "position": "Project Director",
+    "company": "GreenTech Solutions",
+    "content": "Outstanding environmental engineering analysis. Helped us meet all regulatory requirements successfully.",
+    "rating": 5,
+    "image": "",
+    "is_featured": true,
+    "created_at": "2025-08-23T13:25:56.451Z"
+  }
+},
+{
+  "model": "main.themesettings",
+  "pk": 1,
+  "fields": {
+    "theme_name": "professional",
+    "primary_color": "#1e3a5f",
+    "secondary_color": "#64748b",
+    "accent_color": "#0891b2",
+    "background_color": "#fafafa",
+    "surface_color": "#ffffff",
+    "success_color": "#10b981",
+    "warning_color": "#f59e0b",
+    "error_color": "#ef4444",
+    "info_color": "#3b82f6",
+    "is_active": true,
+    "created_at": "2025-08-22T17:50:22.449Z",
+    "updated_at": "2025-08-23T11:08:55.718Z"
+  }
+},
+{
+  "model": "main.themesettings",
+  "pk": 2,
+  "fields": {
+    "theme_name": "minimal",
+    "primary_color": "#18181b",
+    "secondary_color": "#71717a",
+    "accent_color": "#2563eb",
+    "background_color": "#f4f4f5",
+    "surface_color": "#ffffff",
+    "success_color": "#10b981",
+    "warning_color": "#f59e0b",
+    "error_color": "#ef4444",
+    "info_color": "#3b82f6",
+    "is_active": false,
+    "created_at": "2025-08-22T18:32:20.028Z",
+    "updated_at": "2025-08-22T18:32:20.040Z"
+  }
+},
+{
+  "model": "main.themesettings",
+  "pk": 3,
+  "fields": {
+    "theme_name": "warm",
+    "primary_color": "#451a03",
+    "secondary_color": "#78716c",
+    "accent_color": "#ea580c",
+    "background_color": "#fef3c7",
+    "surface_color": "#ffffff",
+    "success_color": "#10b981",
+    "warning_color": "#f59e0b",
+    "error_color": "#ef4444",
+    "info_color": "#3b82f6",
+    "is_active": false,
+    "created_at": "2025-08-22T19:21:48.450Z",
+    "updated_at": "2025-08-23T11:08:35.859Z"
+  }
+},
+{
+  "model": "main.professionalsummary",
+  "pk": 1,
+  "fields": {
+    "content": "Engineering Professional with 6+ years of work experience specializing in patent illustrations, engineering design, and environmental solutions. Proven track record of delivering high-quality technical drawings and designs for diverse clients.",
+    "years_experience": 6,
+    "specializations": "Patent Illustrations\nEngineering Design\nEnvironmental Engineering\nTechnical Documentation",
+    "key_strengths": "Multi-tasking abilities\nAttention to detail\nClient relationship management\nProject coordination\nTechnical accuracy",
+    "is_active": true,
+    "created_at": "2025-08-23T06:42:58.059Z",
+    "updated_at": "2025-08-23T06:42:58.059Z"
+  }
+},
+{
+  "model": "main.resumeexperience",
+  "pk": 1,
+  "fields": {
+    "position_title": "Manager - Engineering Design",
+    "company_name": "SIGVITAS & Company",
+    "location": "India",
+    "start_date": "2023-12-01",
+    "end_date": null,
+    "is_current": true,
+    "description": "Leading engineering design team focusing on patent illustration and technical documentation.",
+    "key_responsibilities": [
+      "Patent illustration work with precision and technical accuracy",
+      "Patent draft proofreading and quality assurance",
+      "Client meetings and patent data analytics",
+      "Team management and project coordination"
+    ],
+    "achievements": [
+      "Improved patent illustration accuracy by 25%",
+      "Managed 15+ client projects simultaneously",
+      "Implemented quality control processes"
+    ],
+    "technologies_used": "AutoCAD, MS VISIO, Adobe Illustrator",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeexperience",
+  "pk": 2,
+  "fields": {
+    "position_title": "Assistant Engineer",
+    "company_name": "KOUSHIK ENGINEERING SOLUTIONS",
+    "location": "India",
+    "start_date": "2019-08-01",
+    "end_date": "2023-11-30",
+    "is_current": false,
+    "description": "Worked on various civil engineering projects including layout designs and infrastructure planning.",
+    "key_responsibilities": [
+      "Layout designs and comprehensive building plans",
+      "Road design and infrastructure planning",
+      "On-site inspections and detailed site reporting",
+      "Collaboration with cross-functional teams"
+    ],
+    "achievements": [
+      "Successfully completed 20+ infrastructure projects",
+      "Reduced design errors by 30% through quality checks",
+      "Received client appreciation for timely delivery"
+    ],
+    "technologies_used": "AutoCAD, Civil 3D, MS Office",
+    "display_order": 2,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeeducation",
+  "pk": 1,
+  "fields": {
+    "degree_type": "Master of Technology",
+    "field_of_study": "Environmental Engineering",
+    "institution_name": "National Institute of Technology",
+    "location": "India",
+    "start_year": 2021,
+    "end_year": 2023,
+    "grade_type": "cgpa",
+    "grade_value": "9.30/10.0",
+    "thesis_title": "Monitoring and Modeling of Air Emissions from Oleoresin Extraction",
+    "relevant_coursework": "Environmental Impact Assessment, Air Pollution Control, Water Treatment Systems",
+    "honors_awards": "First Class with Distinction\nBest Project Award 2023",
+    "display_order": 10,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeeducation",
+  "pk": 2,
+  "fields": {
+    "degree_type": "Bachelor of Engineering",
+    "field_of_study": "Civil Engineering",
+    "institution_name": "Regional Engineering College",
+    "location": "India",
+    "start_year": 2014,
+    "end_year": 2018,
+    "grade_type": "percentage",
+    "grade_value": "68% (First Class)",
+    "thesis_title": "",
+    "relevant_coursework": "Structural Engineering, Transportation Engineering, Geotechnical Engineering",
+    "honors_awards": "",
+    "display_order": 30,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeeducation",
+  "pk": 3,
+  "fields": {
+    "degree_type": "Master of Technology",
+    "field_of_study": "Environmental Engineering",
+    "institution_name": "APJ Abdul Kalam Technological University",
+    "location": "Kerala, India",
+    "start_year": 2015,
+    "end_year": 2017,
+    "grade_type": "cgpa",
+    "grade_value": "8.2",
+    "thesis_title": "Advanced Water Treatment Systems for Industrial Applications",
+    "relevant_coursework": "Environmental Impact Assessment, Air Pollution Control, Water Treatment Systems",
+    "honors_awards": "Best Project Award, Dean's List",
+    "display_order": 20,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeeducation",
+  "pk": 4,
+  "fields": {
+    "degree_type": "Bachelor of Engineering",
+    "field_of_study": "Civil Engineering",
+    "institution_name": "University of Kerala",
+    "location": "Kerala, India",
+    "start_year": 2011,
+    "end_year": 2015,
+    "grade_type": "percentage",
+    "grade_value": "78.5",
+    "thesis_title": "",
+    "relevant_coursework": "Structural Engineering, Transportation Engineering, Geotechnical Engineering",
+    "honors_awards": "Merit Certificate, Sports Achievement Award",
+    "display_order": 40,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.skillcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Technical Skills",
+    "slug": "technical",
+    "icon": "cpu",
+    "description": "Core technical competencies and specialized skills",
+    "display_order": 1,
+    "is_visible": true,
+    "created_at": "2025-08-23T19:34:37.101Z",
+    "updated_at": "2025-08-23T19:48:49.172Z"
+  }
+},
+{
+  "model": "main.skillcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Software & Tools",
+    "slug": "software",
+    "icon": "layers",
+    "description": "Software applications and development tools",
+    "display_order": 2,
+    "is_visible": true,
+    "created_at": "2025-08-23T19:34:37.104Z",
+    "updated_at": "2025-08-23T19:34:37.104Z"
+  }
+},
+{
+  "model": "main.skillcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Professional Skills",
+    "slug": "professional",
+    "icon": "briefcase",
+    "description": "Business and interpersonal competencies",
+    "display_order": 3,
+    "is_visible": true,
+    "created_at": "2025-08-23T19:34:37.105Z",
+    "updated_at": "2025-08-23T19:34:37.105Z"
+  }
+},
+{
+  "model": "main.skillcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Languages",
+    "slug": "languages",
+    "icon": "globe-2",
+    "description": "Spoken and written language proficiencies",
+    "display_order": 0,
+    "is_visible": true,
+    "created_at": "2025-08-23T19:34:37.107Z",
+    "updated_at": "2025-08-23T19:40:12.452Z"
+  }
+},
+{
+  "model": "main.skillcategory",
+  "pk": 5,
+  "fields": {
+    "name": "Certifications",
+    "slug": "certifications",
+    "icon": "award",
+    "description": "Professional certifications and qualifications",
+    "display_order": 5,
+    "is_visible": true,
+    "created_at": "2025-08-23T19:34:37.108Z",
+    "updated_at": "2025-08-23T19:34:37.108Z"
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 1,
+  "fields": {
+    "name": "Patent Illustrations",
+    "category": 1,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 95,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 2,
+  "fields": {
+    "name": "AutoCAD",
+    "category": 2,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 90,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 3,
+  "fields": {
+    "name": "MS VISIO",
+    "category": 2,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 85,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 2,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 4,
+  "fields": {
+    "name": "GIS",
+    "category": 2,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 75,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 3,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 5,
+  "fields": {
+    "name": "Remote Sensing",
+    "category": 2,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 70,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 4,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 6,
+  "fields": {
+    "name": "Project Management",
+    "category": 3,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 85,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 7,
+  "fields": {
+    "name": "Team Leadership",
+    "category": 3,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 80,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 2,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 8,
+  "fields": {
+    "name": "Client Relations",
+    "category": 3,
+    "proficiency_level": "intermediate",
+    "proficiency_percentage": 85,
+    "years_experience": 0,
+    "description": "",
+    "display_order": 3,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 9,
+  "fields": {
+    "name": "English",
+    "category": 4,
+    "proficiency_level": "expert",
+    "proficiency_percentage": 95,
+    "years_experience": 0,
+    "description": "Native/Bilingual proficiency",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 10,
+  "fields": {
+    "name": "Hindi",
+    "category": 4,
+    "proficiency_level": "expert",
+    "proficiency_percentage": 90,
+    "years_experience": 0,
+    "description": "Professional working proficiency",
+    "display_order": 2,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.resumeskill",
+  "pk": 11,
+  "fields": {
+    "name": "Malayalam",
+    "category": 4,
+    "proficiency_level": "advanced",
+    "proficiency_percentage": 85,
+    "years_experience": 0,
+    "description": "Native proficiency",
+    "display_order": 3,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.certification",
+  "pk": 1,
+  "fields": {
+    "name": "Patent Illustration Professional",
+    "issuing_organization": "Technical Illustration Institute",
+    "credential_id": "PIP2023001",
+    "issue_date": "2023-06-15",
+    "expiry_date": null,
+    "is_lifetime": true,
+    "verification_url": "",
+    "description": "Professional certification in technical patent illustration and documentation",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.certification",
+  "pk": 2,
+  "fields": {
+    "name": "AutoCAD Professional Certification",
+    "issuing_organization": "Autodesk",
+    "credential_id": "ACAD-2019-567",
+    "issue_date": "2019-03-15",
+    "expiry_date": null,
+    "is_lifetime": true,
+    "verification_url": "",
+    "description": "Advanced certification in AutoCAD for professional design work",
+    "display_order": 1,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.achievement",
+  "pk": 1,
+  "fields": {
+    "title": "M.Tech Project Excellence Award",
+    "description": "Outstanding academic achievement for exceptional research work in environmental engineering",
+    "date_achieved": "2023-05-20",
+    "category": "academic",
+    "organization": "National Institute of Technology",
+    "url": "",
+    "display_order": 1,
+    "is_featured": true,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.achievement",
+  "pk": 2,
+  "fields": {
+    "title": "Best Employee of the Year 2022",
+    "description": "Recognized for exceptional performance and client satisfaction in engineering projects",
+    "date_achieved": "2022-12-31",
+    "category": "professional",
+    "organization": "KOUSHIK ENGINEERING SOLUTIONS",
+    "url": "",
+    "display_order": 2,
+    "is_featured": true,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.achievement",
+  "pk": 3,
+  "fields": {
+    "title": "Best Engineering Project Award",
+    "description": "Received recognition for innovative approach in environmental engineering project design and implementation.",
+    "date_achieved": "2017-05-20",
+    "category": "",
+    "organization": "APJ Abdul Kalam Technological University",
+    "url": "",
+    "display_order": 3,
+    "is_featured": false,
+    "is_visible": true
+  }
+},
+{
+  "model": "main.service",
+  "pk": 1,
+  "fields": {
+    "title": "Civil Engineering Consultation",
+    "slug": "civil-engineering-consultation",
+    "category": "civil",
+    "short_description": "Professional civil engineering design and consultation services for residential, commercial, and industrial projects.",
+    "description": "Comprehensive civil engineering services including structural analysis, foundation design, site planning, and project feasibility studies. Our expertise covers residential buildings, commercial complexes, industrial structures, and infrastructure development.\n\nWe provide detailed engineering solutions that comply with local building codes and safety standards, ensuring your project is both safe and cost-effective.",
+    "icon": "building",
+    "image": "",
+    "features": [
+      "Structural design and analysis",
+      "Foundation and footing design",
+      "Load calculations and safety assessments",
+      "Building code compliance verification",
+      "Construction drawings and specifications",
+      "Site supervision and quality control"
+    ],
+    "process_steps": [
+      "Initial site survey and project assessment",
+      "Soil testing and geotechnical analysis",
+      "Structural design and calculations",
+      "Drawing preparation and review",
+      "Regulatory approvals and permits",
+      "Construction supervision and support"
+    ],
+    "deliverables": [
+      "Detailed structural drawings",
+      "Engineering calculations and reports",
+      "Material specifications",
+      "Construction guidelines",
+      "Compliance certificates"
+    ],
+    "timeline": "2-6 weeks",
+    "base_price": "50000.00",
+    "has_bom": true,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2025-08-23T08:24:13.754Z",
+    "updated_at": "2025-08-23T08:24:13.754Z"
+  }
+},
+{
+  "model": "main.service",
+  "pk": 2,
+  "fields": {
+    "title": "AERMOD Modeling & Environmental Analysis",
+    "slug": "aermod-modeling-environmental-analysis",
+    "category": "environmental",
+    "short_description": "Advanced air quality modeling and environmental impact assessment using AERMOD and other regulatory models.",
+    "description": "Professional environmental consulting services specializing in air quality modeling, dispersion analysis, and regulatory compliance. We use industry-standard tools like AERMOD, CALPUFF, and ISC3 to assess environmental impacts and support permit applications.\n\nOur services help industries comply with environmental regulations and minimize their ecological footprint through scientific analysis and practical solutions.",
+    "icon": "wind",
+    "image": "",
+    "features": [
+      "AERMOD dispersion modeling",
+      "Air quality impact assessment",
+      "Emission inventory development",
+      "Regulatory compliance analysis",
+      "Environmental permit support",
+      "Monitoring network design"
+    ],
+    "process_steps": [
+      "Project scoping and data collection",
+      "Meteorological data analysis",
+      "Emission source characterization",
+      "Model setup and validation",
+      "Scenario analysis and reporting",
+      "Regulatory submission support"
+    ],
+    "deliverables": [
+      "AERMOD model files and outputs",
+      "Technical modeling report",
+      "Contour plots and visualizations",
+      "Regulatory compliance assessment",
+      "Recommendations report"
+    ],
+    "timeline": "3-8 weeks",
+    "base_price": "75000.00",
+    "has_bom": false,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2025-08-23T08:24:13.871Z",
+    "updated_at": "2025-08-23T08:24:13.871Z"
+  }
+},
+{
+  "model": "main.service",
+  "pk": 3,
+  "fields": {
+    "title": "Building Design & Layout Planning",
+    "slug": "building-design-layout-planning",
+    "category": "design",
+    "short_description": "Comprehensive architectural and layout design services for residential and commercial buildings.",
+    "description": "Complete building design services from conceptual planning to detailed architectural drawings. We create functional, aesthetic, and sustainable designs that maximize space utilization while meeting all regulatory requirements.\n\nOur designs focus on user experience, energy efficiency, and cost-effectiveness, ensuring your building serves its purpose beautifully and efficiently.",
+    "icon": "home",
+    "image": "",
+    "features": [
+      "Architectural design and planning",
+      "Space optimization and layout",
+      "Building code compliance",
+      "3D visualization and renders",
+      "Interior design coordination",
+      "Sustainable design solutions"
+    ],
+    "process_steps": [
+      "Client consultation and brief",
+      "Site analysis and surveys",
+      "Conceptual design development",
+      "Detailed design and drawings",
+      "Regulatory approvals",
+      "Construction documentation"
+    ],
+    "deliverables": [
+      "Architectural drawings (plans, elevations, sections)",
+      "3D renderings and visualizations",
+      "Material specifications",
+      "Interior layout plans",
+      "Regulatory compliance documents"
+    ],
+    "timeline": "4-10 weeks",
+    "base_price": "60000.00",
+    "has_bom": true,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2025-08-23T08:24:13.922Z",
+    "updated_at": "2025-08-23T08:24:13.922Z"
+  }
+},
+{
+  "model": "main.service",
+  "pk": 4,
+  "fields": {
+    "title": "Patent Illustrations & Technical Drawings",
+    "slug": "patent-illustrations-technical-drawings",
+    "category": "design",
+    "short_description": "Professional patent illustrations, technical drawings, and engineering documentation services.",
+    "description": "Specialized technical illustration services for patent applications, engineering documentation, and technical publications. We create precise, professional drawings that meet patent office standards and clearly communicate technical concepts.\n\nOur illustrations help inventors and companies protect their intellectual property with high-quality visual documentation that supports successful patent applications.",
+    "icon": "file-text",
+    "image": "",
+    "features": [
+      "Patent application drawings",
+      "Technical illustration and diagrams",
+      "Engineering documentation",
+      "CAD drawing services",
+      "Scientific illustration",
+      "3D technical rendering"
+    ],
+    "process_steps": [
+      "Project requirements analysis",
+      "Concept sketching and layout",
+      "Detailed drawing creation",
+      "Technical review and refinement",
+      "Format preparation for submission",
+      "Final delivery and revisions"
+    ],
+    "deliverables": [
+      "Patent-ready technical drawings",
+      "High-resolution illustration files",
+      "Multiple format exports (PDF, DWG, etc.)",
+      "Revision documentation",
+      "Usage guidelines"
+    ],
+    "timeline": "1-3 weeks",
+    "base_price": "25000.00",
+    "has_bom": false,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2025-08-23T08:24:13.998Z",
+    "updated_at": "2025-08-23T08:24:13.998Z"
+  }
+},
+{
+  "model": "main.service",
+  "pk": 5,
+  "fields": {
+    "title": "Construction Project Management",
+    "slug": "construction-project-management",
+    "category": "construction",
+    "short_description": "End-to-end construction project management services ensuring timely and quality project delivery.",
+    "description": "Comprehensive construction project management services covering all phases from planning to completion. We ensure projects are delivered on time, within budget, and to the highest quality standards through effective coordination and management.\n\nOur experienced team manages contractors, schedules, budgets, and quality control, allowing you to focus on your business while we handle the construction complexities.",
+    "icon": "hard-hat",
+    "image": "",
+    "features": [
+      "Project planning and scheduling",
+      "Contractor coordination and management",
+      "Quality control and assurance",
+      "Budget management and cost control",
+      "Progress monitoring and reporting",
+      "Safety compliance and supervision"
+    ],
+    "process_steps": [
+      "Project planning and baseline setup",
+      "Contractor selection and contracts",
+      "Construction phase management",
+      "Quality control and inspections",
+      "Progress tracking and reporting",
+      "Project closure and handover"
+    ],
+    "deliverables": [
+      "Project management plan",
+      "Regular progress reports",
+      "Quality control documentation",
+      "Budget tracking reports",
+      "Completion certificates",
+      "As-built documentation"
+    ],
+    "timeline": "Project duration + 2 weeks",
+    "base_price": "100000.00",
+    "has_bom": true,
+    "is_active": true,
+    "display_order": 0,
+    "created_at": "2025-08-23T08:24:14.044Z",
+    "updated_at": "2025-08-23T08:24:14.044Z"
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 1,
+  "fields": {
+    "service": 1,
+    "tab_type": "info",
+    "title": "Service Information",
+    "icon": "info",
+    "content": "",
+    "is_active": true,
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 2,
+  "fields": {
+    "service": 1,
+    "tab_type": "requirements",
+    "title": "Requirements",
+    "icon": "list",
+    "content": "",
+    "is_active": true,
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 3,
+  "fields": {
+    "service": 1,
+    "tab_type": "quote",
+    "title": "Get Quote",
+    "icon": "calculator",
+    "content": "",
+    "is_active": true,
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 4,
+  "fields": {
+    "service": 1,
+    "tab_type": "bom",
+    "title": "Materials",
+    "icon": "package",
+    "content": "",
+    "is_active": true,
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 5,
+  "fields": {
+    "service": 1,
+    "tab_type": "portfolio",
+    "title": "Portfolio",
+    "icon": "briefcase",
+    "content": "",
+    "is_active": true,
+    "display_order": 4
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 6,
+  "fields": {
+    "service": 2,
+    "tab_type": "info",
+    "title": "Service Information",
+    "icon": "info",
+    "content": "",
+    "is_active": true,
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 7,
+  "fields": {
+    "service": 2,
+    "tab_type": "requirements",
+    "title": "Requirements",
+    "icon": "list",
+    "content": "",
+    "is_active": true,
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 8,
+  "fields": {
+    "service": 2,
+    "tab_type": "quote",
+    "title": "Get Quote",
+    "icon": "calculator",
+    "content": "",
+    "is_active": true,
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 9,
+  "fields": {
+    "service": 2,
+    "tab_type": "portfolio",
+    "title": "Portfolio",
+    "icon": "briefcase",
+    "content": "",
+    "is_active": true,
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 10,
+  "fields": {
+    "service": 3,
+    "tab_type": "info",
+    "title": "Service Information",
+    "icon": "info",
+    "content": "",
+    "is_active": true,
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 11,
+  "fields": {
+    "service": 3,
+    "tab_type": "requirements",
+    "title": "Requirements",
+    "icon": "list",
+    "content": "",
+    "is_active": true,
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 12,
+  "fields": {
+    "service": 3,
+    "tab_type": "quote",
+    "title": "Get Quote",
+    "icon": "calculator",
+    "content": "",
+    "is_active": true,
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 13,
+  "fields": {
+    "service": 3,
+    "tab_type": "bom",
+    "title": "Materials",
+    "icon": "package",
+    "content": "",
+    "is_active": true,
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 14,
+  "fields": {
+    "service": 3,
+    "tab_type": "portfolio",
+    "title": "Portfolio",
+    "icon": "briefcase",
+    "content": "",
+    "is_active": true,
+    "display_order": 4
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 15,
+  "fields": {
+    "service": 4,
+    "tab_type": "info",
+    "title": "Service Information",
+    "icon": "info",
+    "content": "",
+    "is_active": true,
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 16,
+  "fields": {
+    "service": 4,
+    "tab_type": "requirements",
+    "title": "Requirements",
+    "icon": "list",
+    "content": "",
+    "is_active": true,
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 17,
+  "fields": {
+    "service": 4,
+    "tab_type": "quote",
+    "title": "Get Quote",
+    "icon": "calculator",
+    "content": "",
+    "is_active": true,
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 18,
+  "fields": {
+    "service": 4,
+    "tab_type": "portfolio",
+    "title": "Portfolio",
+    "icon": "briefcase",
+    "content": "",
+    "is_active": true,
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 19,
+  "fields": {
+    "service": 5,
+    "tab_type": "info",
+    "title": "Service Information",
+    "icon": "info",
+    "content": "",
+    "is_active": true,
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 20,
+  "fields": {
+    "service": 5,
+    "tab_type": "requirements",
+    "title": "Requirements",
+    "icon": "list",
+    "content": "",
+    "is_active": true,
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 21,
+  "fields": {
+    "service": 5,
+    "tab_type": "quote",
+    "title": "Get Quote",
+    "icon": "calculator",
+    "content": "",
+    "is_active": true,
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 22,
+  "fields": {
+    "service": 5,
+    "tab_type": "bom",
+    "title": "Materials",
+    "icon": "package",
+    "content": "",
+    "is_active": true,
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicetab",
+  "pk": 23,
+  "fields": {
+    "service": 5,
+    "tab_type": "portfolio",
+    "title": "Portfolio",
+    "icon": "briefcase",
+    "content": "",
+    "is_active": true,
+    "display_order": 4
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 1,
+  "fields": {
+    "service": 1,
+    "field_name": "project_type",
+    "field_type": "select",
+    "label": "Project Type",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Residential Building",
+      "Commercial Building",
+      "Industrial Structure",
+      "Infrastructure"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.20",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 2,
+  "fields": {
+    "service": 1,
+    "field_name": "plot_area",
+    "field_type": "number",
+    "label": "Plot Area (sq ft)",
+    "placeholder": "Enter plot area in square feet",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.10",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 3,
+  "fields": {
+    "service": 1,
+    "field_name": "floors",
+    "field_type": "number",
+    "label": "Number of Floors",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.30",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 4,
+  "fields": {
+    "service": 1,
+    "field_name": "soil_report",
+    "field_type": "checkbox",
+    "label": "Soil test report available",
+    "placeholder": "",
+    "help_text": "Check if you have existing soil test reports",
+    "choices": [],
+    "is_required": false,
+    "affects_pricing": true,
+    "pricing_multiplier": "0.90",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 5,
+  "fields": {
+    "service": 2,
+    "field_name": "study_type",
+    "field_type": "select",
+    "label": "Study Type",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Air Quality Assessment",
+      "Environmental Clearance",
+      "Permit Application",
+      "Impact Study"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.20",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 6,
+  "fields": {
+    "service": 2,
+    "field_name": "source_count",
+    "field_type": "number",
+    "label": "Number of Emission Sources",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.15",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 7,
+  "fields": {
+    "service": 2,
+    "field_name": "study_area",
+    "field_type": "number",
+    "label": "Study Area (sq km)",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.10",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 8,
+  "fields": {
+    "service": 3,
+    "field_name": "building_type",
+    "field_type": "select",
+    "label": "Building Type",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Residential House",
+      "Apartment Building",
+      "Office Building",
+      "Retail Space",
+      "Mixed Use"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.10",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 9,
+  "fields": {
+    "service": 3,
+    "field_name": "built_area",
+    "field_type": "number",
+    "label": "Built-up Area (sq ft)",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.05",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 10,
+  "fields": {
+    "service": 3,
+    "field_name": "interior_design",
+    "field_type": "checkbox",
+    "label": "Include interior design",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": false,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.40",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 11,
+  "fields": {
+    "service": 4,
+    "field_name": "drawing_type",
+    "field_type": "select",
+    "label": "Drawing Type",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Patent Illustrations",
+      "Technical Diagrams",
+      "Engineering Drawings",
+      "Scientific Illustrations"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.10",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 12,
+  "fields": {
+    "service": 4,
+    "field_name": "drawing_count",
+    "field_type": "number",
+    "label": "Number of Drawings",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.20",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 13,
+  "fields": {
+    "service": 4,
+    "field_name": "complexity",
+    "field_type": "select",
+    "label": "Drawing Complexity",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Simple",
+      "Moderate",
+      "Complex",
+      "Highly Complex"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.50",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 14,
+  "fields": {
+    "service": 5,
+    "field_name": "project_value",
+    "field_type": "number",
+    "label": "Project Value (INR Lakhs)",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.02",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 15,
+  "fields": {
+    "service": 5,
+    "field_name": "project_duration",
+    "field_type": "number",
+    "label": "Expected Duration (months)",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.10",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.servicerequirement",
+  "pk": 16,
+  "fields": {
+    "service": 5,
+    "field_name": "site_supervision",
+    "field_type": "select",
+    "label": "Site Supervision Frequency",
+    "placeholder": "",
+    "help_text": "",
+    "choices": [
+      "Daily",
+      "Weekly",
+      "Bi-weekly",
+      "Monthly"
+    ],
+    "is_required": true,
+    "affects_pricing": true,
+    "pricing_multiplier": "1.30",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.serviceinquiry",
+  "pk": 1,
+  "fields": {
+    "service": 2,
+    "client_name": "Test Client",
+    "client_email": "testclient@example.com",
+    "client_phone": "+919876543210",
+    "company": "",
+    "project_title": "Modern Office Building Design",
+    "requirements": {
+      "building_type": "Commercial Office",
+      "floors": "5",
+      "area": "5000 sq ft per floor",
+      "budget": "25 Lakhs"
+    },
+    "attachments": [],
+    "status": "in_progress",
+    "estimated_cost": "250000.00",
+    "notes": "",
+    "created_at": "2025-08-23T09:48:13.399Z",
+    "updated_at": "2025-08-23T09:48:13.399Z"
+  }
+},
+{
+  "model": "main.servicebom",
+  "pk": 1,
+  "fields": {
+    "service": 1,
+    "name": "Civil Engineering Consultation - Standard BOM",
+    "description": "Standard bill of materials template",
+    "is_template": true,
+    "inquiry": null,
+    "created_at": "2025-08-23T08:24:13.810Z",
+    "updated_at": "2025-08-23T08:24:13.810Z"
+  }
+},
+{
+  "model": "main.servicebom",
+  "pk": 2,
+  "fields": {
+    "service": 3,
+    "name": "Building Design & Layout Planning - Design Materials",
+    "description": "Materials and resources for design project",
+    "is_template": true,
+    "inquiry": null,
+    "created_at": "2025-08-23T08:24:13.969Z",
+    "updated_at": "2025-08-23T08:24:13.969Z"
+  }
+},
+{
+  "model": "main.servicebom",
+  "pk": 3,
+  "fields": {
+    "service": 5,
+    "name": "Construction Project Management - Management Resources",
+    "description": "Resources required for project management",
+    "is_template": true,
+    "inquiry": null,
+    "created_at": "2025-08-23T08:24:14.091Z",
+    "updated_at": "2025-08-23T08:24:14.091Z"
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 1,
+  "fields": {
+    "bom": 1,
+    "category": "Materials",
+    "item_name": "Cement (OPC 53 Grade)",
+    "description": "",
+    "specification": "50kg bags",
+    "quantity": "50.00",
+    "unit": "nos",
+    "unit_price": "350.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 2,
+  "fields": {
+    "bom": 1,
+    "category": "Materials",
+    "item_name": "Steel (Fe 500)",
+    "description": "",
+    "specification": "12mm, 16mm, 20mm bars",
+    "quantity": "2.00",
+    "unit": "mt",
+    "unit_price": "55000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 3,
+  "fields": {
+    "bom": 1,
+    "category": "Materials",
+    "item_name": "Sand",
+    "description": "",
+    "specification": "River sand, graded",
+    "quantity": "5.00",
+    "unit": "cum",
+    "unit_price": "1200.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 4,
+  "fields": {
+    "bom": 1,
+    "category": "Materials",
+    "item_name": "Aggregate",
+    "description": "",
+    "specification": "20mm & 10mm crushed stone",
+    "quantity": "8.00",
+    "unit": "cum",
+    "unit_price": "1500.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 5,
+  "fields": {
+    "bom": 1,
+    "category": "Labor",
+    "item_name": "Skilled Mason",
+    "description": "",
+    "specification": "Experienced in RCC work",
+    "quantity": "30.00",
+    "unit": "days",
+    "unit_price": "800.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 4
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 6,
+  "fields": {
+    "bom": 1,
+    "category": "Labor",
+    "item_name": "Helper",
+    "description": "",
+    "specification": "Construction helper",
+    "quantity": "60.00",
+    "unit": "days",
+    "unit_price": "500.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 5
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 7,
+  "fields": {
+    "bom": 1,
+    "category": "Equipment",
+    "item_name": "Concrete Mixer",
+    "description": "",
+    "specification": "Rental for project duration",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "15000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 6
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 8,
+  "fields": {
+    "bom": 2,
+    "category": "Software",
+    "item_name": "AutoCAD License",
+    "description": "",
+    "specification": "Monthly subscription",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "5000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 9,
+  "fields": {
+    "bom": 2,
+    "category": "Software",
+    "item_name": "3D Rendering Software",
+    "description": "",
+    "specification": "SketchUp/3DS Max",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "3000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 10,
+  "fields": {
+    "bom": 2,
+    "category": "Services",
+    "item_name": "Site Survey",
+    "description": "",
+    "specification": "Professional surveyor",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "8000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 11,
+  "fields": {
+    "bom": 2,
+    "category": "Services",
+    "item_name": "Soil Testing",
+    "description": "",
+    "specification": "Laboratory analysis",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "12000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 12,
+  "fields": {
+    "bom": 2,
+    "category": "Documentation",
+    "item_name": "Drawing Printing",
+    "description": "",
+    "specification": "A1 size drawings",
+    "quantity": "5.00",
+    "unit": "nos",
+    "unit_price": "500.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 4
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 13,
+  "fields": {
+    "bom": 3,
+    "category": "Personnel",
+    "item_name": "Project Manager",
+    "description": "",
+    "specification": "Monthly cost",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "80000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 0
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 14,
+  "fields": {
+    "bom": 3,
+    "category": "Personnel",
+    "item_name": "Site Supervisor",
+    "description": "",
+    "specification": "Monthly cost",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "50000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 1
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 15,
+  "fields": {
+    "bom": 3,
+    "category": "Equipment",
+    "item_name": "Project Management Software",
+    "description": "",
+    "specification": "Primavera P6/MS Project",
+    "quantity": "1.00",
+    "unit": "lot",
+    "unit_price": "2000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 2
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 16,
+  "fields": {
+    "bom": 3,
+    "category": "Services",
+    "item_name": "Quality Testing",
+    "description": "",
+    "specification": "Material and work quality tests",
+    "quantity": "10.00",
+    "unit": "nos",
+    "unit_price": "3000.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 3
+  }
+},
+{
+  "model": "main.bomitem",
+  "pk": 17,
+  "fields": {
+    "bom": 3,
+    "category": "Documentation",
+    "item_name": "Progress Reports",
+    "description": "",
+    "specification": "Monthly detailed reports",
+    "quantity": "12.00",
+    "unit": "nos",
+    "unit_price": "1500.00",
+    "supplier": "",
+    "notes": "",
+    "display_order": 4
+  }
+},
+{
+  "model": "main.clientprofile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "mobile": "+919876543210",
+    "company": "Test Company Ltd",
+    "address": "123 Test Street",
+    "city": "Test City",
+    "state": "Test State",
+    "pincode": "123456",
+    "country": "India",
+    "mobile_verified": true,
+    "email_verified": true,
+    "preferred_communication": "both",
+    "is_active": true,
+    "created_at": "2025-08-23T09:41:45.279Z",
+    "updated_at": "2025-08-23T09:41:45.279Z",
+    "last_login_at": null
+  }
+},
+{
+  "model": "main.clientorder",
+  "pk": 1,
+  "fields": {
+    "client": 2,
+    "service_inquiry": 1,
+    "order_number": "ORD-2025-001",
+    "status": "in_progress",
+    "quoted_amount": "250000.00",
+    "paid_amount": "125000.00",
+    "estimated_completion": "2025-09-22",
+    "actual_completion": null,
+    "internal_notes": "",
+    "created_at": "2025-08-23T09:48:13.410Z",
+    "updated_at": "2025-08-23T09:48:13.410Z"
+  }
+},
+{
+  "model": "main.clientdeliverable",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "title": "Preliminary Design Plans",
+    "description": "Initial architectural drawings and floor plans",
+    "file": "",
+    "file_type": "PDF",
+    "file_size": 2048000,
+    "status": "ready",
+    "access_token": "e9ef0e36-6018-466b-a740-a586fe2699c8",
+    "expires_at": "2025-09-22T09:48:13.416Z",
+    "download_count": 0,
+    "max_downloads": 10,
+    "first_downloaded_at": null,
+    "last_downloaded_at": null,
+    "created_at": "2025-08-23T09:48:13.417Z",
+    "updated_at": "2025-08-23T09:48:13.417Z"
+  }
+},
+{
+  "model": "main.clientmessage",
+  "pk": 1,
+  "fields": {
+    "client": 2,
+    "order": 1,
+    "subject": "Question about Design Specifications",
+    "message_type": "order_related",
+    "content": "Hi, I wanted to ask about the HVAC specifications mentioned in the preliminary design. Could you provide more details?",
+    "status": "open",
+    "priority": "medium",
+    "admin_response": "",
+    "admin_user": null,
+    "responded_at": null,
+    "attachment": "",
+    "created_at": "2025-08-23T09:48:13.423Z",
+    "updated_at": "2025-08-23T09:48:13.424Z"
+  }
+},
+{
+  "model": "main.clientnotification",
+  "pk": 1,
+  "fields": {
+    "client": 2,
+    "title": "New Deliverable Ready",
+    "message": "Your preliminary design plans are now ready for download.",
+    "notification_type": "delivery_ready",
+    "is_read": false,
+    "sent_via_email": false,
+    "sent_via_sms": false,
+    "order": 1,
+    "deliverable": null,
+    "created_at": "2025-08-23T09:48:13.430Z",
+    "read_at": null
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 1,
+  "fields": {
+    "section_type": "hero",
+    "title": "Hero Section",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.486Z",
+    "updated_at": "2025-08-23T11:44:37.486Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 2,
+  "fields": {
+    "section_type": "about",
+    "title": "About Section",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.496Z",
+    "updated_at": "2025-08-23T11:44:37.496Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 3,
+  "fields": {
+    "section_type": "services",
+    "title": "Services Preview",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.504Z",
+    "updated_at": "2025-08-23T11:44:37.504Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 4,
+  "fields": {
+    "section_type": "portfolio",
+    "title": "Portfolio Showcase",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.512Z",
+    "updated_at": "2025-08-23T11:44:37.512Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 5,
+  "fields": {
+    "section_type": "testimonials",
+    "title": "Testimonials",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.524Z",
+    "updated_at": "2025-08-23T11:44:37.524Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 6,
+  "fields": {
+    "section_type": "contact",
+    "title": "Contact Section",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.532Z",
+    "updated_at": "2025-08-23T11:44:37.532Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 7,
+  "fields": {
+    "section_type": "stats",
+    "title": "Statistics Section",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.542Z",
+    "updated_at": "2025-08-23T11:44:37.542Z"
+  }
+},
+{
+  "model": "main.homepagesection",
+  "pk": 8,
+  "fields": {
+    "section_type": "skills",
+    "title": "Skills Section",
+    "is_enabled": true,
+    "order": 8,
+    "created_at": "2025-08-23T11:44:37.549Z",
+    "updated_at": "2025-08-23T11:44:37.549Z"
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 1,
+  "fields": {
+    "section": 1,
+    "hero_title": "<span class='text-yellow-300'>Sumithra KP</span>",
+    "hero_subtitle": "Civil Engineer & Patent Illustrator",
+    "hero_description": "Specializing in innovative civil engineering design, professional patent illustrations, and sustainable environmental engineering solutions.",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:44:52.426Z",
+    "updated_at": "2025-08-23T12:05:14.685Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 2,
+  "fields": {
+    "section": 2,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "I am a dedicated Civil Engineer with extensive expertise in design, patent illustrations, and environmental engineering. My passion lies in creating innovative solutions that bridge the gap between technical excellence and practical application.",
+    "about_image": "",
+    "about_years_experience": 5,
+    "about_projects_completed": 50,
+    "about_clients_served": 30,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.374Z",
+    "updated_at": "2025-08-23T12:02:17.076Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 3,
+  "fields": {
+    "section": 3,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "I offer comprehensive engineering services that combine technical expertise with creative solutions.",
+    "services_description": "Professional engineering and illustration services tailored to your specific needs.",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.385Z",
+    "updated_at": "2025-08-23T12:02:17.085Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 4,
+  "fields": {
+    "section": 4,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "Showcasing my best engineering and illustration work.",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.391Z",
+    "updated_at": "2025-08-23T12:02:17.119Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 5,
+  "fields": {
+    "section": 5,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "What my clients say about working with me.",
+    "testimonials_description": "",
+    "testimonials_display_mode": "continuous",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.398Z",
+    "updated_at": "2025-08-23T13:51:33.940Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 6,
+  "fields": {
+    "section": 6,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "Let's work together to bring your engineering vision to life with professional expertise and innovative solutions.",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.405Z",
+    "updated_at": "2025-08-23T13:32:30.859Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 7,
+  "fields": {
+    "section": 7,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "Professional Achievements",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "",
+    "skills_description": "",
+    "created_at": "2025-08-23T11:45:03.411Z",
+    "updated_at": "2025-08-23T12:02:17.128Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": []
+  }
+},
+{
+  "model": "main.homepagecontent",
+  "pk": 8,
+  "fields": {
+    "section": 8,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_description": "",
+    "hero_image": "",
+    "hero_cta_primary_text": "View Portfolio",
+    "hero_cta_primary_url": "/portfolio/",
+    "hero_cta_secondary_text": "Contact Me",
+    "hero_cta_secondary_url": "/contact/",
+    "hero_stat1_number": "50+",
+    "hero_stat1_label": "Projects Completed",
+    "hero_stat2_number": "5+",
+    "hero_stat2_label": "Years Experience",
+    "hero_stat3_number": "30+",
+    "hero_stat3_label": "Patent Illustrations",
+    "hero_stat4_number": "100%",
+    "hero_stat4_label": "Client Satisfaction",
+    "about_title": "About Me",
+    "about_description": "",
+    "about_image": "",
+    "about_years_experience": null,
+    "about_projects_completed": null,
+    "about_clients_served": null,
+    "about_point1": "Professional Engineering Design",
+    "about_point2": "Technical Patent Illustrations",
+    "about_point3": "Environmental Engineering Solutions",
+    "about_point4": "Sustainable Development Practices",
+    "about_fact1_label": "Experience",
+    "about_fact1_value": "5+ Years",
+    "about_fact2_label": "Projects Completed",
+    "about_fact2_value": "50+",
+    "about_fact3_label": "Specialization",
+    "about_fact3_value": "Civil Engineering",
+    "about_fact4_label": "Location",
+    "about_fact4_value": "India",
+    "services_title": "My Services",
+    "services_subtitle": "",
+    "services_description": "",
+    "portfolio_title": "My Work",
+    "portfolio_subtitle": "",
+    "portfolio_description": "",
+    "testimonials_title": "What Clients Say",
+    "testimonials_subtitle": "",
+    "testimonials_description": "",
+    "testimonials_display_mode": "grid",
+    "contact_title": "Get In Touch",
+    "contact_subtitle": "",
+    "contact_description": "",
+    "contact_email": "",
+    "contact_phone": "",
+    "contact_address": "",
+    "contact_linkedin_url": "",
+    "contact_facebook_url": "",
+    "contact_twitter_url": "",
+    "contact_instagram_url": "",
+    "contact_cta_primary_text": "Contact Me Today",
+    "contact_cta_primary_url": "/contact",
+    "contact_cta_secondary_text": "View My Work",
+    "contact_cta_secondary_url": "/portfolio",
+    "stats_title": "By The Numbers",
+    "stats_subtitle": "",
+    "skills_title": "Skills & Expertise",
+    "skills_subtitle": "Technical Expertise",
+    "skills_description": "Technical expertise across various engineering domains and software tools.",
+    "created_at": "2025-08-23T11:45:03.418Z",
+    "updated_at": "2025-08-23T12:02:17.092Z",
+    "featured_services": [],
+    "featured_projects": [],
+    "featured_testimonials": [],
+    "featured_skills": [
+      5,
+      12,
+      13,
+      4,
+      15,
+      6,
+      7,
+      8,
+      9,
+      1,
+      10,
+      11,
+      2,
+      3,
+      14
+    ]
+  }
+},
+{
+  "model": "main.sitesettings",
+  "pk": 1,
+  "fields": {
+    "site_title": "Sumithra KP - Civil Engineer & Patent Illustrator",
+    "meta_description": "Professional Civil Engineer specializing in design, patent illustrations, and environmental engineering solutions.",
+    "meta_keywords": "civil engineering, patent illustrations, environmental engineering, sumithra kp",
+    "og_url": "https://sumithrakp.com",
+    "logo_alt_text": "Sumithra KP",
+    "logo_fallback_text": "Sumithra KP",
+    "footer_company_name": "Sumithra KP",
+    "footer_description": "Civil Engineer | Designer\r\nPatent Illustrations Expert",
+    "footer_copyright_year": 2025,
+    "footer_copyright_text": "All rights reserved.",
+    "linkedin_url": "https://www.linkedin.com/in/sumithra-k-p-41578820a/",
+    "email_address": "contact@sumithrakp.com",
+    "phone_number": "+91 829 624 4110",
+    "twitter_url": "https://twitter.com/sumithrakp",
+    "instagram_url": "https://instagram.com/sumithrakp",
+    "footer_service1": "Civil Engineering Design",
+    "footer_service2": "Patent Illustrations",
+    "footer_service3": "Environmental Engineering",
+    "business_address": "Mysore, Karnataka, India",
+    "business_phone": "+91 829 624 4110",
+    "business_email": "contact@sumithrakp.com",
+    "contact_page_title": "Contact Me",
+    "contact_page_subtitle": "Let's discuss your project and how I can help bring your vision to life with professional engineering expertise.",
+    "contact_form_title": "Send a Message",
+    "contact_success_message": "Thank you! Your message has been sent successfully.",
+    "contact_success_note": "I typically respond within 24-48 hours.",
+    "contact_info_title": "Get in Touch",
+    "contact_primary_email": "contact@sumithrakp.com",
+    "contact_primary_phone": "+91 829 624 4110",
+    "contact_location": "Mysore, Karnataka, India",
+    "contact_company": "Sigvitas & Company",
+    "contact_response_time": "I typically respond to inquiries within 24-48 hours.",
+    "services_availability_title": "Services & Availability",
+    "services_availability_subtitle": "Professional consulting services with flexible scheduling",
+    "professional_services_title": "Professional Services",
+    "service_item_1": "Civil Engineering Consultation",
+    "service_item_2": "AERMOD Modeling and Environmental Analysis",
+    "service_item_3": "Building Design and Layout Planning",
+    "service_item_4": "Patent Illustrations and Technical Drawings",
+    "service_item_5": "Construction Project Management",
+    "availability_title": "Current Availability",
+    "availability_description": "I am currently available for select consulting projects that can be done alongside my full-time position.",
+    "availability_note": "Please contact me with project details to discuss availability and timelines.",
+    "response_time_title": "Response Time",
+    "response_time_hours": "24-48",
+    "response_time_description": "I typically respond to all inquiries within 24-48 hours.",
+    "faq_title": "Frequently Asked Questions",
+    "faq_subtitle": "Common questions about my services and process",
+    "faq_question_1": "What types of projects do you work on?",
+    "faq_answer_1": "I specialize in civil engineering design, patent illustrations, environmental engineering solutions, residential and commercial building design, infrastructure planning, and technical documentation for patent applications.",
+    "faq_question_2": "What is your typical project timeline?",
+    "faq_answer_2": "Project timelines vary based on scope and complexity. Simple patent illustrations may take 1-2 weeks, while comprehensive building designs can take 4-8 weeks. I provide detailed timelines during initial consultation.",
+    "faq_question_3": "Do you provide ongoing support after project completion?",
+    "faq_answer_3": "Yes, I provide ongoing support to ensure successful project implementation. This includes answering questions, minor revisions, and assistance with regulatory submissions when needed.",
+    "faq_question_4": "What software and tools do you use?",
+    "faq_answer_4": "I use industry-standard software including AutoCAD, MS Visio, Civil 3D, GIS software, remote sensing tools, and AERMOD for environmental modeling. All deliverables are provided in standard formats.",
+    "cta_title": "Ready to Get Started?",
+    "cta_description": "Let's discuss your project requirements and explore how I can help achieve your engineering goals.",
+    "cta_email_button_text": "Email Me",
+    "cta_phone_button_text": "Call Now",
+    "quick_link_1_text": "",
+    "quick_link_1_url": "",
+    "quick_link_2_text": "Resume",
+    "quick_link_2_url": "/resume",
+    "quick_link_3_text": "Portfolio",
+    "quick_link_3_url": "/portfolio",
+    "quick_link_4_text": "Services",
+    "quick_link_4_url": "/services",
+    "quick_link_5_text": "",
+    "quick_link_5_url": "",
+    "quick_link_6_text": "",
+    "quick_link_6_url": "",
+    "created_at": "2025-08-23T12:25:12.118Z",
+    "updated_at": "2025-08-23T18:03:28.945Z"
+  }
+}
+]
