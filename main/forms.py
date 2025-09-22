@@ -6,7 +6,7 @@ from .models import (
     ProfessionalSummary, ResumeExperience, ResumeEducation, ResumeSkill, 
     SkillCategory, Certification, Achievement, Service, ServiceTab, ServiceRequirement, 
     ServiceInquiry, ServiceQuote, ServiceBOM, BOMItem, HomepageContent,
-    SiteSettings
+    SiteSettings, ContactMessage
 )
 import json
 
@@ -1537,3 +1537,58 @@ class SiteSettingsForm(forms.ModelForm):
                 'placeholder': '/path or https://example.com (optional)'
             }),
         }
+
+
+class ContactMessageForm(forms.ModelForm):
+    """Form for contact page submissions"""
+    
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'subject', 'message', 'phone', 'company']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Enter your full name',
+                'required': True
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Enter your email address',
+                'required': True
+            }),
+            'subject': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': "What's this about?",
+                'required': True
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors resize-none',
+                'placeholder': 'Tell me about your project requirements...',
+                'rows': 6,
+                'required': True
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Your phone number (optional)'
+            }),
+            'company': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors',
+                'placeholder': 'Your company (optional)'
+            }),
+        }
+        labels = {
+            'name': 'Full Name',
+            'email': 'Email Address',
+            'subject': 'Subject',
+            'message': 'Message',
+            'phone': 'Phone Number',
+            'company': 'Company'
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make required fields more prominent
+        for field_name in ['name', 'email', 'subject', 'message']:
+            self.fields[field_name].required = True
+            self.fields[field_name].label = f"{self.fields[field_name].label} *"
+

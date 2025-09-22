@@ -23,101 +23,99 @@
             <!-- Contact Form -->
             <div class="bg-white rounded-lg shadow-lg p-8 animate-slide-up h-full flex flex-col">
                 <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ site_settings.contact_form_title|default:'Send a Message' }}</h2>
-                <form x-data="{ 
-                    form: { name: '', email: '', subject: '', message: '' },
-                    submitted: false,
-                    submitForm() {
-                        // Basic validation
-                        if (!this.form.name || !this.form.email || !this.form.subject || !this.form.message) {
-                            alert('Please fill in all fields');
-                            return;
-                        }
-                        
-                        // Simulate form submission
-                        console.log('Form submitted:', this.form);
-                        this.submitted = true;
-                        
-                        // Reset form after 3 seconds
-                        setTimeout(() => {
-                            this.submitted = false;
-                            this.form = { name: '', email: '', subject: '', message: '' };
-                        }, 3000);
-                    }
-                }" @submit.prevent="submitForm()" class="flex flex-col space-y-4 flex-grow">
-                    
-                    <!-- Success Message -->
-                    <div x-show="submitted" x-transition class="bg-green-50 border border-green-200 rounded-lg p-4">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-4 bg-{{ message.tags }}-50 border border-{{ message.tags }}-200 rounded-lg p-4">
                         <div class="flex items-center">
+                            {% if message.tags == 'success' %}
                             <i data-lucide="check-circle" class="h-5 w-5 text-green-600 mr-3"></i>
-                            <p class="text-green-800 font-semibold">{{ site_settings.contact_success_message|default:'Thank you! Your message has been sent successfully.' }}</p>
+                            {% elif message.tags == 'error' %}
+                            <i data-lucide="x-circle" class="h-5 w-5 text-red-600 mr-3"></i>
+                            {% endif %}
+                            <p class="text-{{ message.tags }}-800 font-semibold">{{ message }}</p>
                         </div>
-                        <p class="text-green-700 text-sm mt-2">{{ site_settings.contact_success_note|default:'I typically respond within 24-48 hours.' }}</p>
                     </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" class="flex flex-col space-y-4 flex-grow">
+                    {% csrf_token %}
                     
                     <!-- Name Field -->
                     <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Full Name <span class="text-red-500">*</span>
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.name.label }}
                         </label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            x-model="form.name"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                            placeholder="Enter your full name">
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                        {% endif %}
                     </div>
                     
                     <!-- Email Field -->
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Email Address <span class="text-red-500">*</span>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.email.label }}
                         </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            x-model="form.email"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                            placeholder="Enter your email address">
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
                     </div>
                     
                     <!-- Subject Field -->
                     <div>
-                        <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Subject <span class="text-red-500">*</span>
+                        <label for="{{ form.subject.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.subject.label }}
                         </label>
-                        <input 
-                            type="text" 
-                            id="subject" 
-                            x-model="form.subject"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                            placeholder="What's this about?">
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.subject.errors.0 }}</p>
+                        {% endif %}
                     </div>
                     
                     <!-- Message Field -->
                     <div class="flex-grow flex flex-col">
-                        <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Message <span class="text-red-500">*</span>
+                        <label for="{{ form.message.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.message.label }}
                         </label>
-                        <textarea 
-                            id="message" 
-                            x-model="form.message"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors resize-none flex-grow"
-                            placeholder="Tell me about your project requirements..."></textarea>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.message.errors.0 }}</p>
+                        {% endif %}
                     </div>
+                    
+                    <!-- Optional Fields -->
+                    {% if form.phone %}
+                    <div>
+                        <label for="{{ form.phone.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.phone.label }}
+                        </label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.phone.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if form.company %}
+                    <div>
+                        <label for="{{ form.company.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ form.company.label }}
+                        </label>
+                        {{ form.company }}
+                        {% if form.company.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.company.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                     
                     <!-- Submit Button -->
                     <button 
                         type="submit"
                         class="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center">
-                        <span x-show="!submitted">Send Message</span>
-                        <span x-show="submitted" class="flex items-center">
-                            <i data-lucide="check" class="h-5 w-5 mr-2"></i>
-                            Message Sent!
-                        </span>
+                        <i data-lucide="send" class="h-5 w-5 mr-2"></i>
+                        Send Message
                     </button>
                 </form>
             </div>

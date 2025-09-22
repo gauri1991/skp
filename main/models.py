@@ -1229,3 +1229,48 @@ class SiteSettings(models.Model):
     
     def __str__(self):
         return "Site Settings"
+
+
+class ContactMessage(models.Model):
+    """Model to store contact form submissions"""
+    name = models.CharField(max_length=100, help_text="Full name of the person")
+    email = models.EmailField(help_text="Email address")
+    subject = models.CharField(max_length=200, help_text="Subject of the message")
+    message = models.TextField(help_text="Message content")
+    
+    # Additional fields
+    phone = models.CharField(max_length=20, blank=True, help_text="Optional phone number")
+    company = models.CharField(max_length=100, blank=True, help_text="Optional company name")
+    
+    # System fields
+    ip_address = models.GenericIPAddressField(blank=True, null=True, help_text="IP address of the sender")
+    user_agent = models.TextField(blank=True, help_text="Browser user agent")
+    
+    # Status fields
+    is_read = models.BooleanField(default=False, help_text="Whether the message has been read")
+    is_replied = models.BooleanField(default=False, help_text="Whether the message has been replied to")
+    reply_notes = models.TextField(blank=True, help_text="Internal notes for replies")
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Contact Message"
+        verbose_name_plural = "Contact Messages"
+    
+    def __str__(self):
+        return f"{self.name} - {self.subject} ({self.created_at.strftime('%Y-%m-%d')})"
+    
+    def mark_as_read(self):
+        """Mark the message as read"""
+        self.is_read = True
+        self.save(update_fields=['is_read', 'updated_at'])
+    
+    def mark_as_replied(self, notes=""):
+        """Mark the message as replied with optional notes"""
+        self.is_replied = True
+        if notes:
+            self.reply_notes = notes
+        self.save(update_fields=['is_replied', 'reply_notes', 'updated_at'])

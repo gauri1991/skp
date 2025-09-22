@@ -121,6 +121,16 @@ urlpatterns = [
     path('dashboard/homepage/content/<str:section_type>/', views.HomepageContentEditView.as_view(), name='dashboard_homepage_content_edit'),
     path('dashboard/homepage/preview/', views.HomepagePreviewView.as_view(), name='dashboard_homepage_preview'),
     
+    # Contact Messages Management
+    path('dashboard/contact-messages/', views.ContactMessageListView.as_view(), name='dashboard_contact_list'),
+    path('dashboard/contact-messages/<int:pk>/', views.ContactMessageDetailView.as_view(), name='dashboard_contact_detail'),
+    path('dashboard/contact-messages/<int:pk>/mark-read/', views.mark_contact_read, name='dashboard_contact_mark_read'),
+    path('dashboard/contact-messages/<int:pk>/mark-replied/', views.mark_contact_replied, name='dashboard_contact_mark_replied'),
+    path('dashboard/contact-messages/<int:pk>/delete/', views.ContactMessageDeleteView.as_view(), name='dashboard_contact_delete'),
+    path('dashboard/contact-messages/bulk-actions/', views.contact_bulk_actions, name='dashboard_contact_bulk_actions'),
+    path('dashboard/api/contact-messages/stats/', views.contact_message_stats, name='dashboard_contact_stats_api'),
+    path('dashboard/contact-messages/<int:pk>/send-email/', views.send_email_reply, name='dashboard_contact_send_email'),
+    
     # Site Settings
     path('dashboard/site-settings/', views.SiteSettingsUpdateView.as_view(), name='site_settings'),
     

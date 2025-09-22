@@ -265,6 +265,23 @@
                         Services
                     </a>
                     
+                    <!-- Contact Messages -->
+                    <a href="{% url 'dashboard_contact_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'contact' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                        <i data-lucide="mail" class="h-5 w-5 mr-3"></i>
+                        <span class="flex-1">Contact Messages</span>
+                        {% load contact_tags %}
+                        {% unread_message_count as unread_count %}
+                        {% if unread_count > 0 %}
+                            <span class="sidebar-message-badge inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                {{ unread_count }}
+                            </span>
+                        {% else %}
+                            <span class="sidebar-message-badge inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full" style="display: none;">
+                                0
+                            </span>
+                        {% endif %}
+                    </a>
+                    
                     <!-- Home Page Management -->
                     <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'homepage' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="home" class="h-5 w-5 mr-3"></i>
@@ -329,6 +346,28 @@
                     </div>
                     
                     <div class="flex items-center space-x-4">
+                        <!-- Message Notification Icon -->
+                        <div class="relative">
+                            <a href="{% url 'dashboard_contact_list' %}" 
+                               class="flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                               title="Contact Messages">
+                                <i data-lucide="mail" class="h-5 w-5"></i>
+                            </a>
+                            
+                            <!-- Notification Badge -->
+                            {% load contact_tags %}
+                            {% unread_message_count as unread_count %}
+                            {% if unread_count > 0 %}
+                                <span class="message-notification-badge absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full min-w-[18px] h-[18px] animate-pulse">
+                                    {{ unread_count }}
+                                </span>
+                            {% else %}
+                                <span class="message-notification-badge absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full min-w-[18px] h-[18px] animate-pulse" style="display: none;">
+                                    0
+                                </span>
+                            {% endif %}
+                        </div>
+                        
                         <span class="text-sm text-gray-600 hidden sm:block">Welcome, {{ user.get_full_name|default:user.username }}</span>
                         
                         <!-- User Profile Dropdown -->
@@ -454,6 +493,62 @@
                     }
                 });
             }, 100);
+        });
+        
+        // Real-time message count updates
+        function updateMessageCounts() {
+            fetch('{% url "dashboard_contact_stats_api" %}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const stats = data.stats;
+                        
+                        // Update navigation badge (header)
+                        const headerBadge = document.querySelector('.message-notification-badge');
+                        if (headerBadge) {
+                            if (stats.unread_count > 0) {
+                                headerBadge.textContent = stats.unread_count;
+                                headerBadge.style.display = 'inline-flex';
+                            } else {
+                                headerBadge.style.display = 'none';
+                            }
+                        }
+                        
+                        // Update sidebar badge
+                        const sidebarBadge = document.querySelector('.sidebar-message-badge');
+                        if (sidebarBadge) {
+                            if (stats.unread_count > 0) {
+                                sidebarBadge.textContent = stats.unread_count;
+                                sidebarBadge.style.display = 'inline-flex';
+                            } else {
+                                sidebarBadge.style.display = 'none';
+                            }
+                        }
+                        
+                        // Update dashboard stats if present
+                        const dashboardStats = document.querySelectorAll('[data-stat]');
+                        dashboardStats.forEach(element => {
+                            const statType = element.getAttribute('data-stat');
+                            if (stats[statType] !== undefined) {
+                                element.textContent = stats[statType];
+                            }
+                        });
+                        
+                        // Dispatch custom event for other components
+                        window.dispatchEvent(new CustomEvent('messageStatsUpdated', {
+                            detail: { stats: stats }
+                        }));
+                    }
+                })
+                .catch(error => {
+                    console.log('Message count update failed:', error);
+                });
+        }
+        
+        // Update immediately and then every 30 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMessageCounts();
+            setInterval(updateMessageCounts, 30000); // 30 seconds
         });
     </script>
     

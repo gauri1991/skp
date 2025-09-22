@@ -14,6 +14,9 @@ from django.db.models import Count, Q
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 import json
 
 from .models import (
@@ -21,7 +24,8 @@ from .models import (
     Testimonial, ThemeSettings, ProfessionalSummary, ResumeExperience,
     ResumeEducation, ResumeSkill, SkillCategory, Certification, Achievement,
     Service, ServiceTab, ServiceRequirement, ServiceInquiry, ServiceQuote,
-    ServiceBOM, BOMItem, HomepageSection, HomepageContent, SiteSettings
+    ServiceBOM, BOMItem, HomepageSection, HomepageContent, SiteSettings,
+    ContactMessage
 )
 from .forms import (
     ProjectForm, CategoryForm, ProjectImageForm, CustomLoginForm,
@@ -30,7 +34,8 @@ from .forms import (
     ServiceForm, ServiceInquiryForm, DynamicServiceInquiryForm,
     HomepageHeroForm, HomepageAboutForm, HomepageServicesForm,
     HomepagePortfolioForm, HomepageContactForm, HomepageTestimonialsForm,
-    HomepageStatsForm, HomepageSkillsForm, SiteSettingsForm, TestimonialForm
+    HomepageStatsForm, HomepageSkillsForm, SiteSettingsForm, TestimonialForm,
+    ContactMessageForm
 )
 
 # Public views
@@ -89,7 +94,48 @@ def portfolio(request):
     return render(request, 'portfolio.html', context)
 
 def contact(request):
-    return render(request, 'contact.html')
+    """Handle contact form submissions"""
+    if request.method == 'POST':
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            # Create contact message instance
+            contact_message = form.save(commit=False)
+            
+            # Add IP address and user agent for tracking
+            contact_message.ip_address = request.META.get('REMOTE_ADDR')
+            contact_message.user_agent = request.META.get('HTTP_USER_AGENT', '')
+            
+            # Save the message
+            contact_message.save()
+            
+            # Add success message
+            messages.success(request, 'Thank you! Your message has been sent successfully. I typically respond within 24-48 hours.')
+            
+            # Return JSON response for AJAX requests
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Thank you! Your message has been sent successfully.'
+                })
+            
+            # Redirect to avoid re-submission on refresh
+            return redirect('contact')
+        else:
+            # Handle form errors
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': False,
+                    'errors': form.errors
+                })
+            # Add error message for regular form submission
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = ContactMessageForm()
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'contact.html', context)
 
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)
@@ -136,6 +182,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['category_stats'] = Category.objects.annotate(
             project_count=Count('projects')
         ).order_by('-project_count')[:5]
+        
+        # Contact Messages Statistics
+        context['total_messages'] = ContactMessage.objects.count()
+        context['unread_messages'] = ContactMessage.objects.filter(is_read=False).count()
+        context['replied_messages'] = ContactMessage.objects.filter(is_replied=True).count()
+        context['today_messages'] = ContactMessage.objects.filter(created_at__date=timezone.now().date()).count()
+        context['recent_messages'] = ContactMessage.objects.order_by('-created_at')[:5]
+        
         return context
 
 class PortfolioListView(LoginRequiredMixin, ListView):
@@ -2021,3 +2075,294 @@ class TestimonialDeleteAPIView(LoginRequiredMixin, View):
                 'success': False,
                 'error': str(e)
             }, status=500)
+
+
+# ============================================================================
+# CONTACT MESSAGES MANAGEMENT VIEWS
+# ============================================================================
+
+class ContactMessageListView(LoginRequiredMixin, ListView):
+    """Dashboard view for listing contact messages with filters and search"""
+    model = ContactMessage
+    template_name = 'dashboard/contact_message_list.html'
+    context_object_name = 'messages'
+    paginate_by = 20
+    ordering = ['-created_at']
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Clear any problematic messages that might be ContactMessage objects
+        storage = messages.get_messages(request)
+        storage.used = True  # Mark all messages as used to clear them
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # Search functionality
+        search = self.request.GET.get('search', '')
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(email__icontains=search) |
+                Q(subject__icontains=search) |
+                Q(message__icontains=search)
+            )
+        
+        # Filter by read status
+        status = self.request.GET.get('status', '')
+        if status == 'unread':
+            queryset = queryset.filter(is_read=False)
+        elif status == 'read':
+            queryset = queryset.filter(is_read=True)
+        elif status == 'replied':
+            queryset = queryset.filter(is_replied=True)
+        elif status == 'not_replied':
+            queryset = queryset.filter(is_replied=False)
+        
+        # Date range filter
+        date_from = self.request.GET.get('date_from', '')
+        date_to = self.request.GET.get('date_to', '')
+        if date_from:
+            queryset = queryset.filter(created_at__date__gte=date_from)
+        if date_to:
+            queryset = queryset.filter(created_at__date__lte=date_to)
+            
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_count'] = ContactMessage.objects.count()
+        context['unread_count'] = ContactMessage.objects.filter(is_read=False).count()
+        context['replied_count'] = ContactMessage.objects.filter(is_replied=True).count()
+        context['today_count'] = ContactMessage.objects.filter(created_at__date=timezone.now().date()).count()
+        
+        # Preserve filter parameters for pagination
+        context['search'] = self.request.GET.get('search', '')
+        context['status'] = self.request.GET.get('status', '')
+        context['date_from'] = self.request.GET.get('date_from', '')
+        context['date_to'] = self.request.GET.get('date_to', '')
+        
+        return context
+
+
+class ContactMessageDetailView(LoginRequiredMixin, DetailView):
+    """Dashboard view for displaying individual contact message details"""
+    model = ContactMessage
+    template_name = 'dashboard/contact_message_detail.html'
+    context_object_name = 'message'
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        # Mark as read when viewed
+        if not obj.is_read:
+            obj.is_read = True
+            obj.save(update_fields=['is_read'])
+        return obj
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get previous and next messages for navigation
+        current_id = self.object.id
+        context['previous_message'] = ContactMessage.objects.filter(
+            id__gt=current_id
+        ).order_by('id').first()
+        context['next_message'] = ContactMessage.objects.filter(
+            id__lt=current_id
+        ).order_by('-id').first()
+        
+        return context
+
+
+class ContactMessageDeleteView(LoginRequiredMixin, DeleteView):
+    """Dashboard view for deleting contact messages"""
+    model = ContactMessage
+    template_name = 'dashboard/contact_message_confirm_delete.html'
+    success_url = reverse_lazy('dashboard_contact_list')
+    context_object_name = 'message'
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Contact message deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+@login_required
+@require_POST
+def mark_contact_read(request, pk):
+    """AJAX view to mark contact message as read/unread"""
+    try:
+        message = get_object_or_404(ContactMessage, pk=pk)
+        message.is_read = not message.is_read
+        message.save(update_fields=['is_read'])
+        
+        return JsonResponse({
+            'success': True,
+            'is_read': message.is_read,
+            'message': f'Message marked as {"read" if message.is_read else "unread"}.'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
+@require_POST
+def mark_contact_replied(request, pk):
+    """AJAX view to mark contact message as replied/not replied"""
+    try:
+        message = get_object_or_404(ContactMessage, pk=pk)
+        message.is_replied = not message.is_replied
+        message.save(update_fields=['is_replied'])
+        
+        return JsonResponse({
+            'success': True,
+            'is_replied': message.is_replied,
+            'message': f'Message marked as {"replied" if message.is_replied else "not replied"}.'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
+@require_POST
+def contact_bulk_actions(request):
+    """Handle bulk actions for contact messages"""
+    try:
+        data = json.loads(request.body)
+        action = data.get('action')
+        message_ids = data.get('message_ids', [])
+        
+        if not message_ids:
+            return JsonResponse({
+                'success': False,
+                'error': 'No messages selected.'
+            }, status=400)
+        
+        messages_qs = ContactMessage.objects.filter(id__in=message_ids)
+        count = messages_qs.count()
+        
+        if action == 'mark_read':
+            messages_qs.update(is_read=True)
+            message = f'{count} message(s) marked as read.'
+        elif action == 'mark_unread':
+            messages_qs.update(is_read=False)
+            message = f'{count} message(s) marked as unread.'
+        elif action == 'mark_replied':
+            messages_qs.update(is_replied=True)
+            message = f'{count} message(s) marked as replied.'
+        elif action == 'delete':
+            messages_qs.delete()
+            message = f'{count} message(s) deleted.'
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid action.'
+            }, status=400)
+        
+        return JsonResponse({
+            'success': True,
+            'message': message,
+            'count': count
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
+def contact_message_stats(request):
+    """API endpoint to get real-time contact message statistics"""
+    try:
+        today = timezone.now().date()
+        
+        stats = {
+            'unread_count': ContactMessage.objects.filter(is_read=False).count(),
+            'total_count': ContactMessage.objects.count(),
+            'today_count': ContactMessage.objects.filter(created_at__date=today).count(),
+            'replied_count': ContactMessage.objects.filter(is_replied=True).count()
+        }
+        
+        return JsonResponse({
+            'success': True,
+            'stats': stats
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
+def send_email_reply(request, pk):
+    """Send email reply to contact message"""
+    message = get_object_or_404(ContactMessage, pk=pk)
+    
+    if request.method == 'POST':
+        subject = request.POST.get('subject', f'Re: {message.subject}')
+        email_message = request.POST.get('message', '')
+        
+        if not email_message.strip():
+            messages.error(request, 'Please enter a message to send.')
+            return redirect('dashboard_contact_detail', pk=pk)
+        
+        try:
+            # Prepare email content
+            full_message = f"""Hi {message.name},
+
+{email_message}
+
+Best regards,
+Sumithra KP
+{settings.DEFAULT_FROM_EMAIL}
+"""
+            
+            # Debug: Print email settings (remove in production)
+            print(f"DEBUG - Email Host: {settings.EMAIL_HOST}")
+            print(f"DEBUG - Email Port: {settings.EMAIL_PORT}")
+            print(f"DEBUG - Email User: {settings.EMAIL_HOST_USER}")
+            print(f"DEBUG - From Email: {settings.DEFAULT_FROM_EMAIL}")
+            print(f"DEBUG - To Email: {message.email}")
+            
+            # Send email
+            result = send_mail(
+                subject=subject,
+                message=full_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[message.email],
+                fail_silently=False,
+            )
+            
+            print(f"DEBUG - Send mail result: {result}")
+            
+            if result == 1:  # Email sent successfully
+                # Mark message as replied
+                message.is_replied = True
+                message.save(update_fields=['is_replied'])
+                messages.success(request, f'Email sent successfully to {message.email}')
+            else:
+                messages.error(request, 'Email sending failed - no emails were sent')
+            
+        except Exception as e:
+            print(f"DEBUG - Email error: {type(e).__name__}: {str(e)}")
+            import traceback
+            print(f"DEBUG - Full traceback: {traceback.format_exc()}")
+            messages.error(request, f'Failed to send email: {type(e).__name__}: {str(e)}')
+        
+        return redirect('dashboard_contact_detail', pk=pk)
+    
+    # GET request - show email compose form
+    context = {
+        'message': message,
+        'suggested_subject': f'Re: {message.subject}',
+    }
+    return render(request, 'dashboard/contact_message_email_compose.html', context)

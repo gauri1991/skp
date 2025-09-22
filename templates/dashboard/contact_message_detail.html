@@ -1,0 +1,335 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Contact Message Details{% endblock %}
+
+{% block content %}
+<!-- Header with Navigation -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Message from {{ message.name }}</h1>
+        <p class="text-gray-600">Received on {{ message.created_at|date:"F j, Y \a\t g:i A" }}</p>
+    </div>
+    <div class="mt-4 sm:mt-0 flex gap-2">
+        <a href="{% url 'dashboard_contact_list' %}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+            <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+            Back to Messages
+        </a>
+    </div>
+</div>
+
+<!-- Navigation between messages -->
+<div class="flex justify-between items-center mb-6">
+    <div>
+        {% if previous_message %}
+            <a href="{% url 'dashboard_contact_detail' previous_message.pk %}" 
+               class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                <i data-lucide="chevron-left" class="h-4 w-4 mr-1"></i>
+                Previous
+            </a>
+        {% else %}
+            <span class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+                <i data-lucide="chevron-left" class="h-4 w-4 mr-1"></i>
+                Previous
+            </span>
+        {% endif %}
+    </div>
+    
+    <div class="flex items-center space-x-2 text-sm text-gray-500">
+        {% if not message.is_read %}
+            <span class="flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
+                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                Unread
+            </span>
+        {% else %}
+            <span class="flex items-center px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
+                <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                Read
+            </span>
+        {% endif %}
+        
+        {% if message.is_replied %}
+            <span class="flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full">
+                <i data-lucide="reply" class="h-3 w-3 mr-1"></i>
+                Replied
+            </span>
+        {% else %}
+            <span class="flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">
+                <i data-lucide="clock" class="h-3 w-3 mr-1"></i>
+                Awaiting Reply
+            </span>
+        {% endif %}
+    </div>
+    
+    <div>
+        {% if next_message %}
+            <a href="{% url 'dashboard_contact_detail' next_message.pk %}" 
+               class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                Next
+                <i data-lucide="chevron-right" class="h-4 w-4 ml-1"></i>
+            </a>
+        {% else %}
+            <span class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+                Next
+                <i data-lucide="chevron-right" class="h-4 w-4 ml-1"></i>
+            </span>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Message Content -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <!-- Message Header -->
+            <div class="border-b border-gray-200 pb-4 mb-6">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-primary-600 font-semibold text-lg">
+                                {{ message.name|first|upper }}
+                            </span>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-900">{{ message.name }}</h2>
+                            <p class="text-gray-600">{{ message.email }}</p>
+                            {% if message.phone %}
+                                <p class="text-gray-600">{{ message.phone }}</p>
+                            {% endif %}
+                            {% if message.company %}
+                                <p class="text-gray-600">{{ message.company }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-gray-500">
+                        <div>{{ message.created_at|date:"F j, Y" }}</div>
+                        <div>{{ message.created_at|time:"g:i A" }} IST</div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ message.subject }}</h3>
+                </div>
+            </div>
+            
+            <!-- Message Body -->
+            <div class="prose max-w-none">
+                <div class="text-gray-700 whitespace-pre-wrap leading-relaxed">{{ message.message }}</div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <button onclick="toggleReadStatus()" 
+                        class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-6 w-6 text-blue-600 mb-2"></i>
+                    <span class="text-sm font-medium">
+                        {% if message.is_read %}Mark Unread{% else %}Mark Read{% endif %}
+                    </span>
+                </button>
+                
+                <button onclick="toggleReplyStatus()" 
+                        class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i data-lucide="reply" class="h-6 w-6 text-green-600 mb-2"></i>
+                    <span class="text-sm font-medium">
+                        {% if message.is_replied %}Mark Not Replied{% else %}Mark Replied{% endif %}
+                    </span>
+                </button>
+                
+                <a href="{% url 'dashboard_contact_send_email' message.pk %}" 
+                   class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i data-lucide="send" class="h-6 w-6 text-indigo-600 mb-2"></i>
+                    <span class="text-sm font-medium">Send Email Reply</span>
+                </a>
+                
+                <a href="{% url 'dashboard_contact_delete' message.pk %}" 
+                   onclick="return confirm('Are you sure you want to delete this message? This action cannot be undone.')"
+                   class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-red-50 transition-colors">
+                    <i data-lucide="trash-2" class="h-6 w-6 text-red-600 mb-2"></i>
+                    <span class="text-sm font-medium">Delete</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="lg:col-span-1">
+        <!-- Message Info -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Message Information</h3>
+            <dl class="space-y-3">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Message ID</dt>
+                    <dd class="text-sm text-gray-900">#{{ message.id }}</dd>
+                </div>
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Received</dt>
+                    <dd class="text-sm text-gray-900">{{ message.created_at|date:"F j, Y \a\t g:i A" }}</dd>
+                </div>
+                
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="text-sm">
+                        <div class="flex items-center space-x-2">
+                            {% if not message.is_read %}
+                                <span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                    <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1"></span>
+                                    Unread
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                    <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-1"></span>
+                                    Read
+                                </span>
+                            {% endif %}
+                            
+                            {% if message.is_replied %}
+                                <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                    <i data-lucide="reply" class="h-3 w-3 mr-1"></i>
+                                    Replied
+                                </span>
+                            {% endif %}
+                        </div>
+                    </dd>
+                </div>
+                
+                {% if message.phone %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Phone</dt>
+                    <dd class="text-sm text-gray-900">
+                        <a href="tel:{{ message.phone }}" class="text-primary-600 hover:text-primary-700">
+                            {{ message.phone }}
+                        </a>
+                    </dd>
+                </div>
+                {% endif %}
+                
+                {% if message.company %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Company</dt>
+                    <dd class="text-sm text-gray-900">{{ message.company }}</dd>
+                </div>
+                {% endif %}
+                
+                {% if message.ip_address %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">IP Address</dt>
+                    <dd class="text-sm text-gray-900">{{ message.ip_address }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+        
+        <!-- Contact Actions -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Actions</h3>
+            <div class="space-y-3">
+                <a href="mailto:{{ message.email }}" 
+                   class="w-full flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                    <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                    Send Email
+                </a>
+                
+                {% if message.phone %}
+                <a href="tel:{{ message.phone }}" 
+                   class="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                    Call {{ message.name }}
+                </a>
+                {% endif %}
+                
+                <button onclick="copyContactInfo()" 
+                        class="w-full flex items-center justify-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    <i data-lucide="copy" class="h-4 w-4 mr-2"></i>
+                    Copy Contact Info
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+{% csrf_token %}
+
+// Initialize Lucide icons
+lucide.createIcons();
+
+// Toggle read status
+async function toggleReadStatus() {
+    try {
+        const response = await fetch(`/dashboard/contact-messages/{{ message.id }}/mark-read/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error updating message status: ' + error.message);
+    }
+}
+
+// Toggle reply status
+async function toggleReplyStatus() {
+    try {
+        const response = await fetch(`/dashboard/contact-messages/{{ message.id }}/mark-replied/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error updating reply status: ' + error.message);
+    }
+}
+
+// Copy contact information to clipboard
+function copyContactInfo() {
+    const contactInfo = `Name: {{ message.name }}
+Email: {{ message.email }}{% if message.phone %}
+Phone: {{ message.phone }}{% endif %}{% if message.company %}
+Company: {{ message.company }}{% endif %}
+Subject: {{ message.subject }}
+Date: {{ message.created_at|date:"F j, Y \a\t g:i A" }}
+
+Message:
+{{ message.message }}`;
+    
+    navigator.clipboard.writeText(contactInfo).then(function() {
+        // Create a temporary success message
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i data-lucide="check" class="h-4 w-4 mr-2"></i>Copied!';
+        button.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+        button.classList.add('bg-green-600', 'hover:bg-green-700');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('bg-green-600', 'hover:bg-green-700');
+            button.classList.add('bg-gray-600', 'hover:bg-gray-700');
+            lucide.createIcons();
+        }, 2000);
+    }).catch(function(err) {
+        alert('Failed to copy contact information');
+    });
+}
+</script>
+{% endblock %}

@@ -4,7 +4,7 @@ from .models import (
     Testimonial, ThemeSettings, ProfessionalSummary, ResumeExperience,
     ResumeEducation, ResumeSkill, Certification, Achievement,
     Service, ServiceTab, ServiceRequirement, ServiceInquiry, ServiceQuote,
-    ServiceBOM, BOMItem
+    ServiceBOM, BOMItem, ContactMessage
 )
 
 @admin.register(Category)
@@ -206,4 +206,23 @@ class BOMItemAdmin(admin.ModelAdmin):
     list_display = ['bom', 'category', 'item_name', 'quantity', 'unit', 'unit_price', 'total_cost']
     list_filter = ['category', 'unit', 'bom__service']
     search_fields = ['item_name', 'description', 'specification']
-    ordering = ['bom', 'category', 'display_order']
+
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'subject', 'created_at', 'is_read', 'is_replied']
+    list_filter = ['is_read', 'is_replied', 'created_at']
+    search_fields = ['name', 'email', 'subject', 'message']
+    readonly_fields = ['created_at', 'ip_address', 'user_agent']
+    date_hierarchy = 'created_at'
+    ordering = ['-created_at']
+    
+    def mark_as_read(self, request, queryset):
+        queryset.update(is_read=True)
+    mark_as_read.short_description = "Mark selected messages as read"
+    
+    def mark_as_replied(self, request, queryset):
+        queryset.update(is_replied=True)
+    mark_as_replied.short_description = "Mark selected messages as replied"
+    
+    actions = [mark_as_read, mark_as_replied]

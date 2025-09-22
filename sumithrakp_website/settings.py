@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -159,3 +159,18 @@ if not DEBUG:
     
 # WhiteNoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Email Configuration for GoDaddy Professional Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtpout.secureserver.net'  # GoDaddy SMTP server
+EMAIL_PORT = 587  # TLS port (recommended for GoDaddy)
+EMAIL_USE_TLS = True  # Use TLS instead of SSL
+EMAIL_USE_SSL = False  # Don't use SSL when using TLS
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='contact@sumithrakp.com')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='contact@sumithrakp.com')
+SERVER_EMAIL = config('SERVER_EMAIL', default='contact@sumithrakp.com')
+
+# Email timeout and additional settings
+EMAIL_TIMEOUT = 60
+EMAIL_DEBUG = True  # Enable debug mode for testing
