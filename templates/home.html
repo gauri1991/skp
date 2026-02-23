@@ -2,53 +2,67 @@
 
 {% block content %}
 {% if sections_data.hero %}
-<!-- Hero Section -->
-<section class="relative text-white py-20 min-h-screen flex items-center hero-bg" 
-         style="background-image: linear-gradient(135deg, rgba(30, 58, 95, 0.9), rgba(8, 145, 178, 0.8)){% if sections_data.hero.content.hero_background %}, url('{{ sections_data.hero.content.hero_background.url }}'){% else %}, url('{% load static %}{% static "images/hero/sumithra-hero.png" %}'){% endif %}; 
-                background-size: cover; 
-                background-position: center; 
+<!-- Hero Section with Premium Gold Accents -->
+<section class="relative text-white py-20 min-h-screen flex items-center hero-bg overflow-hidden"
+         style="background-image: linear-gradient(135deg, rgba(10, 25, 47, 0.95), rgba(30, 58, 95, 0.9), rgba(8, 145, 178, 0.85)){% if sections_data.hero.content.hero_background %}, url('{{ sections_data.hero.content.hero_background.url }}'){% else %}, url('{% load static %}{% static "images/hero/sumithra-hero.png" %}'){% endif %};
+                background-size: cover;
+                background-position: center;
                 background-attachment: fixed;">
+
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10" style="background: radial-gradient(circle, #d4af37 0%, transparent 70%);"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, #f5d585 0%, transparent 70%);"></div>
+        <div class="absolute top-1/2 left-1/4 w-32 h-32 rounded-full opacity-5 animate-float" style="background: #d4af37;"></div>
+    </div>
+
     <style>
     .hero-bg {
-        /* Fallback gradient if image doesn't load */
-        background: linear-gradient(135deg, #1e3a5f 0%, #0891b2 100%);
+        background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 50%, #0891b2 100%);
     }
-    
-    /* Slow testimonials animation */
+
+    /* Gold accent text */
+    .text-gold-gradient {
+        background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Testimonials slow scroll */
     .testimonials-slow-scroll {
         animation: testimonials-scroll 60s linear infinite;
     }
-    
+
     @keyframes testimonials-scroll {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-100%);
-        }
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
     }
-    
-    /* Responsive adjustments for testimonials */
+
+    .testimonials-slow-scroll:hover {
+        animation-play-state: paused;
+    }
+
     @media (max-width: 640px) {
         .testimonials-slow-scroll {
-            animation-duration: 40s; /* Faster on mobile for better UX */
+            animation-duration: 40s;
         }
     }
-    
-    /* Fixed testimonial card sizing */
+
+    /* Testimonial card styling */
     .testimonial-card {
-        height: 280px; /* Fixed height for all cards */
+        height: 300px;
         display: flex;
         flex-direction: column;
     }
-    
+
     .testimonial-content {
         flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
-    
+
     .testimonial-text {
         flex: 1;
         overflow: hidden;
@@ -56,233 +70,479 @@
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
     }
+
+    /* Stat card animations */
+    .stat-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+    }
+
+    .stat-card.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Logo carousel */
+    .logo-carousel-container {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    @keyframes logo-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    .logo-carousel {
+        animation: logo-scroll 30s linear infinite;
+    }
+
+    .logo-carousel:hover {
+        animation-play-state: paused;
+    }
+
+    /* Premium quote mark */
+    .quote-mark {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 4rem;
+        line-height: 1;
+        color: rgba(212, 175, 55, 0.3);
+    }
     </style>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Left Content -->
-            <div class="text-center lg:text-left animate-fade-in">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                    {{ sections_data.hero.content.hero_title|default:"Hi, I'm <span class='text-yellow-300'>Sumithra KP</span>"|safe }}
+            <div class="text-center lg:text-left" data-aos="fade-right" data-aos-delay="100">
+                <!-- Available Badge -->
+                <div class="inline-flex items-center mb-6 px-4 py-2 rounded-full text-sm font-medium"
+                     style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3);">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span class="text-green-300">Available for Projects</span>
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 font-display">
+                    {{ sections_data.hero.content.hero_title|default:"Hi, I'm <span class='text-gold-gradient'>Sumithra KP</span>"|safe }}
                 </h1>
-                <p class="text-xl md:text-2xl mb-4 text-blue-100">
+                <p class="text-xl md:text-2xl mb-4 text-blue-100 font-elegant">
                     {{ sections_data.hero.content.hero_subtitle|default:"Civil Engineer & Patent Illustrator" }}
                 </p>
-                <p class="text-lg mb-8 text-blue-100 max-w-3xl mx-auto lg:mx-0">
+                <p class="text-lg mb-8 text-blue-200/90 max-w-3xl mx-auto lg:mx-0">
                     {{ sections_data.hero.content.hero_description|default:"Specializing in innovative civil engineering design, professional patent illustrations, and sustainable environmental engineering solutions." }}
                 </p>
+
+                <!-- Premium CTA Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{% if sections_data.hero.content.hero_cta_primary_url %}{{ sections_data.hero.content.hero_cta_primary_url }}{% else %}/contact{% endif %}" 
-                       class="bg-white px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
-                       style="color: {{ theme_colors.primary }};">
+                    <a href="{% if sections_data.hero.content.hero_cta_primary_url %}{{ sections_data.hero.content.hero_cta_primary_url }}{% else %}/contact{% endif %}"
+                       class="btn-premium-primary px-8 py-4 rounded-full font-semibold text-charcoal-900 shadow-gold inline-flex items-center justify-center group">
                         {{ sections_data.hero.content.hero_cta_primary_text|default:"Get In Touch" }}
+                        <i data-lucide="arrow-right" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1"></i>
                     </a>
-                    <a href="{% if sections_data.hero.content.hero_cta_secondary_url %}{{ sections_data.hero.content.hero_cta_secondary_url }}{% else %}/portfolio{% endif %}" 
-                       class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white transition-all duration-300"
-                       style="border-color: white;" 
-                       onmouseover="this.style.backgroundColor='white'; this.style.color='{{ theme_colors.primary }}';" 
-                       onmouseout="this.style.backgroundColor='transparent'; this.style.color='white';">
+                    <a href="{% if sections_data.hero.content.hero_cta_secondary_url %}{{ sections_data.hero.content.hero_cta_secondary_url }}{% else %}/portfolio{% endif %}"
+                       class="px-8 py-4 rounded-full font-semibold border-2 border-gold-400 text-gold-300 hover:bg-gold-500 hover:text-charcoal-900 hover:border-gold-500 transition-all duration-300 inline-flex items-center justify-center">
                         {{ sections_data.hero.content.hero_cta_secondary_text|default:"View Portfolio" }}
+                        <i data-lucide="briefcase" class="h-5 w-5 ml-2"></i>
                     </a>
                 </div>
             </div>
-            
-            <!-- Right Content - Professional Stats -->
-            <div class="hidden lg:block animate-slide-up">
-                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20">
+
+            <!-- Right Content - Professional Stats Card -->
+            <div class="hidden lg:block" data-aos="fade-left" data-aos-delay="200">
+                <div class="glass-card rounded-2xl p-8 border border-white/10 shadow-premium">
+                    <!-- Stats Grid -->
                     <div class="grid grid-cols-2 gap-6 text-center">
-                        <div>
-                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat1_number|default:"50+" }}</div>
-                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat1_label|default:"Projects Completed" }}</div>
+                        <div class="stat-card p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                            <div class="text-3xl font-bold text-gold-400 mb-1 stat-number" data-counter data-target="{{ sections_data.hero.content.hero_stat1_number|default:'50' }}" data-suffix="+">
+                                {{ sections_data.hero.content.hero_stat1_number|default:"50+" }}
+                            </div>
+                            <div class="text-sm text-blue-200 font-medium">{{ sections_data.hero.content.hero_stat1_label|default:"Projects Completed" }}</div>
                         </div>
-                        <div>
-                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat2_number|default:"5+" }}</div>
-                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat2_label|default:"Years Experience" }}</div>
+                        <div class="stat-card p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                            <div class="text-3xl font-bold text-gold-400 mb-1 stat-number" data-counter data-target="{{ sections_data.hero.content.hero_stat2_number|default:'5' }}" data-suffix="+">
+                                {{ sections_data.hero.content.hero_stat2_number|default:"5+" }}
+                            </div>
+                            <div class="text-sm text-blue-200 font-medium">{{ sections_data.hero.content.hero_stat2_label|default:"Years Experience" }}</div>
                         </div>
-                        <div>
-                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat3_number|default:"30+" }}</div>
-                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat3_label|default:"Patent Illustrations" }}</div>
+                        <div class="stat-card p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                            <div class="text-3xl font-bold text-gold-400 mb-1 stat-number" data-counter data-target="{{ sections_data.hero.content.hero_stat3_number|default:'30' }}" data-suffix="+">
+                                {{ sections_data.hero.content.hero_stat3_number|default:"30+" }}
+                            </div>
+                            <div class="text-sm text-blue-200 font-medium">{{ sections_data.hero.content.hero_stat3_label|default:"Patent Illustrations" }}</div>
                         </div>
-                        <div>
-                            <div class="text-3xl font-bold text-yellow-300">{{ sections_data.hero.content.hero_stat4_number|default:"100%" }}</div>
-                            <div class="text-sm text-blue-100">{{ sections_data.hero.content.hero_stat4_label|default:"Client Satisfaction" }}</div>
+                        <div class="stat-card p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                            <div class="text-3xl font-bold text-gold-400 mb-1 stat-number" data-counter data-target="100" data-suffix="%">
+                                {{ sections_data.hero.content.hero_stat4_number|default:"100%" }}
+                            </div>
+                            <div class="text-sm text-blue-200 font-medium">{{ sections_data.hero.content.hero_stat4_label|default:"Client Satisfaction" }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="w-full h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent my-6"></div>
+
+                    <!-- Trust Indicators -->
+                    <div class="flex items-center justify-center space-x-4 text-sm text-blue-200">
+                        <div class="flex items-center">
+                            <i data-lucide="shield-check" class="h-5 w-5 text-gold-400 mr-2"></i>
+                            <span>Verified Professional</span>
+                        </div>
+                        <span class="text-gold-400/50">|</span>
+                        <div class="flex items-center">
+                            <i data-lucide="clock" class="h-5 w-5 text-gold-400 mr-2"></i>
+                            <span>24-48h Response</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Scroll Down Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <a href="#about" class="text-white hover:text-yellow-300 transition-colors">
-            <i data-lucide="chevron-down" class="h-8 w-8"></i>
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center" data-aos="fade-up" data-aos-delay="500">
+        <a href="#about" class="group inline-flex flex-col items-center text-white/70 hover:text-gold-400 transition-colors">
+            <span class="text-sm font-medium mb-2">Scroll</span>
+            <div class="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2">
+                <div class="w-1 h-2 bg-current rounded-full animate-bounce"></div>
+            </div>
         </a>
     </div>
 </section>
 {% endif %}
 
+<!-- Trusted By / Client Logos Section -->
+{% if client_logos %}
+<section class="py-12 bg-champagne-100 dark:bg-charcoal-800 border-y border-gold-200/30 dark:border-gold-900/30" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <p class="text-sm font-semibold text-gold-600 dark:text-gold-400 uppercase tracking-wider">Trusted By Industry Leaders</p>
+        </div>
+
+        <div class="logo-carousel-container overflow-hidden">
+            <div class="logo-carousel flex items-center space-x-16">
+                {% for logo in client_logos %}
+                <div class="flex-shrink-0 w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    {% if logo.website %}
+                    <a href="{{ logo.website }}" target="_blank" rel="noopener noreferrer" title="{{ logo.name }}">
+                        <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain">
+                    </a>
+                    {% else %}
+                    <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain" title="{{ logo.name }}">
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <!-- Duplicate for seamless loop -->
+                {% for logo in client_logos %}
+                <div class="flex-shrink-0 w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    {% if logo.website %}
+                    <a href="{{ logo.website }}" target="_blank" rel="noopener noreferrer" title="{{ logo.name }}">
+                        <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain">
+                    </a>
+                    {% else %}
+                    <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain" title="{{ logo.name }}">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<!-- Placeholder Client Logos (shown when no logos in database) -->
+<section class="py-12 bg-champagne-100 dark:bg-charcoal-800 border-y border-gold-200/30 dark:border-gold-900/30" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <p class="text-sm font-semibold text-gold-600 dark:text-gold-400 uppercase tracking-wider">Trusted By Industry Leaders</p>
+        </div>
+
+        <div class="logo-carousel-container overflow-hidden">
+            <div class="logo-carousel flex items-center space-x-16">
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="building-2" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="landmark" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="factory" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="shield" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="home" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="building" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="building-2" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="landmark" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="factory" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="shield" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="home" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+                <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                    <i data-lucide="building" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 {% if sections_data.about %}
-<!-- About Me Section -->
-<section id="about" class="py-20 bg-white">
+<!-- About Me Section with Premium Styling -->
+<section id="about" class="py-20 bg-white dark:bg-charcoal-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="animate-slide-up bg-gradient-to-br from-amber-50 to-orange-100 rounded-lg p-8 shadow-sm">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <div class="premium-card p-8 shadow-premium" data-aos="fade-right">
+                <div class="mb-6">
+                    <span class="text-gold-600 dark:text-gold-400 text-sm font-semibold uppercase tracking-wider">About Me</span>
+                    <div class="w-12 h-1 bg-gradient-to-r from-gold-500 to-gold-300 rounded-full mt-2"></div>
+                </div>
+
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 font-display">
                     {{ sections_data.about.content.about_title|default:"About Me" }}
                 </h2>
-                <p class="text-lg text-gray-600 mb-6">
+                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                     {{ sections_data.about.content.about_description|default:"I am a dedicated Civil Engineer with extensive expertise in design, patent illustrations, and environmental engineering. My passion lies in creating innovative solutions that bridge the gap between technical excellence and practical application." }}
                 </p>
+
                 <div class="space-y-4">
                     {% if sections_data.about.content.about_point1 %}
-                    <div class="flex items-center">
-                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
-                        <span class="text-gray-700">{{ sections_data.about.content.about_point1|default:"Professional Engineering Design" }}</span>
+                    <div class="flex items-center group">
+                        <div class="w-8 h-8 rounded-full bg-gold-100 dark:bg-gold-900/30 flex items-center justify-center mr-4 group-hover:bg-gold-200 dark:group-hover:bg-gold-900/50 transition-colors">
+                            <i data-lucide="check" class="h-4 w-4 text-gold-600 dark:text-gold-400"></i>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300 font-medium">{{ sections_data.about.content.about_point1|default:"Professional Engineering Design" }}</span>
                     </div>
                     {% endif %}
                     {% if sections_data.about.content.about_point2 %}
-                    <div class="flex items-center">
-                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
-                        <span class="text-gray-700">{{ sections_data.about.content.about_point2|default:"Technical Patent Illustrations" }}</span>
+                    <div class="flex items-center group">
+                        <div class="w-8 h-8 rounded-full bg-gold-100 dark:bg-gold-900/30 flex items-center justify-center mr-4 group-hover:bg-gold-200 dark:group-hover:bg-gold-900/50 transition-colors">
+                            <i data-lucide="check" class="h-4 w-4 text-gold-600 dark:text-gold-400"></i>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300 font-medium">{{ sections_data.about.content.about_point2|default:"Technical Patent Illustrations" }}</span>
                     </div>
                     {% endif %}
                     {% if sections_data.about.content.about_point3 %}
-                    <div class="flex items-center">
-                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
-                        <span class="text-gray-700">{{ sections_data.about.content.about_point3|default:"Environmental Engineering Solutions" }}</span>
+                    <div class="flex items-center group">
+                        <div class="w-8 h-8 rounded-full bg-gold-100 dark:bg-gold-900/30 flex items-center justify-center mr-4 group-hover:bg-gold-200 dark:group-hover:bg-gold-900/50 transition-colors">
+                            <i data-lucide="check" class="h-4 w-4 text-gold-600 dark:text-gold-400"></i>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300 font-medium">{{ sections_data.about.content.about_point3|default:"Environmental Engineering Solutions" }}</span>
                     </div>
                     {% endif %}
                     {% if sections_data.about.content.about_point4 %}
-                    <div class="flex items-center">
-                        <i data-lucide="check-circle" class="h-5 w-5 text-primary-600 mr-3"></i>
-                        <span class="text-gray-700">{{ sections_data.about.content.about_point4|default:"Sustainable Development Practices" }}</span>
+                    <div class="flex items-center group">
+                        <div class="w-8 h-8 rounded-full bg-gold-100 dark:bg-gold-900/30 flex items-center justify-center mr-4 group-hover:bg-gold-200 dark:group-hover:bg-gold-900/50 transition-colors">
+                            <i data-lucide="check" class="h-4 w-4 text-gold-600 dark:text-gold-400"></i>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300 font-medium">{{ sections_data.about.content.about_point4|default:"Sustainable Development Practices" }}</span>
                     </div>
                     {% endif %}
                 </div>
             </div>
-            <div class="animate-slide-up">
-                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-8 shadow-sm">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Facts</h3>
-                    <div class="space-y-3">
+
+            <div data-aos="fade-left" data-aos-delay="100">
+                <div class="glass-card-gold rounded-2xl p-8 shadow-gold bg-gradient-to-br from-champagne-50 to-gold-50 dark:from-charcoal-800 dark:to-charcoal-700">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <i data-lucide="sparkles" class="h-5 w-5 text-gold-500 mr-2"></i>
+                        Quick Facts
+                    </h3>
+                    <div class="space-y-4">
                         {% if sections_data.about.content.about_fact1_label %}
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">{{ sections_data.about.content.about_fact1_label|default:"Experience" }}:</span>
-                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact1_value|default:"5+ Years" }}</span>
+                        <div class="flex justify-between items-center py-3 border-b border-gold-200/30 dark:border-gold-800/30">
+                            <span class="text-gray-600 dark:text-gray-400">{{ sections_data.about.content.about_fact1_label|default:"Experience" }}</span>
+                            <span class="font-bold text-gray-900 dark:text-white">{{ sections_data.about.content.about_fact1_value|default:"5+ Years" }}</span>
                         </div>
                         {% endif %}
                         {% if sections_data.about.content.about_fact2_label %}
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">{{ sections_data.about.content.about_fact2_label|default:"Projects Completed" }}:</span>
-                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact2_value|default:"50+" }}</span>
+                        <div class="flex justify-between items-center py-3 border-b border-gold-200/30 dark:border-gold-800/30">
+                            <span class="text-gray-600 dark:text-gray-400">{{ sections_data.about.content.about_fact2_label|default:"Projects Completed" }}</span>
+                            <span class="font-bold text-gray-900 dark:text-white">{{ sections_data.about.content.about_fact2_value|default:"50+" }}</span>
                         </div>
                         {% endif %}
                         {% if sections_data.about.content.about_fact3_label %}
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">{{ sections_data.about.content.about_fact3_label|default:"Specialization" }}:</span>
-                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact3_value|default:"Civil Engineering" }}</span>
+                        <div class="flex justify-between items-center py-3 border-b border-gold-200/30 dark:border-gold-800/30">
+                            <span class="text-gray-600 dark:text-gray-400">{{ sections_data.about.content.about_fact3_label|default:"Specialization" }}</span>
+                            <span class="font-bold text-gray-900 dark:text-white">{{ sections_data.about.content.about_fact3_value|default:"Civil Engineering" }}</span>
                         </div>
                         {% endif %}
                         {% if sections_data.about.content.about_fact4_label %}
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">{{ sections_data.about.content.about_fact4_label|default:"Location" }}:</span>
-                            <span class="font-semibold text-gray-900">{{ sections_data.about.content.about_fact4_value|default:"India" }}</span>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-600 dark:text-gray-400">{{ sections_data.about.content.about_fact4_label|default:"Location" }}</span>
+                            <span class="font-bold text-gray-900 dark:text-white">{{ sections_data.about.content.about_fact4_value|default:"India" }}</span>
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Certifications & Awards Showcase -->
+{% if certifications %}
+<section class="py-16 bg-gradient-to-br from-champagne-50 via-white to-gold-50 dark:from-charcoal-900 dark:via-charcoal-800 dark:to-charcoal-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <span class="text-gold-600 dark:text-gold-400 text-sm font-semibold uppercase tracking-wider">Credentials</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 mt-2 font-display">
+                Certifications & <span class="text-gold-gradient">Achievements</span>
+            </h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 rounded-full mx-auto mb-4"></div>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Professional certifications and achievements that validate my expertise
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for cert in certifications %}
+            <div class="group glass-card rounded-2xl p-6 hover:shadow-gold transition-all duration-300 border border-gold-200/30 dark:border-gold-800/30" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-gold mr-4">
+                        <i data-lucide="award" class="h-7 w-7 text-white"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-1 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
+                            {{ cert.name }}
+                        </h3>
+                        <p class="text-gold-600 dark:text-gold-400 text-sm font-medium mb-2">
+                            {{ cert.issuing_organization }}
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <i data-lucide="calendar" class="h-4 w-4 mr-1"></i>
+                            <span>{{ cert.issue_date|date:"M Y" }}</span>
+                            {% if cert.is_lifetime %}
+                            <span class="ml-2 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full text-xs font-medium">
+                                Lifetime
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% if cert.verification_url %}
+                        <a href="{{ cert.verification_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-3 text-sm text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 transition-colors">
+                            <i data-lucide="external-link" class="h-4 w-4 mr-1"></i>
+                            Verify Credential
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-10" data-aos="fade-up">
+            <a href="{% url 'resume' %}" class="inline-flex items-center px-6 py-3 rounded-full font-semibold border-2 border-gold-400 text-gold-600 dark:text-gold-400 hover:bg-gold-500 hover:text-white hover:border-gold-500 transition-all duration-300">
+                <i data-lucide="file-text" class="h-5 w-5 mr-2"></i>
+                View Full Resume
+                <i data-lucide="arrow-right" class="h-5 w-5 ml-2"></i>
+            </a>
         </div>
     </div>
 </section>
 {% endif %}
 
 {% if sections_data.services %}
-<!-- Services Section -->
-<section class="py-20 bg-gray-50">
+<!-- Services Section with Premium Cards -->
+<section class="py-20 bg-gray-50 dark:bg-charcoal-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-slide-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-gold-600 dark:text-gold-400 text-sm font-semibold uppercase tracking-wider">What I Offer</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 mt-2 font-display">
                 {{ sections_data.services.content.services_title|default:"My Services" }}
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 rounded-full mx-auto mb-6"></div>
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto font-elegant">
                 {{ sections_data.services.content.services_subtitle|default:"I offer comprehensive engineering services that combine technical expertise with creative solutions." }}
             </p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Civil Engineering Design -->
-            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
-                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
-                    <i data-lucide="building" class="h-8 w-8 text-primary-600"></i>
+            <div class="premium-card p-8 group hover:shadow-gold transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-gold-100 to-gold-200 dark:from-gold-900/30 dark:to-gold-800/30 group-hover:scale-110 transition-transform">
+                    <i data-lucide="building" class="h-8 w-8 text-gold-600 dark:text-gold-400"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Civil Engineering Design</h3>
-                <p class="text-gray-600 mb-6">
-                    Comprehensive structural design solutions including residential, commercial, and infrastructure projects 
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Civil Engineering Design</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Comprehensive structural design solutions including residential, commercial, and infrastructure projects
                     with focus on safety, efficiency, and sustainability.
                 </p>
-                <ul class="space-y-2 text-sm text-gray-600">
+                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Structural Analysis & Design
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         CAD Drawings & Plans
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Project Management
                     </li>
                 </ul>
             </div>
-            
+
             <!-- Patent Illustrations -->
-            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
-                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
-                    <i data-lucide="pen-tool" class="h-8 w-8 text-primary-600"></i>
+            <div class="premium-card p-8 group hover:shadow-gold transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-gold-100 to-gold-200 dark:from-gold-900/30 dark:to-gold-800/30 group-hover:scale-110 transition-transform">
+                    <i data-lucide="pen-tool" class="h-8 w-8 text-gold-600 dark:text-gold-400"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Patent Illustrations</h3>
-                <p class="text-gray-600 mb-6">
-                    Professional technical illustrations for patent applications, combining artistic skill with 
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Patent Illustrations</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Professional technical illustrations for patent applications, combining artistic skill with
                     engineering precision to clearly communicate complex inventions.
                 </p>
-                <ul class="space-y-2 text-sm text-gray-600">
+                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Technical Drawings
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Patent Documentation
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         3D Visualization
                     </li>
                 </ul>
             </div>
-            
+
             <!-- Environmental Engineering -->
-            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-8 shadow-lg card-hover animate-slide-up">
-                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-6">
-                    <i data-lucide="leaf" class="h-8 w-8 text-primary-600"></i>
+            <div class="premium-card p-8 group hover:shadow-gold transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-gold-100 to-gold-200 dark:from-gold-900/30 dark:to-gold-800/30 group-hover:scale-110 transition-transform">
+                    <i data-lucide="leaf" class="h-8 w-8 text-gold-600 dark:text-gold-400"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">Environmental Engineering</h3>
-                <p class="text-gray-600 mb-6">
-                    Sustainable engineering solutions focused on environmental protection, waste management, 
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Environmental Engineering</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Sustainable engineering solutions focused on environmental protection, waste management,
                     and eco-friendly design practices for a better future.
                 </p>
-                <ul class="space-y-2 text-sm text-gray-600">
+                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Environmental Impact Assessment
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Sustainable Design
                     </li>
                     <li class="flex items-center">
-                        <i data-lucide="dot" class="h-4 w-4 text-primary-600 mr-2"></i>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-gold-500 mr-2"></i>
                         Green Building Solutions
                     </li>
                 </ul>
@@ -294,36 +554,36 @@
 
 {% if sections_data.skills %}
 <!-- Skills Section -->
-<section class="py-20 bg-white">
+<section class="py-20 bg-white dark:bg-charcoal-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-slide-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-gold-600 dark:text-gold-400 text-sm font-semibold uppercase tracking-wider">Expertise</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 mt-2 font-display">
                 {{ sections_data.skills.content.skills_title|default:"Professional Skills" }}
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 rounded-full mx-auto mb-6"></div>
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto font-elegant">
                 {{ sections_data.skills.content.skills_description|default:"Technical expertise across various engineering domains and software tools." }}
             </p>
         </div>
-        
+
         {% if sections_data.skills.content.featured_skills.all %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <!-- Left Column -->
-            <div class="animate-slide-up">
+            <div data-aos="fade-right">
                 <div class="space-y-6" id="left-skills">
                 </div>
             </div>
-            
+
             <!-- Right Column -->
-            <div class="animate-slide-up">
+            <div data-aos="fade-left">
                 <div class="space-y-6" id="right-skills">
                 </div>
             </div>
         </div>
-        
-        <!-- JavaScript to equally divide skills with animation -->
+
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all skills and divide them equally
             const allSkills = [
                 {% for skill in sections_data.skills.content.featured_skills.all %}
                 {
@@ -332,189 +592,90 @@
                 }{% if not forloop.last %},{% endif %}
                 {% endfor %}
             ];
-            
+
             const leftContainer = document.getElementById('left-skills');
             const rightContainer = document.getElementById('right-skills');
             const half = Math.ceil(allSkills.length / 2);
-            
-            // Function to create skill HTML with animation
+
             function createSkillHTML(skill, index) {
                 return `
-                    <div class="skill-item" style="opacity: 0; transform: translateY(20px);">
+                    <div class="skill-item opacity-0 translate-y-4 transition-all duration-500" style="transition-delay: ${index * 100}ms;">
                         <div class="flex justify-between mb-2">
-                            <span class="font-semibold text-gray-900">${skill.name}</span>
-                            <span class="text-primary-600 font-semibold skill-percentage">${skill.percentage}%</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">${skill.name}</span>
+                            <span class="text-gold-600 dark:text-gold-400 font-semibold">${skill.percentage}%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                            <div class="skill-bar h-3 rounded-full transition-all duration-1000 ease-out" 
-                                 style="width: 0%; background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%); position: relative; overflow: hidden;" 
-                                 data-target="${skill.percentage}">
-                                <div class="skill-bar-fill absolute top-0 left-0 h-full w-0 rounded-full"
-                                     style="background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.3) 100%); 
-                                            animation: fillWave 2s ease-in-out infinite;
-                                            transition: width 1200ms ease-out;">
-                                </div>
+                        <div class="w-full bg-gray-200 dark:bg-charcoal-700 rounded-full h-3 overflow-hidden">
+                            <div class="skill-bar h-3 rounded-full transition-all duration-1000 ease-out"
+                                 style="width: 0%; background: linear-gradient(90deg, #d4af37 0%, #f5d585 100%);"
+                                 data-progress="${skill.percentage}">
                             </div>
                         </div>
                     </div>
                 `;
             }
-            
-            // Add skills to left column (first half)
+
             for (let i = 0; i < half; i++) {
                 if (allSkills[i]) {
                     leftContainer.innerHTML += createSkillHTML(allSkills[i], i);
                 }
             }
-            
-            // Add skills to right column (second half)
+
             for (let i = half; i < allSkills.length; i++) {
-                rightContainer.innerHTML += createSkillHTML(allSkills[i], i);
+                rightContainer.innerHTML += createSkillHTML(allSkills[i], i - half);
             }
-            
-            // Animate skills on scroll or page load
-            function animateSkills() {
-                const skillItems = document.querySelectorAll('.skill-item');
-                const skillBars = document.querySelectorAll('.skill-bar');
-                const skillPercentages = document.querySelectorAll('.skill-percentage');
-                
-                skillItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        // Fade in the skill item
-                        item.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, index * 150);
+
+            // Animate on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const skillItems = entry.target.querySelectorAll('.skill-item');
+                        skillItems.forEach((item, idx) => {
+                            setTimeout(() => {
+                                item.classList.remove('opacity-0', 'translate-y-4');
+                                const bar = item.querySelector('.skill-bar');
+                                if (bar) {
+                                    bar.style.width = bar.dataset.progress + '%';
+                                }
+                            }, idx * 150);
+                        });
+                        observer.unobserve(entry.target);
+                    }
                 });
-                
-                // Animate progress bars after items appear
-                setTimeout(() => {
-                    skillBars.forEach((bar, index) => {
-                        const targetWidth = bar.getAttribute('data-target');
-                        const fillElement = bar.querySelector('.skill-bar-fill');
-                        
-                        // Animate the bar
-                        setTimeout(() => {
-                            bar.style.width = targetWidth + '%';
-                            // Animate the color fill effect
-                            if (fillElement) {
-                                setTimeout(() => {
-                                    fillElement.style.width = '100%';
-                                }, 200); // Start fill animation after bar starts expanding
-                            }
-                        }, index * 100);
-                        
-                        // Animate the percentage counter
-                        const percentageElement = skillPercentages[index];
-                        let currentPercentage = 0;
-                        const increment = targetWidth / 50; // 50 steps for smooth animation
-                        
-                        const counterInterval = setInterval(() => {
-                            currentPercentage += increment;
-                            if (currentPercentage >= targetWidth) {
-                                currentPercentage = targetWidth;
-                                clearInterval(counterInterval);
-                            }
-                            percentageElement.textContent = Math.round(currentPercentage) + '%';
-                        }, 20);
-                    });
-                }, 800); // Wait for skill items to appear first
-            }
-            
-            // Check if skills section is in viewport and animate
-            function checkViewport() {
-                const skillsSection = document.querySelector('#left-skills').closest('section') || 
-                                    document.querySelector('#left-skills').parentElement;
-                const rect = skillsSection.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-                
-                if (isVisible && !skillsSection.classList.contains('animated')) {
-                    skillsSection.classList.add('animated');
-                    animateSkills();
-                }
-            }
-            
-            // Animate immediately if skills are visible, or on scroll
-            setTimeout(checkViewport, 500);
-            window.addEventListener('scroll', checkViewport);
+            }, { threshold: 0.3 });
+
+            if (leftContainer) observer.observe(leftContainer);
+            if (rightContainer) observer.observe(rightContainer);
         });
         </script>
-        
-        <!-- CSS for progress bar animations -->
-        <style>
-        @keyframes fillWave {
-            0% {
-                transform: translateX(-100%);
-                opacity: 0.8;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100%);
-                opacity: 0.8;
-            }
-        }
-        
-        .skill-bar {
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .skill-bar-fill {
-            background: linear-gradient(90deg, 
-                rgba(255,255,255,0.4) 0%, 
-                rgba(255,255,255,0.8) 50%, 
-                rgba(255,255,255,0.4) 100%) !important;
-            animation: fillWave 2.5s ease-in-out infinite;
-        }
-        
-        /* Enhanced progress bar styling */
-        .skill-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                rgba(255,255,255,0.2) 0%, 
-                rgba(255,255,255,0.1) 50%, 
-                rgba(255,255,255,0.2) 100%);
-            border-radius: inherit;
-        }
-        </style>
         {% else %}
-        <!-- Fallback skills if no featured skills are selected -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div class="animate-slide-up">
+            <div data-aos="fade-right">
                 <div class="space-y-6">
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="font-semibold text-gray-900">AutoCAD</span>
-                            <span class="text-primary-600 font-semibold">95%</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">AutoCAD</span>
+                            <span class="text-gold-600 dark:text-gold-400 font-semibold">95%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-3">
-                            <div class="bg-primary-600 h-3 rounded-full" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <span class="font-semibold text-gray-900">Structural Analysis</span>
-                            <span class="text-primary-600 font-semibold">90%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-3">
-                            <div class="bg-primary-600 h-3 rounded-full" style="width: 90%"></div>
+                        <div class="w-full bg-gray-200 dark:bg-charcoal-700 rounded-full h-3">
+                            <div class="h-3 rounded-full" style="width: 95%; background: linear-gradient(90deg, #d4af37 0%, #f5d585 100%);"></div>
                         </div>
                     </div>
-                    
                     <div>
                         <div class="flex justify-between mb-2">
-                            <span class="font-semibold text-gray-900">Technical Illustration</span>
-                            <span class="text-primary-600 font-semibold">92%</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">Structural Analysis</span>
+                            <span class="text-gold-600 dark:text-gold-400 font-semibold">90%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-3">
-                            <div class="bg-primary-600 h-3 rounded-full" style="width: 92%"></div>
+                        <div class="w-full bg-gray-200 dark:bg-charcoal-700 rounded-full h-3">
+                            <div class="h-3 rounded-full" style="width: 90%; background: linear-gradient(90deg, #d4af37 0%, #f5d585 100%);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold text-gray-900 dark:text-white">Technical Illustration</span>
+                            <span class="text-gold-600 dark:text-gold-400 font-semibold">92%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-charcoal-700 rounded-full h-3">
+                            <div class="h-3 rounded-full" style="width: 92%; background: linear-gradient(90deg, #d4af37 0%, #f5d585 100%);"></div>
                         </div>
                     </div>
                 </div>
@@ -526,109 +687,79 @@
 {% endif %}
 
 {% if sections_data.testimonials %}
-<!-- Testimonials Section -->
-<section class="py-20 bg-gray-50">
+<!-- Testimonials Section with Premium Design -->
+<section class="py-20 bg-gray-50 dark:bg-charcoal-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 animate-slide-up">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-gold-600 dark:text-gold-400 text-sm font-semibold uppercase tracking-wider">Testimonials</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 mt-2 font-display">
                 {{ sections_data.testimonials.content.testimonials_title|default:"Client Testimonials" }}
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 rounded-full mx-auto mb-6"></div>
+
+            <!-- Overall Rating -->
+            <div class="inline-flex items-center bg-white dark:bg-charcoal-700 rounded-full px-6 py-3 shadow-gold">
+                <div class="flex text-gold-400 mr-3">
+                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-900 dark:text-white">4.9</span>
+                <span class="text-gray-500 dark:text-gray-400 ml-2">/ 5.0</span>
+            </div>
+
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mt-4 font-elegant">
                 {{ sections_data.testimonials.content.testimonials_subtitle|default:"What my clients say about working with me." }}
             </p>
         </div>
-        
+
         {% if sections_data.testimonials.content.featured_testimonials.all %}
-        <!-- Dynamic Display Based on Mode -->
-        {% if sections_data.testimonials.content.testimonials_display_mode == 'slider' %}
-        <!-- Slider Mode -->
-        <div class="testimonials-slider relative">
-            <div class="testimonials-container overflow-hidden">
-                <div class="testimonials-track flex transition-transform duration-500 ease-in-out">
-                    {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-                    <div class="testimonial-slide min-w-full md:min-w-1/2 lg:min-w-1/3 px-4">
-                        <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up testimonial-card">
-                            <div class="testimonial-content">
-                                <div>
-                                    <div class="flex items-center mb-4">
-                                        <div class="flex text-yellow-400">
-                                            {% for i in "12345"|make_list %}
-                                                {% if forloop.counter <= testimonial.rating %}
-                                                    <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                                                {% else %}
-                                                    <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    <p class="text-gray-600 mb-4 testimonial-text">
-                                        "{{ testimonial.content }}"
-                                    </p>
-                                </div>
-                                <div class="flex items-center">
-                                    {% if testimonial.image %}
-                                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                                    {% else %}
-                                        <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                                    {% endif %}
-                                    <div>
-                                        <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                        <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <!-- Slider Navigation -->
-            <div class="flex items-center justify-center mt-6 space-x-4">
-                <button class="slider-prev bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 transition-colors">
-                    <i data-lucide="chevron-left" class="h-5 w-5"></i>
-                </button>
-                <div class="flex space-x-2" id="slider-dots">
-                    <!-- Dots will be generated by JavaScript -->
-                </div>
-                <button class="slider-next bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 transition-colors">
-                    <i data-lucide="chevron-right" class="h-5 w-5"></i>
-                </button>
-            </div>
-        </div>
-        
-        {% elif sections_data.testimonials.content.testimonials_display_mode == 'continuous' %}
         <!-- Continuous Scroll Mode -->
         <div class="testimonials-continuous-container relative overflow-hidden">
             <div class="testimonials-continuous-track flex testimonials-slow-scroll">
                 {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-                <div class="testimonial-continuous-item w-72 sm:w-80 lg:w-96 mx-4 flex-shrink-0">
-                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover testimonial-card">
+                <div class="testimonial-continuous-item w-80 lg:w-96 mx-4 flex-shrink-0">
+                    <div class="testimonial-premium rounded-2xl p-8 shadow-premium testimonial-card bg-white dark:bg-charcoal-700">
                         <div class="testimonial-content">
                             <div>
+                                <!-- Quote Mark -->
+                                <div class="quote-mark absolute top-4 right-6">"</div>
+
+                                <!-- Rating Stars -->
                                 <div class="flex items-center mb-4">
-                                    <div class="flex text-yellow-400">
+                                    <div class="flex text-gold-400">
                                         {% for i in "12345"|make_list %}
                                             {% if forloop.counter <= testimonial.rating %}
                                                 <i data-lucide="star" class="h-5 w-5 fill-current"></i>
                                             {% else %}
-                                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                                <i data-lucide="star" class="h-5 w-5 text-gray-300 dark:text-gray-600"></i>
                                             {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <p class="text-gray-600 mb-4 testimonial-text">
+
+                                <p class="text-gray-600 dark:text-gray-300 mb-4 testimonial-text font-elegant text-lg italic">
                                     "{{ testimonial.content }}"
                                 </p>
                             </div>
-                            <div class="flex items-center">
-                                {% if testimonial.image %}
-                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                                {% else %}
-                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                                {% endif %}
+
+                            <!-- Author -->
+                            <div class="flex items-center mt-auto pt-4 border-t border-gold-100 dark:border-gold-900/30">
+                                <div class="avatar-gold mr-4">
+                                    {% if testimonial.image %}
+                                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover">
+                                    {% else %}
+                                        <div class="w-12 h-12 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center text-white font-bold">
+                                            {{ testimonial.name|slice:":1" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                                 <div>
-                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    <span class="verified-badge">Verified Client</span>
                                 </div>
                             </div>
                         </div>
@@ -637,34 +768,40 @@
                 {% endfor %}
                 <!-- Duplicate for seamless loop -->
                 {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-                <div class="testimonial-continuous-item w-72 sm:w-80 lg:w-96 mx-4 flex-shrink-0">
-                    <div class="bg-white rounded-lg p-6 shadow-lg card-hover testimonial-card">
+                <div class="testimonial-continuous-item w-80 lg:w-96 mx-4 flex-shrink-0">
+                    <div class="testimonial-premium rounded-2xl p-8 shadow-premium testimonial-card bg-white dark:bg-charcoal-700">
                         <div class="testimonial-content">
                             <div>
+                                <div class="quote-mark absolute top-4 right-6">"</div>
                                 <div class="flex items-center mb-4">
-                                    <div class="flex text-yellow-400">
+                                    <div class="flex text-gold-400">
                                         {% for i in "12345"|make_list %}
                                             {% if forloop.counter <= testimonial.rating %}
                                                 <i data-lucide="star" class="h-5 w-5 fill-current"></i>
                                             {% else %}
-                                                <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
+                                                <i data-lucide="star" class="h-5 w-5 text-gray-300 dark:text-gray-600"></i>
                                             {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <p class="text-gray-600 mb-4 testimonial-text">
+                                <p class="text-gray-600 dark:text-gray-300 mb-4 testimonial-text font-elegant text-lg italic">
                                     "{{ testimonial.content }}"
                                 </p>
                             </div>
-                            <div class="flex items-center">
-                                {% if testimonial.image %}
-                                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                                {% else %}
-                                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                                {% endif %}
+                            <div class="flex items-center mt-auto pt-4 border-t border-gold-100 dark:border-gold-900/30">
+                                <div class="avatar-gold mr-4">
+                                    {% if testimonial.image %}
+                                        <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover">
+                                    {% else %}
+                                        <div class="w-12 h-12 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center text-white font-bold">
+                                            {{ testimonial.name|slice:":1" }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                                 <div>
-                                    <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                                    <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white">{{ testimonial.name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
+                                    <span class="verified-badge">Verified Client</span>
                                 </div>
                             </div>
                         </div>
@@ -673,51 +810,12 @@
                 {% endfor %}
             </div>
         </div>
-        
         {% else %}
-        <!-- Default Grid Mode -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for testimonial in sections_data.testimonials.content.featured_testimonials.all %}
-            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up testimonial-card">
-                <div class="testimonial-content">
-                    <div>
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400">
-                                {% for i in "12345"|make_list %}
-                                    {% if forloop.counter <= testimonial.rating %}
-                                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                                    {% else %}
-                                        <i data-lucide="star" class="h-5 w-5 text-gray-300"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4 testimonial-text">
-                            "{{ testimonial.content }}"
-                        </p>
-                    </div>
-                    <div class="flex items-center">
-                        {% if testimonial.image %}
-                            <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-3 object-cover">
-                        {% else %}
-                            <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                        {% endif %}
-                        <div>
-                            <p class="font-semibold text-gray-900">{{ testimonial.name }}</p>
-                            <p class="text-sm text-gray-600">{{ testimonial.position }}{% if testimonial.company %}, {{ testimonial.company }}{% endif %}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% else %}
-        <!-- Fallback testimonials if no featured testimonials are selected -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
+        <!-- Fallback testimonials -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="testimonial-premium rounded-2xl p-8 shadow-premium bg-white dark:bg-charcoal-700" data-aos="fade-up">
                 <div class="flex items-center mb-4">
-                    <div class="flex text-yellow-400">
+                    <div class="flex text-gold-400">
                         <i data-lucide="star" class="h-5 w-5 fill-current"></i>
                         <i data-lucide="star" class="h-5 w-5 fill-current"></i>
                         <i data-lucide="star" class="h-5 w-5 fill-current"></i>
@@ -725,58 +823,16 @@
                         <i data-lucide="star" class="h-5 w-5 fill-current"></i>
                     </div>
                 </div>
-                <p class="text-gray-600 mb-4">
+                <p class="text-gray-600 dark:text-gray-300 mb-4 font-elegant italic">
                     "Excellent work on our structural design project. Professional, timely, and exceeded expectations."
                 </p>
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div class="avatar-gold mr-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center text-white font-bold">J</div>
+                    </div>
                     <div>
-                        <p class="font-semibold text-gray-900">John Smith</p>
-                        <p class="text-sm text-gray-600">Construction Manager</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
-                <div class="flex items-center mb-4">
-                    <div class="flex text-yellow-400">
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                    </div>
-                </div>
-                <p class="text-gray-600 mb-4">
-                    "The patent illustrations were exactly what we needed. Clear, detailed, and professionally executed."
-                </p>
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                    <div>
-                        <p class="font-semibold text-gray-900">Sarah Johnson</p>
-                        <p class="text-sm text-gray-600">Patent Attorney</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg p-6 shadow-lg card-hover animate-slide-up">
-                <div class="flex items-center mb-4">
-                    <div class="flex text-yellow-400">
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                        <i data-lucide="star" class="h-5 w-5 fill-current"></i>
-                    </div>
-                </div>
-                <p class="text-gray-600 mb-4">
-                    "Outstanding environmental engineering consultation. Helped us achieve our sustainability goals."
-                </p>
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                    <div>
-                        <p class="font-semibold text-gray-900">Mike Davis</p>
-                        <p class="text-sm text-gray-600">Project Director</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">John Smith</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Construction Manager</p>
                     </div>
                 </div>
             </div>
@@ -787,24 +843,29 @@
 {% endif %}
 
 {% if sections_data.contact %}
-<!-- CTA Section -->
-<section class="py-20 text-white" style="background: linear-gradient(135deg, {{ theme_colors.primary }} 0%, {{ theme_colors.accent }} 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-slide-up">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+<!-- CTA Section with Premium Gold Gradient -->
+<section class="py-20 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 50%, #0891b2 100%);">
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 rounded-full opacity-10" style="background: radial-gradient(circle, #d4af37 0%, transparent 70%);"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 rounded-full opacity-10" style="background: radial-gradient(circle, #f5d585 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10" data-aos="fade-up">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4 font-display">
             {{ sections_data.contact.content.contact_title|default:"Ready to Start Your Project?" }}
         </h2>
-        <p class="text-xl mb-8 max-w-3xl mx-auto" style="color: rgba(255, 255, 255, 0.9);">
+        <p class="text-xl mb-8 max-w-3xl mx-auto text-blue-100 font-elegant">
             {{ sections_data.contact.content.contact_description|default:"Let's work together to bring your engineering vision to life with professional expertise and innovative solutions." }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ sections_data.contact.content.contact_cta_primary_url|default:'/contact' }}" class="bg-white px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
-               style="color: {{ theme_colors.primary }};">
+            <a href="{{ sections_data.contact.content.contact_cta_primary_url|default:'/contact' }}"
+               class="btn-premium-primary px-8 py-4 rounded-full font-semibold text-charcoal-900 shadow-gold inline-flex items-center justify-center group">
                 {{ sections_data.contact.content.contact_cta_primary_text|default:"Contact Me Today" }}
+                <i data-lucide="arrow-right" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1"></i>
             </a>
-            <a href="{{ sections_data.contact.content.contact_cta_secondary_url|default:'/portfolio' }}" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white transition-all duration-300"
-               style="border-color: white;" 
-               onmouseover="this.style.backgroundColor='white'; this.style.color='{{ theme_colors.primary }}';" 
-               onmouseout="this.style.backgroundColor='transparent'; this.style.color='white';">
+            <a href="{{ sections_data.contact.content.contact_cta_secondary_url|default:'/portfolio' }}"
+               class="px-8 py-4 rounded-full font-semibold border-2 border-gold-400 text-gold-300 hover:bg-gold-500 hover:text-charcoal-900 hover:border-gold-500 transition-all duration-300 inline-flex items-center justify-center">
                 {{ sections_data.contact.content.contact_cta_secondary_text|default:"View My Work" }}
             </a>
         </div>
@@ -815,36 +876,6 @@
 
 {% block extra_css %}
 <style>
-/* Testimonials Slider Styles */
-.testimonials-slider {
-    max-width: 100%;
-}
-
-.testimonial-slide {
-    transition: transform 0.3s ease;
-}
-
-.slider-prev, .slider-next {
-    transition: all 0.3s ease;
-}
-
-.slider-prev:hover, .slider-next:hover {
-    transform: scale(1.1);
-}
-
-.slider-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #d1d5db;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.slider-dot.active {
-    background-color: #2563eb;
-}
-
 /* Continuous Scroll Styles */
 .testimonials-continuous-container {
     mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
@@ -852,47 +883,39 @@
 }
 
 .testimonials-continuous-track {
-    animation: continuousScroll 40s linear infinite;
     width: max-content;
 }
 
-.testimonials-continuous-track:hover {
-    animation-play-state: paused;
+/* Premium Font Classes */
+.font-display {
+    font-family: 'Playfair Display', Georgia, serif;
 }
 
-@keyframes continuousScroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+.font-elegant {
+    font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-.testimonial-continuous-item {
-    min-width: 320px;
+/* Verified Badge */
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #16a34a;
+    margin-top: 0.25rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .testimonial-slide {
-        min-width: 100%;
-    }
-    
-    .testimonial-continuous-item {
-        min-width: 280px;
-    }
-    
-    .testimonials-continuous-track {
-        animation-duration: 60s;
-    }
-}
-
-/* Animation enhancements */
-.card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s ease;
+.verified-badge::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-size: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 </style>
 {% endblock %}
@@ -901,138 +924,14 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     lucide.createIcons();
-    
-    // Slider functionality
-    const slider = document.querySelector('.testimonials-slider');
-    if (slider) {
-        initTestimonialsSlider();
-    }
-    
-    // Initialize any needed functionality for continuous scroll
-    const continuousContainer = document.querySelector('.testimonials-continuous-container');
-    if (continuousContainer) {
-        initContinuousScroll();
-    }
+
+    // Initialize stat card animations
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('animate-in');
+        }, index * 150);
+    });
 });
-
-function initTestimonialsSlider() {
-    const track = document.querySelector('.testimonials-track');
-    const slides = document.querySelectorAll('.testimonial-slide');
-    const prevBtn = document.querySelector('.slider-prev');
-    const nextBtn = document.querySelector('.slider-next');
-    const dotsContainer = document.getElementById('slider-dots');
-    
-    if (!track || slides.length === 0) return;
-    
-    let currentIndex = 0;
-    const slidesToShow = getSlidesToShow();
-    const totalSlides = slides.length;
-    const maxIndex = Math.max(0, totalSlides - slidesToShow);
-    
-    // Create dots
-    createSliderDots();
-    
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-        currentIndex = Math.max(0, currentIndex - 1);
-        updateSlider();
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        currentIndex = Math.min(maxIndex, currentIndex + 1);
-        updateSlider();
-    });
-    
-    // Auto-play functionality
-    let autoPlayInterval = setInterval(() => {
-        currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-        updateSlider();
-    }, 5000);
-    
-    // Pause auto-play on hover
-    track.addEventListener('mouseenter', () => {
-        clearInterval(autoPlayInterval);
-    });
-    
-    track.addEventListener('mouseleave', () => {
-        autoPlayInterval = setInterval(() => {
-            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-            updateSlider();
-        }, 5000);
-    });
-    
-    function getSlidesToShow() {
-        if (window.innerWidth >= 1024) return 3;
-        if (window.innerWidth >= 768) return 2;
-        return 1;
-    }
-    
-    function createSliderDots() {
-        if (!dotsContainer) return;
-        
-        dotsContainer.innerHTML = '';
-        const dotsCount = Math.ceil(totalSlides / slidesToShow);
-        
-        for (let i = 0; i < dotsCount; i++) {
-            const dot = document.createElement('button');
-            dot.className = 'slider-dot';
-            if (i === 0) dot.classList.add('active');
-            
-            dot.addEventListener('click', () => {
-                currentIndex = i;
-                updateSlider();
-            });
-            
-            dotsContainer.appendChild(dot);
-        }
-    }
-    
-    function updateSlider() {
-        const slideWidth = 100 / slidesToShow;
-        const translateX = -currentIndex * slideWidth;
-        track.style.transform = `translateX(${translateX}%)`;
-        
-        // Update dots
-        const dots = dotsContainer.querySelectorAll('.slider-dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === Math.floor(currentIndex / slidesToShow));
-        });
-        
-        // Update button states
-        prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex >= maxIndex;
-        
-        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-        nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
-    }
-    
-    // Responsive handling
-    window.addEventListener('resize', () => {
-        const newSlidesToShow = getSlidesToShow();
-        if (newSlidesToShow !== slidesToShow) {
-            location.reload(); // Simple solution - reload to recalculate
-        }
-    });
-    
-    // Initial update
-    updateSlider();
-}
-
-function initContinuousScroll() {
-    // Additional functionality can be added here if needed
-    // For now, CSS animations handle the continuous scroll
-    
-    // Optional: Add pause/resume on hover for better UX
-    const track = document.querySelector('.testimonials-continuous-track');
-    if (track) {
-        track.addEventListener('mouseenter', () => {
-            track.style.animationPlayState = 'paused';
-        });
-        
-        track.addEventListener('mouseleave', () => {
-            track.style.animationPlayState = 'running';
-        });
-    }
-}
 </script>
 {% endblock %}

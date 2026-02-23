@@ -1,10 +1,10 @@
 from django.contrib import admin
 from .models import (
-    Category, Project, ProjectImage, Skill, Experience, Education, 
+    Category, Project, ProjectImage, Skill, Experience, Education,
     Testimonial, ThemeSettings, ProfessionalSummary, ResumeExperience,
     ResumeEducation, ResumeSkill, Certification, Achievement,
     Service, ServiceTab, ServiceRequirement, ServiceInquiry, ServiceQuote,
-    ServiceBOM, BOMItem, ContactMessage
+    ServiceBOM, BOMItem, ClientLogo, ContactMessage
 )
 
 @admin.register(Category)
@@ -206,6 +206,15 @@ class BOMItemAdmin(admin.ModelAdmin):
     list_display = ['bom', 'category', 'item_name', 'quantity', 'unit', 'unit_price', 'total_cost']
     list_filter = ['category', 'unit', 'bom__service']
     search_fields = ['item_name', 'description', 'specification']
+
+
+@admin.register(ClientLogo)
+class ClientLogoAdmin(admin.ModelAdmin):
+    list_display = ['name', 'display_order', 'is_active', 'created_at']
+    list_filter = ['is_active']
+    search_fields = ['name', 'website']
+    ordering = ['display_order', 'name']
+    list_editable = ['display_order', 'is_active']
 
 
 @admin.register(ContactMessage)

@@ -4,12 +4,39 @@
 {% block description %}Professional civil engineering, environmental analysis, building design, patent illustrations, and construction management services by Sumithra KP in Mysore, Karnataka.{% endblock %}
 
 {% block content %}
-<!-- Header Section -->
-<section class="text-white py-16" style="background: linear-gradient(135deg, {{ theme_colors.primary }} 0%, {{ theme_colors.accent }} 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center animate-fade-in">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Professional Services</h1>
-            <p class="text-xl max-w-3xl mx-auto" style="color: rgba(255, 255, 255, 0.9);">
+<!-- Header Section - Premium Gold Theme -->
+<section class="relative py-20 md:py-28 overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-charcoal-800 dark:from-charcoal-900 dark:via-charcoal-800 dark:to-navy-900">
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-champagne-300/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-gold-500/10 rounded-full"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center" data-aos="fade-up">
+            <!-- Breadcrumb -->
+            <nav class="flex justify-center mb-6" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm">
+                    <li>
+                        <a href="/" class="text-champagne-300/70 hover:text-gold-400 transition-colors">
+                            <i data-lucide="home" class="h-4 w-4"></i>
+                        </a>
+                    </li>
+                    <li class="text-champagne-300/50">/</li>
+                    <li class="text-gold-400 font-medium">Services</li>
+                </ol>
+            </nav>
+
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-gold-500/20 text-gold-400 border border-gold-500/30 mb-6">
+                <i data-lucide="briefcase" class="h-3.5 w-3.5 mr-2"></i>
+                Expert Solutions
+            </span>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
+                Professional <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-champagne-300 to-gold-500">Services</span>
+            </h1>
+            <p class="text-lg md:text-xl text-champagne-200/80 max-w-3xl mx-auto leading-relaxed">
                 Comprehensive engineering solutions with professional expertise, advanced tools, and dedicated support for your project success.
             </p>
         </div>
@@ -17,98 +44,104 @@
 </section>
 
 <!-- Services Section -->
-<section class="py-12 bg-gray-50 min-h-screen">
+<section class="py-12 md:py-16 bg-charcoal-50 dark:bg-charcoal-900 min-h-screen transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div x-data="{
             selectedService: {{ selected_service.id|default:'null' }},
             sidebarOpen: true,
             activeTab: 'info',
             serviceData: {},
-            
+
             selectService(serviceId) {
                 this.selectedService = serviceId;
                 this.activeTab = 'info';
-                // Close sidebar on mobile after selection
                 if (window.innerWidth < 1024) {
                     this.sidebarOpen = false;
                 }
             },
-            
+
             switchTab(tab) {
                 this.activeTab = tab;
-            },
-            
-            async loadServiceData(serviceId, tab) {
-                // Load dynamic content based on tab
-                if (tab === 'quote' || tab === 'bom') {
-                    // Make AJAX calls for dynamic content
-                }
             }
-        }" class="flex gap-6">
-        
-            <!-- Collapsible Sidebar -->
+        }" class="flex gap-6 lg:gap-8">
+
+            <!-- Collapsible Sidebar - Premium Style -->
             <div class="relative">
                 <!-- Mobile Toggle Button -->
-                <button @click="sidebarOpen = !sidebarOpen" 
-                        class="lg:hidden fixed top-24 left-4 z-50 bg-white rounded-lg shadow-lg p-3 border">
-                    <i data-lucide="menu" class="h-5 w-5"></i>
+                <button @click="sidebarOpen = !sidebarOpen"
+                        class="lg:hidden fixed top-24 left-4 z-50 bg-white dark:bg-charcoal-800 rounded-xl shadow-premium p-3 border border-charcoal-200 dark:border-charcoal-700">
+                    <i data-lucide="menu" class="h-5 w-5 text-charcoal-700 dark:text-champagne-200"></i>
                 </button>
-                
+
                 <!-- Sidebar Content -->
-                <div x-show="sidebarOpen" 
+                <div x-show="sidebarOpen"
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="transform -translate-x-full"
                      x-transition:enter-end="transform translate-x-0"
                      x-transition:leave="transition ease-in duration-300"
                      x-transition:leave-start="transform translate-x-0"
                      x-transition:leave-end="transform -translate-x-full"
-                     class="fixed lg:relative inset-y-0 left-0 z-40 w-80 bg-white rounded-lg shadow-lg border h-fit max-h-[80vh] overflow-y-auto lg:sticky lg:top-6">
-                     
+                     class="fixed lg:relative inset-y-0 left-0 z-40 w-80 bg-white dark:bg-charcoal-800 rounded-2xl shadow-premium border border-charcoal-100 dark:border-charcoal-700 h-fit max-h-[80vh] overflow-y-auto lg:sticky lg:top-6">
+
                     <!-- Sidebar Header -->
-                    <div class="p-6 border-b border-gray-200">
+                    <div class="p-6 border-b border-charcoal-100 dark:border-charcoal-700">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-xl font-bold text-gray-900">Services</h2>
-                            <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-gray-600">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center mr-3 shadow-gold">
+                                    <i data-lucide="briefcase" class="h-5 w-5 text-white"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-charcoal-900 dark:text-white">Services</h2>
+                                    <p class="text-xs text-charcoal-500 dark:text-champagne-400/70">Select to explore</p>
+                                </div>
+                            </div>
+                            <button @click="sidebarOpen = false" class="lg:hidden text-charcoal-400 hover:text-charcoal-600 dark:text-charcoal-500 dark:hover:text-champagne-300">
                                 <i data-lucide="x" class="h-5 w-5"></i>
                             </button>
                         </div>
-                        <p class="text-sm text-gray-600 mt-1">Select a service to explore</p>
                     </div>
-                    
+
                     <!-- Service Categories -->
-                    <div class="p-6 space-y-6">
+                    <div class="p-4 space-y-4">
                         {% for category, category_services in service_categories.items %}
                         <div x-data="{ open: true }">
-                            <button @click="open = !open" 
-                                    class="flex items-center justify-between w-full text-left font-semibold text-gray-900 hover:text-primary-600 transition-colors">
-                                <span>{{ category|title|default:"Services" }}</span>
-                                <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-200" 
+                            <button @click="open = !open"
+                                    class="flex items-center justify-between w-full text-left px-3 py-2 rounded-lg font-semibold text-charcoal-900 dark:text-white hover:bg-charcoal-50 dark:hover:bg-charcoal-700 transition-colors">
+                                <span class="flex items-center">
+                                    <i data-lucide="folder" class="h-4 w-4 text-gold-500 mr-2"></i>
+                                    {{ category|title|default:"Services" }}
+                                </span>
+                                <i data-lucide="chevron-down" class="h-4 w-4 text-charcoal-400 transition-transform duration-200"
                                    :class="{ 'rotate-180': open }"></i>
                             </button>
-                            
-                            <div x-show="open" x-collapse class="mt-3 space-y-2">
+
+                            <div x-show="open" x-collapse class="mt-2 space-y-2 pl-2">
                                 {% for service in category_services %}
                                 <div @click="selectService({{ service.id }})"
                                      :class="{
-                                         'bg-primary-50 border-primary-200 text-primary-700': selectedService === {{ service.id }},
-                                         'hover:bg-gray-50 border-transparent': selectedService !== {{ service.id }}
+                                         'bg-gradient-to-r from-gold-500/10 to-champagne-200/10 border-gold-400/50 dark:border-gold-500/50': selectedService === {{ service.id }},
+                                         'hover:bg-charcoal-50 dark:hover:bg-charcoal-700 border-transparent': selectedService !== {{ service.id }}
                                      }"
-                                     class="p-4 rounded-lg border-2 cursor-pointer transition-all duration-200">
-                                     
+                                     class="p-4 rounded-xl border-2 cursor-pointer transition-all duration-300">
+
                                     <div class="flex items-start">
-                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
-                                             :class="{ 
-                                                 'bg-primary-100': selectedService === {{ service.id }},
-                                                 'bg-gray-100': selectedService !== {{ service.id }}
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                                             :class="{
+                                                 'bg-gradient-to-br from-gold-500 to-gold-600 shadow-gold': selectedService === {{ service.id }},
+                                                 'bg-charcoal-100 dark:bg-charcoal-600': selectedService !== {{ service.id }}
                                              }">
                                             {% include 'includes/service_icon.html' with service=service icon_class="h-5 w-5" %}
                                         </div>
-                                        <div class="flex-1">
-                                            <h3 class="font-semibold text-sm">{{ service.title }}</h3>
-                                            <p class="text-xs text-gray-600 mt-1 line-clamp-2">{{ service.short_description }}</p>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-semibold text-sm truncate"
+                                                :class="{
+                                                    'text-gold-600 dark:text-gold-400': selectedService === {{ service.id }},
+                                                    'text-charcoal-900 dark:text-white': selectedService !== {{ service.id }}
+                                                }">{{ service.title }}</h3>
+                                            <p class="text-xs text-charcoal-500 dark:text-champagne-400/70 mt-1 line-clamp-2">{{ service.short_description }}</p>
                                             {% if service.base_price %}
-                                            <p class="text-xs font-medium mt-2" 
-                                               :class="{ 'text-primary-600': selectedService === {{ service.id }}, 'text-gray-600': selectedService !== {{ service.id }} }">
+                                            <p class="text-xs font-semibold mt-2"
+                                               :class="{ 'text-gold-600 dark:text-gold-400': selectedService === {{ service.id }}, 'text-charcoal-600 dark:text-champagne-400': selectedService !== {{ service.id }} }">
                                                 Starting at ₹{{ service.base_price|floatformat:0 }}
                                             </p>
                                             {% endif %}
@@ -121,9 +154,9 @@
                         {% endfor %}
                     </div>
                 </div>
-                
+
                 <!-- Mobile Backdrop -->
-                <div x-show="sidebarOpen" 
+                <div x-show="sidebarOpen"
                      x-transition:enter="transition-opacity ease-linear duration-300"
                      x-transition:enter-start="opacity-0"
                      x-transition:enter-end="opacity-100"
@@ -131,181 +164,203 @@
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
                      @click="sidebarOpen = false"
-                     class="fixed inset-0 z-30 bg-gray-600 bg-opacity-50 lg:hidden"></div>
+                     class="fixed inset-0 z-30 bg-charcoal-900/50 backdrop-blur-sm lg:hidden"></div>
             </div>
-            
+
             <!-- Main Content Area -->
             <div class="flex-1 min-w-0">
                 {% for service in services %}
-                <div x-show="selectedService === {{ service.id }}" class="space-y-6">
-                    
-                    <!-- Service Header -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-start justify-between">
+                <div x-show="selectedService === {{ service.id }}" class="space-y-6" data-aos="fade-up">
+
+                    <!-- Service Header Card -->
+                    <div class="bg-white dark:bg-charcoal-800 rounded-2xl shadow-premium border border-charcoal-100 dark:border-charcoal-700 p-6 md:p-8">
+                        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                             <div class="flex items-start space-x-4">
-                                <div class="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center">
-                                    {% include 'includes/service_icon.html' with service=service icon_class="h-8 w-8" icon_color="text-primary-600" %}
+                                <div class="w-16 h-16 bg-gradient-to-br from-gold-500 to-gold-600 rounded-2xl flex items-center justify-center shadow-gold flex-shrink-0">
+                                    {% include 'includes/service_icon.html' with service=service icon_class="h-8 w-8" icon_color="text-white" %}
                                 </div>
                                 <div>
-                                    <h1 class="text-2xl font-bold text-gray-900">{{ service.title }}</h1>
-                                    <p class="text-gray-600 mt-1">{{ service.short_description }}</p>
-                                    <div class="flex items-center space-x-4 mt-2">
+                                    <h1 class="text-2xl md:text-3xl font-display font-bold text-charcoal-900 dark:text-white">{{ service.title }}</h1>
+                                    <p class="text-charcoal-600 dark:text-champagne-300/80 mt-2">{{ service.short_description }}</p>
+                                    <div class="flex flex-wrap items-center gap-4 mt-4">
                                         {% if service.timeline %}
-                                        <span class="text-sm text-gray-500">
-                                            <i data-lucide="clock" class="h-4 w-4 inline mr-1"></i>
+                                        <span class="inline-flex items-center text-sm text-charcoal-500 dark:text-champagne-400/70">
+                                            <i data-lucide="clock" class="h-4 w-4 mr-1.5 text-gold-500"></i>
                                             {{ service.timeline }}
                                         </span>
                                         {% endif %}
                                         {% if service.base_price %}
-                                        <span class="text-sm font-semibold text-primary-600">
+                                        <span class="inline-flex items-center text-sm font-semibold text-gold-600 dark:text-gold-400">
+                                            <i data-lucide="indian-rupee" class="h-4 w-4 mr-1"></i>
                                             Starting at ₹{{ service.base_price|floatformat:0 }}
                                         </span>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
-                            <a href="{% url 'service_inquiry' service.slug %}" 
-                               class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold">
+                            <a href="{% url 'service_inquiry' service.slug %}"
+                               class="btn-premium-primary inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold whitespace-nowrap">
+                                <i data-lucide="send" class="h-4 w-4 mr-2"></i>
                                 Get Quote
                             </a>
                         </div>
                     </div>
-                    
-                    <!-- Service Tabs -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+
+                    <!-- Service Tabs - Premium Style -->
+                    <div class="bg-white dark:bg-charcoal-800 rounded-2xl shadow-premium border border-charcoal-100 dark:border-charcoal-700 overflow-hidden">
                         <!-- Tab Navigation -->
-                        <div class="border-b border-gray-200">
-                            <nav class="flex space-x-8 px-6" role="tablist">
+                        <div class="border-b border-charcoal-100 dark:border-charcoal-700 bg-charcoal-50 dark:bg-charcoal-800/50">
+                            <nav class="flex overflow-x-auto scrollbar-hide" role="tablist">
                                 <button @click="switchTab('info')"
-                                        :class="{ 
-                                            'border-primary-500 text-primary-600': activeTab === 'info',
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'info'
+                                        :class="{
+                                            'border-gold-500 text-gold-600 dark:text-gold-400 bg-white dark:bg-charcoal-800': activeTab === 'info',
+                                            'border-transparent text-charcoal-500 dark:text-champagne-400/70 hover:text-charcoal-700 dark:hover:text-champagne-300 hover:border-charcoal-300': activeTab !== 'info'
                                         }"
-                                        class="py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap">
+                                        class="py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-300">
                                     <i data-lucide="info" class="h-4 w-4 inline mr-2"></i>
                                     Service Info
                                 </button>
-                                
+
                                 <button @click="switchTab('requirements')"
-                                        :class="{ 
-                                            'border-primary-500 text-primary-600': activeTab === 'requirements',
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'requirements'
+                                        :class="{
+                                            'border-gold-500 text-gold-600 dark:text-gold-400 bg-white dark:bg-charcoal-800': activeTab === 'requirements',
+                                            'border-transparent text-charcoal-500 dark:text-champagne-400/70 hover:text-charcoal-700 dark:hover:text-champagne-300 hover:border-charcoal-300': activeTab !== 'requirements'
                                         }"
-                                        class="py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap">
+                                        class="py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-300">
                                     <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                                     Requirements
                                 </button>
-                                
+
                                 <button @click="switchTab('quote')"
-                                        :class="{ 
-                                            'border-primary-500 text-primary-600': activeTab === 'quote',
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'quote'
+                                        :class="{
+                                            'border-gold-500 text-gold-600 dark:text-gold-400 bg-white dark:bg-charcoal-800': activeTab === 'quote',
+                                            'border-transparent text-charcoal-500 dark:text-champagne-400/70 hover:text-charcoal-700 dark:hover:text-champagne-300 hover:border-charcoal-300': activeTab !== 'quote'
                                         }"
-                                        class="py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap">
+                                        class="py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-300">
                                     <i data-lucide="calculator" class="h-4 w-4 inline mr-2"></i>
                                     Get Quote
                                 </button>
-                                
+
                                 {% if service.has_bom %}
                                 <button @click="switchTab('bom')"
-                                        :class="{ 
-                                            'border-primary-500 text-primary-600': activeTab === 'bom',
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'bom'
+                                        :class="{
+                                            'border-gold-500 text-gold-600 dark:text-gold-400 bg-white dark:bg-charcoal-800': activeTab === 'bom',
+                                            'border-transparent text-charcoal-500 dark:text-champagne-400/70 hover:text-charcoal-700 dark:hover:text-champagne-300 hover:border-charcoal-300': activeTab !== 'bom'
                                         }"
-                                        class="py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap">
+                                        class="py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-300">
                                     <i data-lucide="package" class="h-4 w-4 inline mr-2"></i>
                                     Materials
                                 </button>
                                 {% endif %}
-                                
+
                                 <button @click="switchTab('portfolio')"
-                                        :class="{ 
-                                            'border-primary-500 text-primary-600': activeTab === 'portfolio',
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'portfolio'
+                                        :class="{
+                                            'border-gold-500 text-gold-600 dark:text-gold-400 bg-white dark:bg-charcoal-800': activeTab === 'portfolio',
+                                            'border-transparent text-charcoal-500 dark:text-champagne-400/70 hover:text-charcoal-700 dark:hover:text-champagne-300 hover:border-charcoal-300': activeTab !== 'portfolio'
                                         }"
-                                        class="py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap">
+                                        class="py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-300">
                                     <i data-lucide="briefcase" class="h-4 w-4 inline mr-2"></i>
                                     Portfolio
                                 </button>
                             </nav>
                         </div>
-                        
+
                         <!-- Tab Content -->
-                        <div class="p-6">
+                        <div class="p-6 md:p-8">
                             <!-- Service Info Tab -->
-                            <div x-show="activeTab === 'info'" class="space-y-6">
+                            <div x-show="activeTab === 'info'" class="space-y-8">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Service Description</h3>
-                                    <p class="text-gray-700 leading-relaxed">{{ service.description|linebreaks }}</p>
+                                    <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-4 flex items-center">
+                                        <i data-lucide="file-text" class="h-5 w-5 text-gold-500 mr-2"></i>
+                                        Service Description
+                                    </h3>
+                                    <div class="text-charcoal-700 dark:text-champagne-300/90 leading-relaxed prose dark:prose-invert max-w-none">
+                                        {{ service.description|linebreaks }}
+                                    </div>
                                 </div>
-                                
+
                                 {% if service.features %}
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Key Features</h3>
-                                    <ul class="space-y-2">
+                                    <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-4 flex items-center">
+                                        <i data-lucide="check-circle" class="h-5 w-5 text-gold-500 mr-2"></i>
+                                        Key Features
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {% for feature in service.features %}
-                                        <li class="flex items-start">
-                                            <i data-lucide="check-circle" class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0"></i>
-                                            <span class="text-gray-700">{{ feature }}</span>
-                                        </li>
+                                        <div class="flex items-start p-4 rounded-xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600">
+                                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0 mr-3">
+                                                <i data-lucide="check" class="h-4 w-4 text-white"></i>
+                                            </div>
+                                            <span class="text-charcoal-700 dark:text-champagne-300">{{ feature }}</span>
+                                        </div>
                                         {% endfor %}
-                                    </ul>
+                                    </div>
                                 </div>
                                 {% endif %}
-                                
+
                                 {% if service.process_steps %}
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Process Steps</h3>
-                                    <ol class="space-y-3">
+                                    <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-4 flex items-center">
+                                        <i data-lucide="workflow" class="h-5 w-5 text-gold-500 mr-2"></i>
+                                        Process Steps
+                                    </h3>
+                                    <div class="space-y-4">
                                         {% for step in service.process_steps %}
-                                        <li class="flex items-start">
-                                            <span class="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5 flex-shrink-0">{{ forloop.counter }}</span>
-                                            <span class="text-gray-700">{{ step }}</span>
-                                        </li>
+                                        <div class="flex items-start">
+                                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold flex-shrink-0 mr-4 shadow-gold">
+                                                {{ forloop.counter }}
+                                            </div>
+                                            <div class="flex-1 pt-2">
+                                                <span class="text-charcoal-700 dark:text-champagne-300">{{ step }}</span>
+                                            </div>
+                                        </div>
                                         {% endfor %}
-                                    </ol>
+                                    </div>
                                 </div>
                                 {% endif %}
-                                
+
                                 {% if service.deliverables %}
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Deliverables</h3>
-                                    <ul class="space-y-2">
+                                    <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-4 flex items-center">
+                                        <i data-lucide="package" class="h-5 w-5 text-gold-500 mr-2"></i>
+                                        Deliverables
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {% for deliverable in service.deliverables %}
-                                        <li class="flex items-start">
-                                            <i data-lucide="file-text" class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"></i>
-                                            <span class="text-gray-700">{{ deliverable }}</span>
-                                        </li>
+                                        <div class="flex items-center p-4 rounded-xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600">
+                                            <i data-lucide="file-text" class="h-5 w-5 text-blue-500 mr-3 flex-shrink-0"></i>
+                                            <span class="text-charcoal-700 dark:text-champagne-300">{{ deliverable }}</span>
+                                        </div>
                                         {% endfor %}
-                                    </ul>
+                                    </div>
                                 </div>
                                 {% endif %}
                             </div>
-                            
+
                             <!-- Requirements Tab -->
-                            <div x-show="activeTab === 'requirements'" class="space-y-4">
+                            <div x-show="activeTab === 'requirements'" class="space-y-6">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Project Requirements</h3>
-                                    <p class="text-gray-600 mb-6">To provide an accurate quote, we need to understand your specific requirements.</p>
+                                    <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Project Requirements</h3>
+                                    <p class="text-charcoal-600 dark:text-champagne-300/80">To provide an accurate quote, we need to understand your specific requirements.</p>
                                 </div>
-                                
+
                                 {% if service.requirements.all %}
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {% for requirement in service.requirements.all %}
-                                    <div class="bg-gray-50 p-4 rounded-lg">
-                                        <label class="block text-sm font-medium text-gray-900 mb-1">
+                                    <div class="p-5 rounded-xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600">
+                                        <label class="block text-sm font-semibold text-charcoal-900 dark:text-white mb-1">
                                             {{ requirement.label }}
                                             {% if requirement.is_required %}
-                                            <span class="text-red-500">*</span>
+                                            <span class="text-red-500 ml-1">*</span>
                                             {% endif %}
                                         </label>
                                         {% if requirement.help_text %}
-                                        <p class="text-xs text-gray-600 mb-2">{{ requirement.help_text }}</p>
+                                        <p class="text-xs text-charcoal-500 dark:text-champagne-400/70 mb-3">{{ requirement.help_text }}</p>
                                         {% endif %}
-                                        <div class="text-sm text-gray-500">
-                                            Type: {{ requirement.get_field_type_display }}
+                                        <div class="flex items-center gap-2 text-sm text-charcoal-500 dark:text-champagne-400/70">
+                                            <span>Type: {{ requirement.get_field_type_display }}</span>
                                             {% if requirement.affects_pricing %}
-                                            <span class="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+                                            <span class="px-2 py-0.5 bg-gold-100 dark:bg-gold-900/30 text-gold-700 dark:text-gold-400 rounded-full text-xs font-medium">
                                                 Affects Pricing
                                             </span>
                                             {% endif %}
@@ -314,126 +369,392 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                <p class="text-gray-600">No specific requirements configured for this service.</p>
+                                <div class="text-center py-8">
+                                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-charcoal-100 dark:bg-charcoal-700 flex items-center justify-center">
+                                        <i data-lucide="clipboard-list" class="h-8 w-8 text-charcoal-400"></i>
+                                    </div>
+                                    <p class="text-charcoal-600 dark:text-champagne-300/80">No specific requirements configured for this service.</p>
+                                </div>
                                 {% endif %}
-                                
+
                                 <div class="pt-4">
-                                    <a href="{% url 'service_inquiry' service.slug %}" 
-                                       class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold inline-flex items-center">
+                                    <a href="{% url 'service_inquiry' service.slug %}"
+                                       class="btn-premium-primary inline-flex items-center px-6 py-3 rounded-xl font-semibold">
                                         <i data-lucide="send" class="h-4 w-4 mr-2"></i>
                                         Submit Requirements
                                     </a>
                                 </div>
                             </div>
-                            
+
                             <!-- Quote Tab -->
                             <div x-show="activeTab === 'quote'">
                                 <div class="text-center py-8">
-                                    <i data-lucide="calculator" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Get Custom Quote</h3>
-                                    <p class="text-gray-600 mb-6">Fill out our requirements form to receive a detailed quote tailored to your project.</p>
-                                    
+                                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center shadow-gold">
+                                        <i data-lucide="calculator" class="h-10 w-10 text-white"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-charcoal-900 dark:text-white mb-2">Get Custom Quote</h3>
+                                    <p class="text-charcoal-600 dark:text-champagne-300/80 mb-8 max-w-md mx-auto">Fill out our requirements form to receive a detailed quote tailored to your project.</p>
+
                                     {% if service.base_price %}
-                                    <div class="bg-primary-50 rounded-lg p-4 mb-6 inline-block">
-                                        <span class="text-sm text-primary-600 font-medium">Starting Price</span>
-                                        <div class="text-2xl font-bold text-primary-900">₹{{ service.base_price|floatformat:0 }}</div>
-                                        <span class="text-xs text-primary-600">*Final price depends on requirements</span>
+                                    <div class="inline-block p-6 rounded-2xl bg-gradient-to-br from-gold-500/10 to-champagne-200/10 border border-gold-500/20 mb-8">
+                                        <span class="text-sm text-gold-600 dark:text-gold-400 font-medium">Starting Price</span>
+                                        <div class="text-3xl font-bold text-charcoal-900 dark:text-white mt-1">₹{{ service.base_price|floatformat:0 }}</div>
+                                        <span class="text-xs text-charcoal-500 dark:text-champagne-400/70">*Final price depends on requirements</span>
                                     </div>
                                     {% endif %}
-                                    
-                                    <div class="space-y-3">
-                                        <a href="{% url 'service_inquiry' service.slug %}" 
-                                           class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold inline-flex items-center">
+
+                                    <div class="space-y-4">
+                                        <a href="{% url 'service_inquiry' service.slug %}"
+                                           class="btn-premium-primary inline-flex items-center px-8 py-4 rounded-xl font-semibold text-lg">
                                             <i data-lucide="file-text" class="h-5 w-5 mr-2"></i>
                                             Request Detailed Quote
+                                            <i data-lucide="arrow-right" class="h-5 w-5 ml-2"></i>
                                         </a>
                                         <div>
-                                            <a href="{% url 'contact' %}" class="text-primary-600 hover:text-primary-700 text-sm">
+                                            <a href="{% url 'contact' %}" class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 text-sm font-medium">
                                                 Or contact us directly for consultation
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- BOM Tab -->
                             {% if service.has_bom %}
                             <div x-show="activeTab === 'bom'">
                                 <div class="text-center py-8">
-                                    <i data-lucide="package" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Bill of Materials</h3>
-                                    <p class="text-gray-600 mb-6">Detailed material specifications and quantities for your project.</p>
-                                    
-                                    <a href="{% url 'service_bom' service.slug %}" 
-                                       class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold inline-flex items-center">
+                                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                                        <i data-lucide="package" class="h-10 w-10 text-white"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-charcoal-900 dark:text-white mb-2">Bill of Materials</h3>
+                                    <p class="text-charcoal-600 dark:text-champagne-300/80 mb-8 max-w-md mx-auto">Detailed material specifications and quantities for your project.</p>
+
+                                    <a href="{% url 'service_bom' service.slug %}"
+                                       class="btn-premium-primary inline-flex items-center px-8 py-4 rounded-xl font-semibold">
                                         <i data-lucide="list" class="h-5 w-5 mr-2"></i>
                                         View Material List
                                     </a>
                                 </div>
                             </div>
                             {% endif %}
-                            
+
                             <!-- Portfolio Tab -->
                             <div x-show="activeTab === 'portfolio'">
                                 <div class="space-y-6">
                                     <div>
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Related Projects</h3>
-                                        <p class="text-gray-600">Examples of our work in {{ service.title|lower }}.</p>
+                                        <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Related Projects</h3>
+                                        <p class="text-charcoal-600 dark:text-champagne-300/80">Examples of our work in {{ service.title|lower }}.</p>
                                     </div>
-                                    
+
                                     <div class="text-center py-8">
-                                        <i data-lucide="folder" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Portfolio Coming Soon</h3>
-                                        <p class="text-gray-600 mb-6">We're updating our portfolio with recent projects.</p>
-                                        
-                                        <a href="{% url 'portfolio' %}" 
-                                           class="text-primary-600 hover:text-primary-700 font-semibold">
-                                            View All Projects →
+                                        <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-charcoal-100 dark:bg-charcoal-700 flex items-center justify-center">
+                                            <i data-lucide="folder" class="h-10 w-10 text-charcoal-400"></i>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-charcoal-900 dark:text-white mb-2">Portfolio Coming Soon</h3>
+                                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-6">We're updating our portfolio with recent projects.</p>
+
+                                        <a href="{% url 'portfolio' %}"
+                                           class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 font-semibold inline-flex items-center">
+                                            View All Projects
+                                            <i data-lucide="arrow-right" class="h-4 w-4 ml-2"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+
+                    <!-- Action Buttons Card -->
+                    <div class="bg-white dark:bg-charcoal-800 rounded-2xl shadow-premium border border-charcoal-100 dark:border-charcoal-700 p-6">
                         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="{% url 'service_inquiry' service.slug %}" 
-                               class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold text-center">
+                            <a href="{% url 'service_inquiry' service.slug %}"
+                               class="btn-premium-primary inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg">
+                                <i data-lucide="rocket" class="h-5 w-5 mr-2"></i>
                                 Start Your Project
                             </a>
-                            <a href="{% url 'contact' %}" 
-                               class="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-center">
+                            <a href="{% url 'contact' %}"
+                               class="btn-premium-secondary inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg">
+                                <i data-lucide="message-circle" class="h-5 w-5 mr-2"></i>
                                 Discuss Requirements
                             </a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-                
+
                 <!-- Default State -->
-                <div x-show="selectedService === null" class="text-center py-12">
-                    <i data-lucide="briefcase" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Select a Service</h3>
-                    <p class="text-gray-600">Choose a service from the sidebar to view details and get started.</p>
+                <div x-show="selectedService === null" class="text-center py-16" data-aos="fade-up">
+                    <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-charcoal-100 to-charcoal-200 dark:from-charcoal-700 dark:to-charcoal-800 flex items-center justify-center">
+                        <i data-lucide="briefcase" class="h-12 w-12 text-charcoal-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-charcoal-900 dark:text-white mb-3">Select a Service</h3>
+                    <p class="text-charcoal-600 dark:text-champagne-300/80 max-w-md mx-auto">Choose a service from the sidebar to view details and get started with your project.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Interactive Process Timeline Section -->
+<section class="py-20 md:py-28 bg-gradient-to-br from-champagne-50 via-white to-gold-50 dark:from-charcoal-900 dark:via-charcoal-800 dark:to-charcoal-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-gold-500/10 text-gold-600 dark:text-gold-400 border border-gold-500/20 mb-4">
+                <i data-lucide="workflow" class="h-3.5 w-3.5 mr-2"></i>
+                How We Work
+            </span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-charcoal-900 dark:text-white mb-4">
+                Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-500 to-gold-600">Process</span>
+            </h2>
+            <p class="text-lg text-charcoal-600 dark:text-champagne-300/80 max-w-3xl mx-auto">
+                A streamlined approach to deliver exceptional results for every project.
+            </p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="relative">
+            <!-- Center Line (desktop only) -->
+            <div class="hidden lg:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-gold-400 via-gold-500 to-gold-600 rounded-full"></div>
+
+            <!-- Timeline Items -->
+            <div class="space-y-12 lg:space-y-0">
+                <!-- Step 1: Consultation - Left -->
+                <div class="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center" data-aos="fade-right">
+                    <div class="lg:text-right lg:pr-12">
+                        <div class="inline-flex items-center justify-center lg:justify-end mb-4">
+                            <span class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-xl shadow-gold lg:hidden">1</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-charcoal-900 dark:text-white mb-3">Initial Consultation</h3>
+                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-4">We begin by understanding your project requirements, goals, and vision through a detailed discussion.</p>
+                        <ul class="space-y-2 text-sm text-charcoal-500 dark:text-champagne-400/70 lg:text-right">
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Free initial consultation</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Requirements gathering</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Scope definition</li>
+                        </ul>
+                    </div>
+                    <!-- Center Circle (desktop) -->
+                    <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 items-center justify-center text-white font-bold text-2xl shadow-gold z-10">
+                        <i data-lucide="message-circle" class="h-7 w-7"></i>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+
+                <!-- Step 2: Proposal - Right -->
+                <div class="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center lg:mt-16" data-aos="fade-left">
+                    <div class="hidden lg:block"></div>
+                    <!-- Center Circle (desktop) -->
+                    <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 items-center justify-center text-white font-bold text-2xl shadow-gold z-10">
+                        <i data-lucide="file-text" class="h-7 w-7"></i>
+                    </div>
+                    <div class="lg:pl-12">
+                        <div class="inline-flex items-center mb-4">
+                            <span class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-xl shadow-gold lg:hidden">2</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-charcoal-900 dark:text-white mb-3">Proposal & Quote</h3>
+                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-4">Based on our discussion, we prepare a detailed proposal with timeline, deliverables, and transparent pricing.</p>
+                        <ul class="space-y-2 text-sm text-charcoal-500 dark:text-champagne-400/70">
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Detailed scope document</li>
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Clear pricing breakdown</li>
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Realistic timeline</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: Execution - Left -->
+                <div class="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center lg:mt-16" data-aos="fade-right">
+                    <div class="lg:text-right lg:pr-12">
+                        <div class="inline-flex items-center justify-center lg:justify-end mb-4">
+                            <span class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-xl shadow-gold lg:hidden">3</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-charcoal-900 dark:text-white mb-3">Project Execution</h3>
+                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-4">Our team executes the project with precision, keeping you informed at every milestone.</p>
+                        <ul class="space-y-2 text-sm text-charcoal-500 dark:text-champagne-400/70 lg:text-right">
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Regular progress updates</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Quality checkpoints</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Collaborative feedback</li>
+                        </ul>
+                    </div>
+                    <!-- Center Circle (desktop) -->
+                    <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 items-center justify-center text-white font-bold text-2xl shadow-gold z-10">
+                        <i data-lucide="settings" class="h-7 w-7"></i>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+
+                <!-- Step 4: Review - Right -->
+                <div class="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center lg:mt-16" data-aos="fade-left">
+                    <div class="hidden lg:block"></div>
+                    <!-- Center Circle (desktop) -->
+                    <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 items-center justify-center text-white font-bold text-2xl shadow-gold z-10">
+                        <i data-lucide="search" class="h-7 w-7"></i>
+                    </div>
+                    <div class="lg:pl-12">
+                        <div class="inline-flex items-center mb-4">
+                            <span class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-xl shadow-gold lg:hidden">4</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-charcoal-900 dark:text-white mb-3">Review & Refinement</h3>
+                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-4">We present the work for your review and make refinements based on your feedback.</p>
+                        <ul class="space-y-2 text-sm text-charcoal-500 dark:text-champagne-400/70">
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Comprehensive review</li>
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Revision rounds included</li>
+                            <li class="flex items-center"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2"></i>Quality assurance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 5: Delivery - Left -->
+                <div class="relative lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center lg:mt-16" data-aos="fade-right">
+                    <div class="lg:text-right lg:pr-12">
+                        <div class="inline-flex items-center justify-center lg:justify-end mb-4">
+                            <span class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-white font-bold text-xl shadow-gold lg:hidden">5</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-charcoal-900 dark:text-white mb-3">Delivery & Support</h3>
+                        <p class="text-charcoal-600 dark:text-champagne-300/80 mb-4">Final deliverables are handed over with complete documentation and ongoing support.</p>
+                        <ul class="space-y-2 text-sm text-charcoal-500 dark:text-champagne-400/70 lg:text-right">
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Complete documentation</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Training if needed</li>
+                            <li class="flex items-center lg:justify-end"><i data-lucide="check" class="h-4 w-4 text-gold-500 mr-2 lg:order-2 lg:ml-2 lg:mr-0"></i>Post-delivery support</li>
+                        </ul>
+                    </div>
+                    <!-- Center Circle (desktop) -->
+                    <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 items-center justify-center text-white font-bold text-2xl shadow-gold z-10">
+                        <i data-lucide="package-check" class="h-7 w-7"></i>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-16" data-aos="fade-up">
+            <a href="{% url 'contact' %}" class="btn-premium-primary inline-flex items-center px-8 py-4 rounded-xl font-semibold text-lg">
+                <i data-lucide="rocket" class="h-5 w-5 mr-2"></i>
+                Start Your Project
+                <i data-lucide="arrow-right" class="h-5 w-5 ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-20 md:py-28 bg-white dark:bg-charcoal-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-gold-500/10 text-gold-600 dark:text-gold-400 border border-gold-500/20 mb-4">
+                <i data-lucide="award" class="h-3.5 w-3.5 mr-2"></i>
+                Why Choose Us
+            </span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-charcoal-900 dark:text-white mb-4">
+                Excellence in Every <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-500 to-gold-600">Detail</span>
+            </h2>
+            <p class="text-lg text-charcoal-600 dark:text-champagne-300/80 max-w-3xl mx-auto">
+                Committed to delivering exceptional engineering solutions with precision and professionalism.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Feature 1 -->
+            <div class="group p-6 rounded-2xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600 hover:border-gold-400/50 dark:hover:border-gold-500/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="0">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center mb-4 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="shield-check" class="h-7 w-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Quality Assured</h3>
+                <p class="text-sm text-charcoal-600 dark:text-champagne-300/80">Every deliverable undergoes rigorous quality checks to ensure accuracy and compliance.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="group p-6 rounded-2xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600 hover:border-gold-400/50 dark:hover:border-gold-500/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center mb-4 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="clock" class="h-7 w-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Timely Delivery</h3>
+                <p class="text-sm text-charcoal-600 dark:text-champagne-300/80">Committed to meeting deadlines without compromising on quality or attention to detail.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="group p-6 rounded-2xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600 hover:border-gold-400/50 dark:hover:border-gold-500/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center mb-4 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="users" class="h-7 w-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Client Focused</h3>
+                <p class="text-sm text-charcoal-600 dark:text-champagne-300/80">Your requirements drive our solutions. We listen, understand, and deliver accordingly.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="group p-6 rounded-2xl bg-charcoal-50 dark:bg-charcoal-700/50 border border-charcoal-100 dark:border-charcoal-600 hover:border-gold-400/50 dark:hover:border-gold-500/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center mb-4 shadow-gold group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="headphones" class="h-7 w-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-charcoal-900 dark:text-white mb-2">Ongoing Support</h3>
+                <p class="text-sm text-charcoal-600 dark:text-champagne-300/80">Continued assistance and support even after project completion for your peace of mind.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="relative py-20 md:py-28 overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-charcoal-800">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-champagne-300/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
+        <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-gold-500/20 text-gold-400 border border-gold-500/30 mb-6">
+            <i data-lucide="sparkles" class="h-3.5 w-3.5 mr-2"></i>
+            Get Started Today
+        </span>
+
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-6">
+            Ready to Bring Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-champagne-300">Vision</span> to Life?
+        </h2>
+        <p class="text-lg md:text-xl text-champagne-200/80 mb-10 max-w-2xl mx-auto">
+            Let's discuss your project requirements and create something exceptional together.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="btn-premium-primary inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg">
+                <i data-lucide="send" class="h-5 w-5 mr-2"></i>
+                Contact Us
+                <i data-lucide="arrow-right" class="h-5 w-5 ml-2"></i>
+            </a>
+            <a href="/portfolio" class="btn-premium-secondary inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg">
+                <i data-lucide="briefcase" class="h-5 w-5 mr-2"></i>
+                View Portfolio
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Line clamp */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Hide scrollbar for tabs */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // Initialize Lucide icons
-    lucide.createIcons();
-    
-    // Auto-select first service on desktop
-    document.addEventListener('DOMContentLoaded', function() {
-        if (window.innerWidth >= 1024 && {{ selected_service.id|default:'null' }}) {
-            // First service is already selected
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Reinitialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+});
 </script>
 {% endblock %}

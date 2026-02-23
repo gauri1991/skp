@@ -1,0 +1,25 @@
+# robots.txt for Sumithra KP Professional Website
+# https://sumithrakp.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /accounts/
+Disallow: /api/
+
+# Disallow sensitive files
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Allow access to static files
+Allow: /static/
+Allow: /media/
+
+# Sitemap location
+Sitemap: https://sumithrakp.com/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 10

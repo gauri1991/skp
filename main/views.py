@@ -20,12 +20,12 @@ from django.conf import settings
 import json
 
 from .models import (
-    Project, Category, ProjectImage, Skill, Experience, Education, 
+    Project, Category, ProjectImage, Skill, Experience, Education,
     Testimonial, ThemeSettings, ProfessionalSummary, ResumeExperience,
     ResumeEducation, ResumeSkill, SkillCategory, Certification, Achievement,
     Service, ServiceTab, ServiceRequirement, ServiceInquiry, ServiceQuote,
     ServiceBOM, BOMItem, HomepageSection, HomepageContent, SiteSettings,
-    ContactMessage
+    ClientLogo, ContactMessage
 )
 from .forms import (
     ProjectForm, CategoryForm, ProjectImageForm, CustomLoginForm,
@@ -63,6 +63,8 @@ def home(request):
         'skills': Skill.objects.all()[:6],
         'testimonials': Testimonial.objects.filter(is_featured=True)[:3],
         'services': Service.objects.filter(is_active=True)[:6],
+        'client_logos': ClientLogo.objects.filter(is_active=True),
+        'certifications': Certification.objects.filter(is_visible=True)[:6],
     }
     return render(request, 'home.html', context)
 

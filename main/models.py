@@ -1238,6 +1238,25 @@ class SiteSettings(models.Model):
         return "Site Settings"
 
 
+class ClientLogo(models.Model):
+    """Model to store client/partner logos for the 'Trusted By' section"""
+    name = models.CharField(max_length=200, help_text="Client/Company name")
+    logo = models.ImageField(upload_to='clients/', help_text="Client logo image")
+    website = models.URLField(blank=True, help_text="Client website URL (optional)")
+    display_order = models.PositiveIntegerField(default=0, help_text="Order in which logos appear")
+    is_active = models.BooleanField(default=True, help_text="Show this logo on the website")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        verbose_name = "Client Logo"
+        verbose_name_plural = "Client Logos"
+
+    def __str__(self):
+        return self.name
+
+
 class ContactMessage(models.Model):
     """Model to store contact form submissions"""
     name = models.CharField(max_length=100, help_text="Full name of the person")

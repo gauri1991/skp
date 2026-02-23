@@ -1,61 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Login - Sumithra KP</title>
-    
-    <!-- Google Fonts -->
+    <title>{% if login_type == 'client' %}Client Portal{% else %}Dashboard Login{% endif %} - Sumithra KP</title>
+
+    <!-- Google Fonts - Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        'primary': {
-                            DEFAULT: '#2563eb',
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#2563eb',
-                            600: '#1d4ed8',
-                            900: '#1e3a8a',
-                        }
+                        'gold': {
+                            DEFAULT: '#d4af37',
+                            50: '#fdf9e9',
+                            100: '#f9f0c8',
+                            200: '#f5e5a3',
+                            300: '#f5d585',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#b8942d',
+                            700: '#9a7a24',
+                            800: '#7c611c',
+                            900: '#5e4914',
+                        },
+                        'champagne': {
+                            DEFAULT: '#f7e7ce',
+                            50: '#fefdfb',
+                            100: '#fdf9f3',
+                            200: '#f7e7ce',
+                            300: '#f0d9b5',
+                        },
+                        'navy': {
+                            DEFAULT: '#0a192f',
+                            800: '#0f2a4e',
+                            900: '#0a192f',
+                        },
+                        'charcoal': {
+                            DEFAULT: '#2d3436',
+                            50: '#f8f9fa',
+                            100: '#f1f3f4',
+                            700: '#212829',
+                            800: '#1a2021',
+                            900: '#15191a',
+                        },
                     },
                     fontFamily: {
-                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'display': ['Playfair Display', 'Georgia', 'serif'],
                     }
                 }
             }
         }
     </script>
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
+
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        .gradient-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+            background-size: 200% 200%;
+        }
+
+        .gradient-gold:hover {
+            background-position: 100% 50%;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-gold {
+            box-shadow: 0 4px 20px -5px rgba(212, 175, 55, 0.4);
+        }
+
+        .shadow-premium {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Focus styles */
+        input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Dark mode input */
+        .dark input {
+            background-color: #1a2021;
+            border-color: #374151;
+            color: #f8f8f8;
+        }
+
+        .dark input:focus {
+            border-color: #e5c158;
+            box-shadow: 0 0 0 3px rgba(229, 193, 88, 0.2);
+        }
+
+        .dark input::placeholder {
+            color: #9ca3af;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans">
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<body class="font-sans min-h-screen transition-colors duration-300" :class="darkMode ? 'bg-charcoal-900' : 'bg-gradient-to-br from-champagne-50 via-white to-gold-50'">
+    <!-- Background Decorative Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-10" :class="darkMode ? 'bg-gold-500' : 'bg-gold-300'" style="filter: blur(100px);"></div>
+        <div class="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-10" :class="darkMode ? 'bg-champagne-300' : 'bg-gold-400'" style="filter: blur(100px);"></div>
+    </div>
+
+    <div class="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
             <!-- Header -->
-            <div class="text-center">
-                <h1 class="text-3xl font-bold gradient-bg bg-clip-text text-transparent mb-2">
-                    {% if login_type == 'client' %}Client Portal{% else %}Dashboard Login{% endif %}
+            <div class="text-center" data-aos="fade-up">
+                <!-- Logo/Icon -->
+                <div class="mx-auto w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center shadow-gold mb-6">
+                    {% if login_type == 'client' %}
+                    <i data-lucide="user" class="h-8 w-8 text-charcoal-900"></i>
+                    {% else %}
+                    <i data-lucide="layout-dashboard" class="h-8 w-8 text-charcoal-900"></i>
+                    {% endif %}
+                </div>
+
+                <h1 class="text-3xl font-display font-bold mb-2" :class="darkMode ? 'text-white' : 'text-charcoal-900'">
+                    {% if login_type == 'client' %}
+                    <span class="text-gradient-gold">Client Portal</span>
+                    {% else %}
+                    <span class="text-gradient-gold">Dashboard</span>
+                    {% endif %}
                 </h1>
-                <p class="text-gray-600">
+                <p :class="darkMode ? 'text-champagne-200/80' : 'text-charcoal-600'">
                     {% if login_type == 'client' %}
                         Access your orders, deliverables, and manage your account
                     {% else %}
@@ -68,16 +157,16 @@
             {% if messages %}
                 <div class="space-y-3">
                     {% for message in messages %}
-                        <div class="p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}">
+                        <div class="p-4 rounded-xl border {% if message.tags == 'error' %}bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300{% elif message.tags == 'warning' %}bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300{% elif message.tags == 'success' %}bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300{% else %}bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300{% endif %}">
                             <div class="flex items-center">
                                 {% if message.tags == 'error' %}
-                                    <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                                    <i data-lucide="alert-circle" class="h-5 w-5 mr-2 flex-shrink-0"></i>
                                 {% elif message.tags == 'warning' %}
-                                    <i data-lucide="alert-triangle" class="h-5 w-5 mr-2"></i>
+                                    <i data-lucide="alert-triangle" class="h-5 w-5 mr-2 flex-shrink-0"></i>
                                 {% elif message.tags == 'success' %}
-                                    <i data-lucide="check-circle" class="h-5 w-5 mr-2"></i>
+                                    <i data-lucide="check-circle" class="h-5 w-5 mr-2 flex-shrink-0"></i>
                                 {% else %}
-                                    <i data-lucide="info" class="h-5 w-5 mr-2"></i>
+                                    <i data-lucide="info" class="h-5 w-5 mr-2 flex-shrink-0"></i>
                                 {% endif %}
                                 {{ message }}
                             </div>
@@ -87,51 +176,73 @@
             {% endif %}
 
             <!-- Login/Signup Form -->
-            <div class="bg-white p-8 rounded-lg shadow-lg" x-data="authForm()">
+            <div class="p-8 rounded-2xl shadow-premium border transition-colors duration-300" :class="darkMode ? 'bg-charcoal-800 border-charcoal-700' : 'bg-white border-gold-100'" x-data="authForm()">
                 <!-- Tab Navigation (only for client portal) -->
                 {% if login_type == 'client' %}
-                <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
-                    <button type="button" 
+                <div class="flex mb-6 p-1 rounded-xl" :class="darkMode ? 'bg-charcoal-700' : 'bg-charcoal-100'">
+                    <button type="button"
                             @click="activeTab = 'login'"
-                            :class="activeTab === 'login' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all">
+                            :class="activeTab === 'login' ? (darkMode ? 'bg-charcoal-800 text-gold-400 shadow-sm' : 'bg-white text-gold-600 shadow-sm') : (darkMode ? 'text-champagne-300/70 hover:text-champagne-200' : 'text-charcoal-500 hover:text-charcoal-700')"
+                            class="flex-1 py-2.5 px-4 text-sm font-semibold rounded-lg transition-all">
                         Sign In
                     </button>
-                    <button type="button" 
+                    <button type="button"
                             @click="activeTab = 'signup'"
-                            :class="activeTab === 'signup' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
-                            class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all">
+                            :class="activeTab === 'signup' ? (darkMode ? 'bg-charcoal-800 text-gold-400 shadow-sm' : 'bg-white text-gold-600 shadow-sm') : (darkMode ? 'text-champagne-300/70 hover:text-champagne-200' : 'text-charcoal-500 hover:text-charcoal-700')"
+                            class="flex-1 py-2.5 px-4 text-sm font-semibold rounded-lg transition-all">
                         Sign Up
                     </button>
                 </div>
                 {% endif %}
 
                 <!-- Login Form -->
-                <form method="post" class="space-y-6" x-show="activeTab === 'login'">
+                <form method="post" class="space-y-5" x-show="activeTab === 'login'">
                     {% csrf_token %}
                     <input type="hidden" name="login_type" value="{% if login_type == 'client' %}client{% else %}admin{% endif %}">
-                    
+
                     <!-- Username Field -->
                     <div>
-                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             {% if login_type == 'client' %}Email or Mobile Number{% else %}Username{% endif %}
                         </label>
-                        {{ form.username }}
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="{% if login_type == 'client' %}mail{% else %}user{% endif %}" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="text"
+                                   id="{{ form.username.id_for_label }}"
+                                   name="username"
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="{% if login_type == 'client' %}Enter email or mobile{% else %}Enter username{% endif %}">
+                        </div>
                         {% if form.username.errors %}
-                            <div class="mt-1 text-sm text-red-600">
+                            <div class="mt-2 text-sm text-red-500 dark:text-red-400 flex items-center">
+                                <i data-lucide="alert-circle" class="h-4 w-4 mr-1"></i>
                                 {{ form.username.errors.0 }}
                             </div>
                         {% endif %}
                     </div>
-                    
+
                     <!-- Password Field -->
                     <div>
-                        <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Password
                         </label>
-                        {{ form.password }}
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="password"
+                                   id="{{ form.password.id_for_label }}"
+                                   name="password"
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Enter your password">
+                        </div>
                         {% if form.password.errors %}
-                            <div class="mt-1 text-sm text-red-600">
+                            <div class="mt-2 text-sm text-red-500 dark:text-red-400 flex items-center">
+                                <i data-lucide="alert-circle" class="h-4 w-4 mr-1"></i>
                                 {{ form.password.errors.0 }}
                             </div>
                         {% endif %}
@@ -139,14 +250,17 @@
 
                     <!-- Non-field errors -->
                     {% if form.non_field_errors %}
-                        <div class="text-sm text-red-600">
-                            {{ form.non_field_errors.0 }}
+                        <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                            <div class="flex items-center text-sm text-red-600 dark:text-red-400">
+                                <i data-lucide="alert-circle" class="h-5 w-5 mr-2 flex-shrink-0"></i>
+                                {{ form.non_field_errors.0 }}
+                            </div>
                         </div>
                     {% endif %}
-                    
+
                     <!-- Submit Button -->
-                    <div>
-                        <button type="submit" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center">
+                    <div class="pt-2">
+                        <button type="submit" class="w-full gradient-gold text-charcoal-900 py-3.5 px-4 rounded-xl font-semibold shadow-gold hover:shadow-lg transition-all duration-300 flex items-center justify-center">
                             <i data-lucide="log-in" class="h-5 w-5 mr-2"></i>
                             Sign In
                         </button>
@@ -155,82 +269,118 @@
 
                 <!-- Signup Form (only for client portal) -->
                 {% if login_type == 'client' %}
-                <form method="post" action="{% url 'client_signup' %}" class="space-y-6" x-show="activeTab === 'signup'">
+                <form method="post" action="{% url 'client_signup' %}" class="space-y-5" x-show="activeTab === 'signup'">
                     {% csrf_token %}
-                    
+
                     <!-- Full Name -->
                     <div>
-                        <label for="full_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="full_name" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Full Name <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="full_name" name="full_name" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="Enter your full name">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="user" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="text" id="full_name" name="full_name" required
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Enter your full name">
+                        </div>
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="email" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Email Address <span class="text-red-500">*</span>
                         </label>
-                        <input type="email" id="email" name="email" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="Enter your email address">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="mail" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Enter your email address">
+                        </div>
                     </div>
 
                     <!-- Mobile Number -->
                     <div>
-                        <label for="mobile" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="mobile" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Mobile Number <span class="text-red-500">*</span>
                         </label>
-                        <input type="tel" id="mobile" name="mobile" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="+91 XXXX XXXX XX">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="phone" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="tel" id="mobile" name="mobile" required
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="+91 XXXX XXXX XX">
+                        </div>
                     </div>
 
                     <!-- Company (Optional) -->
                     <div>
-                        <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="company" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Company/Organization
                         </label>
-                        <input type="text" id="company" name="company"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="Enter your company name (optional)">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="building" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="text" id="company" name="company"
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Enter company name (optional)">
+                        </div>
                     </div>
 
                     <!-- Password -->
                     <div>
-                        <label for="password1" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="password1" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Password <span class="text-red-500">*</span>
                         </label>
-                        <input type="password" id="password1" name="password1" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="Enter your password">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="password" id="password1" name="password1" required
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Create a password">
+                        </div>
                     </div>
 
                     <!-- Confirm Password -->
                     <div>
-                        <label for="password2" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="password2" class="block text-sm font-semibold mb-2" :class="darkMode ? 'text-champagne-200' : 'text-charcoal-700'">
                             Confirm Password <span class="text-red-500">*</span>
                         </label>
-                        <input type="password" id="password2" name="password2" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                               placeholder="Confirm your password">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="h-5 w-5" :class="darkMode ? 'text-champagne-400/50' : 'text-charcoal-400'"></i>
+                            </div>
+                            <input type="password" id="password2" name="password2" required
+                                   class="w-full pl-12 pr-4 py-3 border rounded-xl transition-all duration-200"
+                                   :class="darkMode ? 'bg-charcoal-700 border-charcoal-600 text-white placeholder-charcoal-400' : 'bg-white border-charcoal-200 text-charcoal-900 placeholder-charcoal-400'"
+                                   placeholder="Confirm your password">
+                        </div>
                     </div>
 
                     <!-- Terms Agreement -->
                     <div class="flex items-start">
                         <input type="checkbox" id="terms" name="terms" required
-                               class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1">
-                        <label for="terms" class="ml-2 block text-sm text-gray-600">
-                            I agree to the <a href="#" class="text-primary-600 hover:text-primary-700">Terms of Service</a> 
-                            and <a href="#" class="text-primary-600 hover:text-primary-700">Privacy Policy</a>
+                               class="h-5 w-5 rounded border-charcoal-300 text-gold-500 focus:ring-gold-500 mt-0.5">
+                        <label for="terms" class="ml-3 block text-sm" :class="darkMode ? 'text-champagne-300/80' : 'text-charcoal-600'">
+                            I agree to the <a href="#" class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 font-medium">Terms of Service</a>
+                            and <a href="#" class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 font-medium">Privacy Policy</a>
                         </label>
                     </div>
-                    
+
                     <!-- Submit Button -->
-                    <div>
-                        <button type="submit" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center">
+                    <div class="pt-2">
+                        <button type="submit" class="w-full gradient-gold text-charcoal-900 py-3.5 px-4 rounded-xl font-semibold shadow-gold hover:shadow-lg transition-all duration-300 flex items-center justify-center">
                             <i data-lucide="user-plus" class="h-5 w-5 mr-2"></i>
                             Create Account
                         </button>
@@ -239,12 +389,21 @@
                 {% endif %}
             </div>
 
-            <!-- Footer -->
-            <div class="text-center">
-                <a href="{% url 'home' %}" class="text-primary-600 hover:text-primary-700 text-sm flex items-center justify-center">
+            <!-- Footer Links -->
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-sm font-medium flex items-center transition-colors" :class="darkMode ? 'text-champagne-300/70 hover:text-gold-400' : 'text-charcoal-600 hover:text-gold-600'">
                     <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
                     Back to Website
                 </a>
+
+                <!-- Theme Toggle -->
+                <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
+                        class="p-2 rounded-lg transition-colors"
+                        :class="darkMode ? 'bg-charcoal-800 text-gold-400 hover:bg-charcoal-700' : 'bg-white text-charcoal-600 hover:bg-charcoal-50 shadow-sm'"
+                        aria-label="Toggle dark mode">
+                    <i data-lucide="sun" class="h-5 w-5" x-show="darkMode"></i>
+                    <i data-lucide="moon" class="h-5 w-5" x-show="!darkMode"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -252,12 +411,12 @@
     <!-- Initialize Lucide Icons -->
     <script>
         lucide.createIcons();
-        
+
         // Alpine.js data function
         function authForm() {
             return {
-                activeTab: '{% if login_type == "client" %}login{% else %}login{% endif %}',
-                
+                activeTab: 'login',
+
                 init() {
                     // Re-initialize icons when tab changes
                     this.$watch('activeTab', () => {
