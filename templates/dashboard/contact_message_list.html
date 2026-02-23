@@ -15,8 +15,8 @@
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-blue-100 rounded-lg">
-                <i data-lucide="mail" class="h-6 w-6 text-blue-600"></i>
+            <div class="p-2 bg-gold-100 rounded-lg">
+                <i data-lucide="mail" class="h-6 w-6 text-gold-600"></i>
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600">Total Messages</p>
@@ -162,7 +162,7 @@
                 <span x-text="selectedMessages.length"></span> message(s) selected
             </span>
             <div class="flex gap-2">
-                <button @click="performBulkAction('mark_read')" class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                <button @click="performBulkAction('mark_read')" class="px-3 py-1 bg-gold-600 text-white text-sm rounded hover:bg-gold-700">
                     Mark as Read
                 </button>
                 <button @click="performBulkAction('mark_replied')" class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
@@ -207,7 +207,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     {% for message in messages %}
-                    <tr class="hover:bg-gray-50 {% if not message.is_read %}bg-blue-50{% endif %}">
+                    <tr class="hover:bg-gray-50 {% if not message.is_read %}bg-champagne-100{% endif %}">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <input type="checkbox" value="{{ message.id }}" class="message-checkbox rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                                    @change="toggleMessage('{{ message.id }}')">
@@ -215,8 +215,8 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center space-x-1">
                                 {% if not message.is_read %}
-                                    <span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
-                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1"></span>
+                                    <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full font-medium">
+                                        <span class="w-1.5 h-1.5 bg-gold-600 rounded-full mr-1"></span>
                                         Unread
                                     </span>
                                 {% else %}
@@ -261,7 +261,7 @@
                                     <i data-lucide="eye" class="h-4 w-4"></i>
                                 </a>
                                 <button onclick="toggleReadStatus({{ message.id }}, {{ message.is_read|yesno:'true,false' }})"
-                                        class="text-blue-600 hover:text-blue-900" 
+                                        class="text-gold-600 hover:text-gold-900" 
                                         title="{% if message.is_read %}Mark as Unread{% else %}Mark as Read{% endif %}">
                                     <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-4 w-4"></i>
                                 </button>

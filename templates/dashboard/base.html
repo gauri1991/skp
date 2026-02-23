@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ darkMode: localStorage.getItem('dashDarkMode') !== 'false' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,31 +8,65 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         'primary': {
-                            DEFAULT: '#2563eb',
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#2563eb',
-                            600: '#1d4ed8',
-                            900: '#1e3a8a',
+                            DEFAULT: '#d4af37',
+                            50: '#fdf9e9',
+                            100: '#f9f0c8',
+                            200: '#f5e5a3',
+                            300: '#f5d585',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#b8942d',
+                            700: '#9a7a24',
+                            800: '#7c611c',
+                            900: '#5e4914',
+                        },
+                        'gold': {
+                            DEFAULT: '#d4af37',
+                            50: '#fdf9e9',
+                            100: '#f9f0c8',
+                            200: '#f5e5a3',
+                            300: '#f5d585',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#b8942d',
+                            700: '#9a7a24',
+                            800: '#7c611c',
+                            900: '#5e4914',
+                        },
+                        'champagne': {
+                            DEFAULT: '#f7e7ce',
+                            50: '#fefdfb',
+                            100: '#fdf9f3',
+                            200: '#f7e7ce',
+                            300: '#f0d9b5',
                         },
                         'navy': {
-                            DEFAULT: '#1e3a8a',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        }
+                            DEFAULT: '#0a192f',
+                            800: '#0f2a4e',
+                            900: '#0a192f',
+                        },
+                        'charcoal': {
+                            DEFAULT: '#2d3436',
+                            700: '#212829',
+                            800: '#1a2021',
+                            900: '#15191a',
+                        },
                     },
                     fontFamily: {
-                        'sans': ['Roboto', 'Poppins', 'system-ui', 'sans-serif'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'display': ['Playfair Display', 'Georgia', 'serif'],
+                        'elegant': ['Cormorant Garamond', 'Georgia', 'serif'],
                     }
                 }
             }
@@ -46,196 +80,297 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     
     <style>
+        [x-cloak] { display: none !important; }
+
         .gradient-bg {
-            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #0a192f 0%, #0f2a4e 100%);
         }
-        
+
+        .gradient-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+            background-size: 200% 200%;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-gold {
+            box-shadow: 0 4px 20px -5px rgba(212, 175, 55, 0.4);
+        }
+
+        .shadow-premium {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-premium-primary {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d585 50%, #d4af37 100%);
+            background-size: 200% 200%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium-primary:hover {
+            background-position: 100% 50%;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px -5px rgba(212, 175, 55, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         .card-hover {
             transition: all 0.3s ease;
         }
-        
+
         .card-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
         /* FORCE SCROLLBARS TO BE ALWAYS VISIBLE */
         html {
-            overflow-y: scroll !important; /* Always show vertical scrollbar */
+            overflow-y: scroll !important;
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #fdf9f3;
         }
-        
-        /* Custom Scrollbar Styles */
+
         /* Webkit browsers (Chrome, Safari, Edge) */
         ::-webkit-scrollbar {
-            width: 16px !important; /* Make even larger for visibility */
-            height: 16px !important;
+            width: 10px;
+            height: 10px;
         }
-        
+
         ::-webkit-scrollbar-track {
-            background: #e2e8f0 !important; /* Light gray track */
-            border-radius: 8px;
-            border: 1px solid #cbd5e1 !important;
+            background: #fdf9f3;
+            border-radius: 5px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
-            background: #64748b !important; /* Darker gray thumb */
-            border-radius: 8px;
-            border: 2px solid #e2e8f0 !important;
+            background: rgba(212, 175, 55, 0.5);
+            border-radius: 5px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569 !important; /* Even darker on hover */
+            background: rgba(212, 175, 55, 0.8);
         }
-        
-        ::-webkit-scrollbar-corner {
-            background: #f1f5f9;
-        }
-        
-        /* Firefox */
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
-        
-        /* Specific styles for main content area */
-        .dashboard-main-content {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
-        
-        .dashboard-main-content::-webkit-scrollbar {
-            width: 12px;
-        }
-        
-        .dashboard-main-content::-webkit-scrollbar-track {
-            background: #f8fafc;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .dashboard-main-content::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 6px;
-            border: 2px solid #f8fafc;
-        }
-        
-        .dashboard-main-content::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-        
+
         /* Sidebar scrollbar styles */
         .dashboard-sidebar {
             scrollbar-width: thin;
-            scrollbar-color: #6b7280 #374151;
+            scrollbar-color: #d4af37 #0a192f;
         }
-        
+
         .dashboard-sidebar::-webkit-scrollbar {
             width: 6px;
         }
-        
+
         .dashboard-sidebar::-webkit-scrollbar-track {
-            background: #374151;
+            background: #0a192f;
             border-radius: 3px;
         }
-        
+
         .dashboard-sidebar::-webkit-scrollbar-thumb {
-            background: #6b7280;
+            background: rgba(212, 175, 55, 0.5);
             border-radius: 3px;
         }
-        
+
         .dashboard-sidebar::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
+            background: rgba(212, 175, 55, 0.8);
         }
-        
-        /* Table containers */
-        .table-container {
-            scrollbar-width: thin;
-            scrollbar-color: #94a3b8 #f1f5f9;
-        }
-        
-        .table-container::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        .table-container::-webkit-scrollbar-track {
-            background: #f8fafc;
-            border-radius: 5px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .table-container::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 5px;
-            border: 1px solid #f8fafc;
-        }
-        
-        .table-container::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-        
-        /* Form containers and textareas */
+
+        /* Content area scrollbars */
+        .dashboard-main-content,
+        .table-container,
         .form-container {
             scrollbar-width: thin;
-            scrollbar-color: #94a3b8 #f1f5f9;
+            scrollbar-color: rgba(212, 175, 55, 0.4) #fdf9f3;
         }
-        
+
+        .dashboard-main-content::-webkit-scrollbar,
+        .table-container::-webkit-scrollbar,
         .form-container::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
         }
-        
+
+        .dashboard-main-content::-webkit-scrollbar-track,
+        .table-container::-webkit-scrollbar-track,
         .form-container::-webkit-scrollbar-track {
-            background: #f8fafc;
-            border-radius: 5px;
+            background: #fdf9f3;
+            border-radius: 4px;
         }
-        
+
+        .dashboard-main-content::-webkit-scrollbar-thumb,
+        .table-container::-webkit-scrollbar-thumb,
         .form-container::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 5px;
-            border: 1px solid #f8fafc;
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
         }
-        
+
+        .dashboard-main-content::-webkit-scrollbar-thumb:hover,
+        .table-container::-webkit-scrollbar-thumb:hover,
         .form-container::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+            background: rgba(212, 175, 55, 0.7);
         }
-        
-        /* Modal and dropdown scrollbars */
-        .modal-content::-webkit-scrollbar,
-        .dropdown-content::-webkit-scrollbar {
-            width: 6px;
+
+        /* Dark mode toggle */
+        .theme-toggle-btn {
+            width: 44px;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease;
         }
-        
-        .modal-content::-webkit-scrollbar-track,
-        .dropdown-content::-webkit-scrollbar-track {
-            background: #f1f5f9;
+
+        .dark .theme-toggle-btn {
+            background: #d4af37;
         }
-        
-        .modal-content::-webkit-scrollbar-thumb,
-        .dropdown-content::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
+
+        .theme-toggle-btn::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        
-        .modal-content::-webkit-scrollbar-thumb:hover,
-        .dropdown-content::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+
+        .dark .theme-toggle-btn::after {
+            transform: translateX(20px);
+        }
+
+        /* ========== DARK MODE ========== */
+
+        /* Backgrounds */
+        .dark body,
+        .dark .bg-champagne-50 { background-color: #1a2021 !important; }
+        .dark .bg-white { background-color: #2d3436 !important; }
+        .dark .bg-gray-50 { background-color: #252b2d !important; }
+        .dark .bg-gray-100 { background-color: #2d3436 !important; }
+        .dark .bg-gray-200 { background-color: #3d4446 !important; }
+        .dark .bg-champagne-100 { background-color: #3a3225 !important; }
+
+        /* Text colors */
+        .dark .text-gray-900 { color: #f7e7ce !important; }
+        .dark .text-gray-800 { color: #e2d5c3 !important; }
+        .dark .text-gray-700 { color: #d0c4b4 !important; }
+        .dark .text-gray-600 { color: #b8ac9c !important; }
+        .dark .text-gray-500 { color: #9e9285 !important; }
+        .dark .text-gray-400 { color: #8a7e71 !important; }
+
+        /* Borders */
+        .dark .border-gray-200 { border-color: #3d4446 !important; }
+        .dark .border-gray-300 { border-color: #4a4e50 !important; }
+        .dark .border-gray-100 { border-color: #353b3d !important; }
+        .dark .border { border-color: #3d4446 !important; }
+        .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #3d4446 !important; }
+
+        /* Shadows */
+        .dark .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.4) !important; }
+        .dark .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3) !important; }
+        .dark .shadow-lg { box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important; }
+
+        /* Hover states */
+        .dark .hover\:bg-gray-100:hover { background-color: #353b3d !important; }
+        .dark .hover\:bg-gray-50:hover { background-color: #313738 !important; }
+        .dark .hover\:bg-gray-200:hover { background-color: #3d4446 !important; }
+        .dark .hover\:text-gray-900:hover { color: #f7e7ce !important; }
+
+        /* Form inputs */
+        .dark input:not([type="checkbox"]):not([type="radio"]),
+        .dark select, .dark textarea {
+            background-color: #212829 !important;
+            border-color: #4a4e50 !important;
+            color: #e2d5c3 !important;
+        }
+        .dark input::placeholder, .dark textarea::placeholder {
+            color: #8a7e71 !important;
+        }
+        .dark input:not([type="checkbox"]):not([type="radio"]):focus,
+        .dark select:focus, .dark textarea:focus {
+            border-color: #d4af37 !important;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+        }
+
+        /* Tables */
+        .dark thead.bg-gray-50 { background-color: #252b2d !important; }
+        .dark tbody .bg-white { background-color: #2d3436 !important; }
+        .dark tr.hover\:bg-gray-50:hover { background-color: #313738 !important; }
+
+        /* Cards and panels */
+        .dark .card-hover:hover {
+            box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Colored badges - keep readable in dark mode */
+        .dark .bg-gold-100 { background-color: #3a3225 !important; }
+        .dark .bg-green-50 { background-color: #1a2e1a !important; }
+        .dark .bg-green-100 { background-color: #1e331e !important; }
+        .dark .bg-red-50 { background-color: #2e1a1a !important; }
+        .dark .bg-red-100 { background-color: #331e1e !important; }
+        .dark .bg-yellow-50 { background-color: #2e2b1a !important; }
+        .dark .bg-yellow-100 { background-color: #33301e !important; }
+        .dark .bg-purple-50 { background-color: #261a2e !important; }
+        .dark .bg-purple-100 { background-color: #2b1e33 !important; }
+
+        /* Code and pre */
+        .dark code { background-color: #212829 !important; color: #d4af37 !important; }
+
+        /* Dropdown menus */
+        .dark [class*="absolute"][class*="bg-white"],
+        .dark .dropdown-content { background-color: #2d3436 !important; }
+
+        /* Gold/champagne text adjustments for dark mode */
+        .dark .text-gold-600 { color: #e5c158 !important; }
+        .dark .text-gold-700 { color: #d4af37 !important; }
+        .dark .text-gold-800 { color: #f5d585 !important; }
+        .dark .text-gold-900 { color: #f5e5a3 !important; }
+        .dark .text-primary-600 { color: #e5c158 !important; }
+        .dark .text-primary-700 { color: #d4af37 !important; }
+        .dark .text-primary-800 { color: #f5d585 !important; }
+        .dark .text-indigo-600 { color: #a5b4fc !important; }
+        .dark .border-gold-200 { border-color: #5e4914 !important; }
+        .dark .border-gold-400 { border-color: #9a7a24 !important; }
+        .dark .bg-gold-200 { background-color: #3a3225 !important; }
+
+        /* Scrollbars */
+        .dark ::-webkit-scrollbar-track { background: #1a2021; }
+        .dark ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.4); }
+        .dark ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.7); }
+
+        /* Transition all colors smoothly */
+        *, *::before, *::after {
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
     </style>
     
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="font-sans transition-colors duration-300" :class="darkMode ? 'bg-charcoal-800' : 'bg-champagne-50'">
     <!-- Sidebar -->
     <div x-data="{ sidebarOpen: false }" class="flex h-screen">
         <!-- Mobile sidebar backdrop -->
-        <div x-show="sidebarOpen" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-30 bg-gray-600 opacity-75 lg:hidden" @click="sidebarOpen = false"></div>
+        <div x-show="sidebarOpen" x-cloak x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-30 bg-gray-600 opacity-75 lg:hidden" @click="sidebarOpen = false"></div>
 
         <!-- Sidebar -->
-        <div x-show="sidebarOpen" x-transition:enter="transition ease-in-out duration-300 transform" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in-out duration-300 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg lg:static lg:inset-0 lg:translate-x-0 lg:block">
-            <div class="flex items-center justify-center h-16 bg-gray-900">
-                <h1 class="text-white text-xl font-bold">Dashboard</h1>
+        <div :class="[darkMode ? 'bg-charcoal-800' : 'bg-white', sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']" class="fixed inset-y-0 left-0 z-40 w-64 shadow-lg lg:static lg:inset-0 transition-transform duration-300 ease-in-out">
+            <div class="flex items-center justify-center h-16 bg-navy-900">
+                <h1 class="text-gold-300 text-xl font-display font-bold">Dashboard</h1>
             </div>
             
             <nav class="mt-8 dashboard-sidebar overflow-y-auto max-h-[calc(100vh-4rem)]">
@@ -244,27 +379,33 @@
                         <i data-lucide="home" class="h-5 w-5 mr-3"></i>
                         Dashboard
                     </a>
-                    
+
+                    <!-- Home Page Management -->
+                    <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'homepage' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                        <i data-lucide="layout-template" class="h-5 w-5 mr-3"></i>
+                        Home Page
+                    </a>
+
                     <a href="{% url 'dashboard_portfolio_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'portfolio' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="briefcase" class="h-5 w-5 mr-3"></i>
                         Portfolio
                     </a>
-                    
+
                     <a href="{% url 'dashboard_category_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'category' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="tag" class="h-5 w-5 mr-3"></i>
                         Categories
                     </a>
-                    
+
                     <a href="{% url 'dashboard_resume_overview' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'resume' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="file-text" class="h-5 w-5 mr-3"></i>
                         Resume
                     </a>
-                    
+
                     <a href="{% url 'dashboard_service_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'service' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="briefcase" class="h-5 w-5 mr-3"></i>
                         Services
                     </a>
-                    
+
                     <!-- Contact Messages -->
                     <a href="{% url 'dashboard_contact_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'contact' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
                         <i data-lucide="mail" class="h-5 w-5 mr-3"></i>
@@ -280,12 +421,6 @@
                                 0
                             </span>
                         {% endif %}
-                    </a>
-                    
-                    <!-- Home Page Management -->
-                    <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'homepage' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
-                        <i data-lucide="home" class="h-5 w-5 mr-3"></i>
-                        Home Page
                     </a>
                     
                     <div class="border-t border-gray-200 mt-4 pt-4">
@@ -306,13 +441,13 @@
         <!-- Main content -->
         <div class="flex-1 flex flex-col h-screen">
             <!-- Top bar -->
-            <header class="bg-white shadow-sm border-b border-gray-200">
+            <header class="shadow-sm border-b" :class="darkMode ? 'bg-charcoal border-charcoal-700' : 'bg-white border-gray-200'">
                 <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
                         <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden">
                             <i data-lucide="menu" class="h-6 w-6 text-gray-600"></i>
                         </button>
-                        <h2 class="ml-4 lg:ml-0 text-xl font-semibold text-gray-900">
+                        <h2 class="ml-4 lg:ml-0 text-xl font-semibold" :class="darkMode ? 'text-champagne-200' : 'text-gray-900'">
                             {% block page_title %}Dashboard{% endblock %}
                         </h2>
                     </div>
@@ -322,6 +457,10 @@
                         <a href="{% url 'dashboard_home' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if request.resolver_match.url_name == 'dashboard_home' %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
                             <i data-lucide="home" class="h-4 w-4 mr-2"></i>
                             Dashboard
+                        </a>
+                        <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'homepage' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
+                            <i data-lucide="layout-template" class="h-4 w-4 mr-2"></i>
+                            Home Page
                         </a>
                         <a href="{% url 'dashboard_portfolio_list' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'portfolio' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
                             <i data-lucide="briefcase" class="h-4 w-4 mr-2"></i>
@@ -339,13 +478,18 @@
                             <i data-lucide="tag" class="h-4 w-4 mr-2"></i>
                             Categories
                         </a>
-                        <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'homepage' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="home" class="h-4 w-4 mr-2"></i>
-                            Home Page
-                        </a>
                     </div>
                     
                     <div class="flex items-center space-x-4">
+                        <!-- Dark Mode Toggle -->
+                        <button @click="darkMode = !darkMode; localStorage.setItem('dashDarkMode', darkMode)"
+                                class="theme-toggle-btn"
+                                aria-label="Toggle dark mode"
+                                role="switch"
+                                :aria-checked="darkMode">
+                            <span class="sr-only">Toggle dark mode</span>
+                        </button>
+
                         <!-- Message Notification Icon -->
                         <div class="relative">
                             <a href="{% url 'dashboard_contact_list' %}" 
@@ -432,7 +576,7 @@
             {% if messages %}
                 <div class="px-6 py-4" id="messages-container">
                     {% for message in messages %}
-                        <div class="alert-message mb-4 p-4 rounded-lg relative {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}" 
+                        <div class="alert-message mb-4 p-4 rounded-lg relative {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-champagne-100 border border-gold-200 text-gold-800{% endif %}" 
                              x-data="{ show: true }" 
                              x-show="show" 
                              x-transition:enter="transition ease-out duration-300"
@@ -482,7 +626,7 @@
                 const messages = document.querySelectorAll('.alert-message');
                 messages.forEach(function(message) {
                     // Check if it's a success or info message (not error or warning)
-                    if (message.classList.contains('bg-green-50') || message.classList.contains('bg-blue-50')) {
+                    if (message.classList.contains('bg-green-50') || message.classList.contains('bg-champagne-100')) {
                         setTimeout(function() {
                             // Find the close button and click it to trigger Alpine.js animation
                             const closeButton = message.querySelector('button');

@@ -62,17 +62,17 @@
             
             <!-- Show current data reference for some sections -->
             {% if current_data %}
-            <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 class="text-sm font-medium text-blue-900 mb-2">
+            <div class="mb-6 p-4 bg-champagne-100 rounded-lg border border-gold-200">
+                <h4 class="text-sm font-medium text-gold-900 mb-2">
                     <i data-lucide="info" class="h-4 w-4 inline mr-1"></i>
                     Current Homepage Data
                 </h4>
-                <div class="text-sm text-blue-700">
+                <div class="text-sm text-gold-700">
                     {% if section_type == 'services' and current_data.available_services %}
                         <p class="mb-2"><strong>Available Services:</strong> {{ current_data.total_services }} active services</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {% for service in current_data.available_services %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gold-100 text-gold-800">
                                     {{ service.title }}
                                 </span>
                             {% endfor %}
@@ -96,19 +96,19 @@
                         <div class="flex items-center justify-between mb-2">
                             <p><strong>Available Skills:</strong> {{ current_data.total_skills }} skills</p>
                             <a href="{% url 'dashboard_resume_skill_list' %}" 
-                               class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition-colors">
+                               class="inline-flex items-center px-3 py-1 bg-gold-600 text-white text-xs rounded-lg hover:bg-gold-700 transition-colors">
                                 <i data-lucide="plus" class="h-3 w-3 mr-1"></i>
                                 Manage Skills
                             </a>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             {% for skill in current_data.available_skills %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gold-100 text-gold-800">
                                     {{ skill.name }} ({{ skill.percentage }}%)
                                 </span>
                             {% endfor %}
                         </div>
-                        <div class="mt-2 text-xs text-blue-600">
+                        <div class="mt-2 text-xs text-gold-600">
                             <i data-lucide="info" class="h-3 w-3 inline mr-1"></i>
                             Click "Manage Skills" to add, edit, reorder, or delete skills
                         </div>
@@ -185,14 +185,14 @@
     </div>
 
     <!-- Section-specific Help -->
-    <div class="bg-blue-50 rounded-lg p-6">
+    <div class="bg-champagne-100 rounded-lg p-6">
         <div class="flex items-start">
-            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                <i data-lucide="info" class="h-4 w-4 text-blue-600"></i>
+            <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center mr-3">
+                <i data-lucide="info" class="h-4 w-4 text-gold-600"></i>
             </div>
             <div>
-                <h3 class="text-sm font-medium text-blue-900 mb-2">{{ section.get_section_type_display }} Section Tips</h3>
-                <div class="text-sm text-blue-700">
+                <h3 class="text-sm font-medium text-gold-900 mb-2">{{ section.get_section_type_display }} Section Tips</h3>
+                <div class="text-sm text-gold-700">
                     {% if section_type == 'hero' %}
                         <ul class="space-y-1">
                             <li>• Keep your title concise and impactful</li>

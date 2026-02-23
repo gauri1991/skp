@@ -36,8 +36,8 @@
     
     <div class="flex items-center space-x-2 text-sm text-gray-500">
         {% if not message.is_read %}
-            <span class="flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+            <span class="flex items-center px-2 py-1 bg-gold-100 text-gold-800 rounded-full">
+                <span class="w-2 h-2 bg-gold-600 rounded-full mr-2"></span>
                 Unread
             </span>
         {% else %}
@@ -124,7 +124,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <button onclick="toggleReadStatus()" 
                         class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-6 w-6 text-blue-600 mb-2"></i>
+                    <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-6 w-6 text-gold-600 mb-2"></i>
                     <span class="text-sm font-medium">
                         {% if message.is_read %}Mark Unread{% else %}Mark Read{% endif %}
                     </span>
@@ -175,8 +175,8 @@
                     <dd class="text-sm">
                         <div class="flex items-center space-x-2">
                             {% if not message.is_read %}
-                                <span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                                    <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1"></span>
+                                <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full">
+                                    <span class="w-1.5 h-1.5 bg-gold-600 rounded-full mr-1"></span>
                                     Unread
                                 </span>
                             {% else %}

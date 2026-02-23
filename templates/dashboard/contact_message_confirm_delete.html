@@ -37,8 +37,8 @@
                 <span class="text-sm font-medium text-gray-500 w-20 flex-shrink-0">Status:</span>
                 <div class="flex items-center space-x-2">
                     {% if not message.is_read %}
-                        <span class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                            <span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-1"></span>
+                        <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full">
+                            <span class="w-1.5 h-1.5 bg-gold-600 rounded-full mr-1"></span>
                             Unread
                         </span>
                     {% else %}
@@ -135,7 +135,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {% if not message.is_read %}
             <button onclick="markAsRead()" 
-                    class="flex items-center justify-center px-4 py-3 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">
+                    class="flex items-center justify-center px-4 py-3 bg-champagne-100 border border-gold-200 text-gold-700 rounded-lg hover:bg-gold-100 transition-colors">
                 <i data-lucide="mail-open" class="h-4 w-4 mr-2"></i>
                 Mark as Read
             </button>

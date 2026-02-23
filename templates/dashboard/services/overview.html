@@ -6,7 +6,7 @@
 {% block content %}
 <div class="space-y-6">
     <!-- Welcome Section -->
-    <div class="bg-gradient-to-r from-primary-600 to-blue-600 rounded-lg shadow-lg">
+    <div class="bg-gradient-to-r from-navy-900 to-navy-800 rounded-lg shadow-lg">
         <div class="px-6 py-8 sm:p-10">
             <div class="flex items-center justify-between">
                 <div>
@@ -30,13 +30,13 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Services</p>
-                    <p class="text-3xl font-bold text-blue-600">{{ total_services }}</p>
+                    <p class="text-3xl font-bold text-gold-600">{{ total_services }}</p>
                     <p class="text-xs text-gray-500 mt-1">
                         {{ active_services }} active, {{ inactive_services }} inactive
                     </p>
                 </div>
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="settings" class="h-6 w-6 text-blue-600"></i>
+                <div class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="settings" class="h-6 w-6 text-gold-600"></i>
                 </div>
             </div>
         </div>
@@ -109,8 +109,8 @@
 
                 <a href="{% url 'dashboard_service_list' %}" 
                    class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                        <i data-lucide="list" class="h-5 w-5 text-blue-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-4">
+                        <i data-lucide="list" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-900">Manage Services</h3>
@@ -223,8 +223,8 @@
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-                        <i data-lucide="target" class="h-5 w-5 text-blue-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mb-3">
+                        <i data-lucide="target" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <h3 class="font-medium text-gray-900 mb-2">Optimize Service Descriptions</h3>
                     <p class="text-sm text-gray-600">Clear, detailed descriptions help clients understand your offerings and increase inquiry quality.</p>

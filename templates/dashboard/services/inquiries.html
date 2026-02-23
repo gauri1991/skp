@@ -68,10 +68,10 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ total_inquiries }}</p>
+                    <p class="text-2xl font-bold text-gold-600">{{ total_inquiries }}</p>
                 </div>
-                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="mail" class="h-4 w-4 text-blue-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="mail" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
                                     </h3>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                         {% if inquiry.status == 'pending' %}bg-orange-100 text-orange-800
-                                        {% elif inquiry.status == 'in_progress' %}bg-blue-100 text-blue-800
+                                        {% elif inquiry.status == 'in_progress' %}bg-gold-100 text-gold-800
                                         {% elif inquiry.status == 'completed' %}bg-green-100 text-green-800
                                         {% elif inquiry.status == 'cancelled' %}bg-red-100 text-red-800
                                         {% else %}bg-gray-100 text-gray-800{% endif %}">
@@ -325,7 +325,7 @@
                             </a>
                             {% if inquiry.status == 'pending' %}
                             <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'in_progress')"
-                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                    class="bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors text-sm font-medium">
                                 Start Working
                             </button>
                             {% elif inquiry.status == 'in_progress' %}
