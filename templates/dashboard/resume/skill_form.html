@@ -9,14 +9,14 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">
+                <h1 class="text-2xl font-bold text-gray-900">
                     {% if object %}Edit Skill{% else %}Add Skill{% endif %}
                 </h1>
                 <p class="mt-2 text-gray-600">
                     {% if object %}Update skill details and proficiency{% else %}Add a new skill to your resume{% endif %}
                 </p>
             </div>
-            <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                 <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
                 Back to Skills
             </a>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <form method="post" class="divide-y divide-gray-200">
             {% csrf_token %}
             
@@ -140,15 +140,15 @@
 
             <!-- Form Actions -->
             <div class="px-6 py-4 bg-gray-50 flex justify-between">
-                <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <a href="{% url 'dashboard_resume_skill_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                     Cancel
                 </a>
                 <div class="flex space-x-3">
-                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                         <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
                         Preview
                     </a>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg btn-premium-primary">
                         <i data-lucide="save" class="h-4 w-4 mr-2"></i>
                         {% if object %}Update Skill{% else %}Add Skill{% endif %}
                     </button>

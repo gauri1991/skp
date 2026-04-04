@@ -6,24 +6,24 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Skill Categories</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Skill Categories</h1>
             <p class="mt-2 text-gray-600">Manage skill categories and their display order</p>
         </div>
         <div class="flex space-x-3">
-            <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <a href="{% url 'dashboard_resume_overview' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                 <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>Back
             </a>
-            <a href="{% url 'dashboard_skill_category_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+            <a href="{% url 'dashboard_skill_category_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg btn-premium-primary">
                 <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Add Category
             </a>
         </div>
     </div>
 
-    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
         {% if categories %}
             <ul class="divide-y divide-gray-200">
                 {% for category in categories %}
-                <li class="px-6 py-4">
+                <li class="px-6 py-4 hover:bg-gray-50 transition-colors">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0 h-10 w-10">
@@ -33,7 +33,7 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center space-x-3">
-                                    <h3 class="text-lg font-medium text-gray-900">{{ category.name }}</h3>
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ category.name }}</h3>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gold-100 text-gold-800">
                                         Order: {{ category.display_order }}
                                     </span>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                         <div class="flex space-x-2">
-                            <a href="{% url 'dashboard_skill_category_edit' category.pk %}" class="text-primary-600 hover:text-primary-900">
+                            <a href="{% url 'dashboard_skill_category_edit' category.pk %}" class="text-gold-600 hover:text-gold-700">
                                 <i data-lucide="edit" class="h-4 w-4"></i>
                             </a>
                             <a href="{% url 'dashboard_skill_category_delete' category.pk %}" class="text-red-600 hover:text-red-900">
@@ -73,9 +73,9 @@
                 <div class="flex justify-center">
                     <i data-lucide="folder-x" class="h-12 w-12 text-gray-400"></i>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2 mt-4">No skill categories</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 mt-4">No skill categories</h3>
                 <p class="text-gray-500 mb-6">Get started by creating your first skill category.</p>
-                <a href="{% url 'dashboard_skill_category_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                <a href="{% url 'dashboard_skill_category_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg btn-premium-primary">
                     <i data-lucide="plus" class="h-4 w-4 mr-2"></i>Add First Category
                 </a>
             </div>
@@ -83,7 +83,7 @@
     </div>
 
     {% if categories %}
-    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-md p-4">
+    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <div class="flex">
             <div class="flex-shrink-0">
                 <i data-lucide="info" class="h-5 w-5 text-yellow-400"></i>

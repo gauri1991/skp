@@ -30,7 +30,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Professional Trust Theme -->
-            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'professional' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'professional' %}border-gold-500{% else %}border-gray-200{% endif %} overflow-hidden">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Professional Trust</h3>
                     
@@ -52,7 +52,7 @@
                     </p>
                     
                     <button type="submit" name="theme_name" value="professional" 
-                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'professional' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'professional' %}btn-premium-primary{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
                         {% if current_theme.theme_name == 'professional' %}
                             <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
                             Active
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Modern Minimal Theme -->
-            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'minimal' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'minimal' %}border-gold-500{% else %}border-gray-200{% endif %} overflow-hidden">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Modern Minimal</h3>
                     
@@ -86,7 +86,7 @@
                     </p>
                     
                     <button type="submit" name="theme_name" value="minimal" 
-                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'minimal' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'minimal' %}btn-premium-primary{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
                         {% if current_theme.theme_name == 'minimal' %}
                             <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
                             Active
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Warm Professional Theme -->
-            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'warm' %}border-primary-500{% else %}border-gray-200{% endif %} overflow-hidden">
+            <div class="bg-white rounded-lg shadow-sm border-2 {% if current_theme.theme_name == 'warm' %}border-gold-500{% else %}border-gray-200{% endif %} overflow-hidden">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-3">Warm Professional</h3>
                     
@@ -120,7 +120,7 @@
                     </p>
                     
                     <button type="submit" name="theme_name" value="warm" 
-                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'warm' %}bg-primary-600 text-white{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
+                            class="w-full px-4 py-2 {% if current_theme.theme_name == 'warm' %}btn-premium-primary{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} rounded-lg transition-colors">
                         {% if current_theme.theme_name == 'warm' %}
                             <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
                             Active

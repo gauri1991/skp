@@ -14,7 +14,7 @@
         </a>
         <div class="flex space-x-3">
             <a href="{% url 'home' %}" target="_blank" 
-               class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+               class="inline-flex items-center px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
                 <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
                 View Live Site
             </a>
@@ -35,7 +35,7 @@
     </div>
 
     <!-- Section Status Summary -->
-    <div class="bg-white rounded-lg shadow border border-gray-200">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">Section Status</h2>
         </div>
@@ -75,7 +75,7 @@
     </div>
 
     <!-- Content Preview -->
-    <div class="bg-white rounded-lg shadow border border-gray-200">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">Content Preview</h2>
             <p class="text-sm text-gray-600 mt-1">Preview of enabled sections with current content</p>
@@ -85,28 +85,28 @@
             {% if data.section.is_enabled %}
             <div class="mb-8 pb-8 border-b border-gray-100 last:border-b-0 last:pb-0 last:mb-0">
                 <div class="flex items-center mb-4">
-                    <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                    <div class="w-8 h-8 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
                         {% if section_type == 'hero' %}
-                            <i data-lucide="home" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="home" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'about' %}
-                            <i data-lucide="user" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="user" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'services' %}
-                            <i data-lucide="briefcase" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="briefcase" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'portfolio' %}
-                            <i data-lucide="folder" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="folder" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'testimonials' %}
-                            <i data-lucide="message-circle" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="message-circle" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'contact' %}
-                            <i data-lucide="mail" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="mail" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'stats' %}
-                            <i data-lucide="bar-chart" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="bar-chart" class="h-4 w-4 text-gold-600"></i>
                         {% elif section_type == 'skills' %}
-                            <i data-lucide="zap" class="h-4 w-4 text-primary-600"></i>
+                            <i data-lucide="zap" class="h-4 w-4 text-gold-600"></i>
                         {% endif %}
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900">{{ data.section.title }}</h3>
                     <a href="{% url 'dashboard_homepage_content_edit' section_type %}" 
-                       class="ml-auto text-primary-600 hover:text-primary-700 text-sm font-medium">
+                       class="ml-auto text-gold-600 hover:text-gold-700 text-sm font-medium">
                         Edit Content →
                     </a>
                 </div>
@@ -148,7 +148,7 @@
                     {% else %}
                         <p class="text-gray-600 text-sm">
                             {{ data.section.get_section_type_display }} section is enabled and ready to display.
-                            <a href="{% url 'dashboard_homepage_content_edit' section_type %}" class="text-primary-600 hover:text-primary-700">
+                            <a href="{% url 'dashboard_homepage_content_edit' section_type %}" class="text-gold-600 hover:text-gold-700">
                                 Edit content →
                             </a>
                         </p>
@@ -164,7 +164,7 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No sections enabled</h3>
                 <p class="text-gray-500 mb-4">Enable some sections to see the preview.</p>
                 <a href="{% url 'dashboard_homepage_sections' %}" 
-                   class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                   class="inline-flex items-center px-4 py-2 btn-premium-primary rounded-lg transition-colors">
                     Manage Sections
                 </a>
             </div>

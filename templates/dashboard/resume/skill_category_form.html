@@ -10,14 +10,14 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">
+                <h1 class="text-2xl font-bold text-gray-900">
                     {% if object %}Edit Skill Category{% else %}Create Skill Category{% endif %}
                 </h1>
                 <p class="mt-2 text-gray-600">
                     {% if object %}Update the skill category details{% else %}Add a new skill category to organize your skills{% endif %}
                 </p>
             </div>
-            <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                 <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
                 Back to Categories
             </a>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Form -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <form method="post" class="divide-y divide-gray-200">
             {% csrf_token %}
             
@@ -137,15 +137,15 @@
 
             <!-- Form Actions -->
             <div class="px-6 py-4 bg-gray-50 flex justify-between">
-                <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <a href="{% url 'dashboard_skill_category_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                     Cancel
                 </a>
                 <div class="flex space-x-3">
-                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <a href="/resume/" target="_blank" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                         <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
                         Preview Resume
                     </a>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg btn-premium-primary">
                         <i data-lucide="save" class="h-4 w-4 mr-2"></i>
                         {% if object %}Update Category{% else %}Create Category{% endif %}
                     </button>
@@ -155,7 +155,7 @@
     </div>
 
     <!-- Icon Preview -->
-    <div class="mt-6 bg-champagne-100 border border-gold-200 rounded-md p-4">
+    <div class="mt-6 bg-champagne-100 border border-gold-200 rounded-lg p-4">
         <div class="flex">
             <div class="flex-shrink-0">
                 <i data-lucide="eye" class="h-5 w-5 text-gold-400"></i>

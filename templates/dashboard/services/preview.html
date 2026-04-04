@@ -20,18 +20,18 @@
 </div>
 
 <!-- Service Hero Section -->
-<section class="py-16 bg-gradient-to-br from-primary-50 to-champagne-100">
+<section class="py-16 bg-gradient-to-br from-gold-50 to-champagne-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i data-lucide="{{ service.icon|default:'settings' }}" class="h-8 w-8 text-primary-600"></i>
+            <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="{{ service.icon|default:'settings' }}" class="h-8 w-8 text-gold-600"></i>
             </div>
             <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ service.title }}</h1>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">{{ service.short_description }}</p>
             
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-6">
                 {% if service.base_price %}
-                <div class="flex items-center text-primary-600">
+                <div class="flex items-center text-gold-600">
                     <i data-lucide="dollar-sign" class="h-5 w-5 mr-2"></i>
                     <span class="text-lg font-semibold">Starting from ₹{{ service.base_price|floatformat:0 }}</span>
                 </div>
@@ -86,7 +86,7 @@
                 <ol class="space-y-3 text-left">
                     {% for step in service.process_steps %}
                     <li class="flex items-start">
-                        <span class="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-800 rounded-full flex items-center justify-center text-sm font-bold mr-3">{{ forloop.counter }}</span>
+                        <span class="flex-shrink-0 w-6 h-6 bg-gold-100 text-gold-800 rounded-full flex items-center justify-center text-sm font-bold mr-3">{{ forloop.counter }}</span>
                         <span class="text-gray-600">{{ step }}</span>
                     </li>
                     {% endfor %}
@@ -96,14 +96,14 @@
 
             {% if service.deliverables %}
             <div class="text-center">
-                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="package" class="h-6 w-6 text-purple-600"></i>
+                <div class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="package" class="h-6 w-6 text-gold-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-6">What You'll Get</h3>
                 <ul class="space-y-3 text-left">
                     {% for deliverable in service.deliverables %}
                     <li class="flex items-start">
-                        <i data-lucide="file-text" class="h-5 w-5 text-purple-600 mr-3 mt-0.5 flex-shrink-0"></i>
+                        <i data-lucide="file-text" class="h-5 w-5 text-gold-600 mr-3 mt-0.5 flex-shrink-0"></i>
                         <span class="text-gray-600">{{ deliverable }}</span>
                     </li>
                     {% endfor %}
@@ -126,7 +126,7 @@
                 <nav class="flex space-x-8 px-6" aria-label="Tabs">
                     {% for tab in tabs %}
                     <button @click="activeTab = '{{ tab.tab_type }}'" 
-                            :class="{ 'border-primary-500 text-primary-600': activeTab === '{{ tab.tab_type }}', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== '{{ tab.tab_type }}' }"
+                            :class="{ 'border-gold-500 text-gold-600': activeTab === '{{ tab.tab_type }}', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== '{{ tab.tab_type }}' }"
                             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2">
                         <i data-lucide="{{ tab.icon|default:'folder' }}" class="h-4 w-4"></i>
                         <span>{{ tab.title }}</span>
@@ -166,7 +166,7 @@
                                     <ol class="space-y-2">
                                         {% for step in service.process_steps %}
                                         <li class="flex items-start">
-                                            <span class="flex-shrink-0 w-5 h-5 bg-primary-100 text-primary-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">{{ forloop.counter }}</span>
+                                            <span class="flex-shrink-0 w-5 h-5 bg-gold-100 text-gold-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">{{ forloop.counter }}</span>
                                             <span class="text-sm text-gray-600">{{ step }}</span>
                                         </li>
                                         {% endfor %}
@@ -180,7 +180,7 @@
                                     <ul class="space-y-2">
                                         {% for deliverable in service.deliverables %}
                                         <li class="flex items-start">
-                                            <i data-lucide="file-text" class="h-4 w-4 text-purple-600 mt-0.5 mr-2"></i>
+                                            <i data-lucide="file-text" class="h-4 w-4 text-gold-600 mt-0.5 mr-2"></i>
                                             <span class="text-sm text-gray-600">{{ deliverable }}</span>
                                         </li>
                                         {% endfor %}
@@ -227,15 +227,15 @@
                             <h3 class="text-2xl font-bold text-gray-900 mb-4">Get a Quote</h3>
                             <p class="text-gray-600 mb-6">Ready to get started? Contact us for a detailed quote based on your specific requirements.</p>
                             
-                            <div class="bg-primary-50 rounded-lg p-6">
-                                <h4 class="font-semibold text-primary-900 mb-2">Pricing Information</h4>
+                            <div class="bg-gold-50 rounded-lg p-6">
+                                <h4 class="font-semibold text-gold-900 mb-2">Pricing Information</h4>
                                 {% if service.base_price %}
-                                <p class="text-primary-800 mb-4">Base price starts from <span class="font-bold">₹{{ service.base_price|floatformat:0 }}</span></p>
+                                <p class="text-gold-800 mb-4">Base price starts from <span class="font-bold">₹{{ service.base_price|floatformat:0 }}</span></p>
                                 {% endif %}
                                 {% if service.timeline %}
-                                <p class="text-primary-800 mb-4">Expected timeline: <span class="font-semibold">{{ service.timeline }}</span></p>
+                                <p class="text-gold-800 mb-4">Expected timeline: <span class="font-semibold">{{ service.timeline }}</span></p>
                                 {% endif %}
-                                <p class="text-sm text-primary-700">Final pricing depends on your specific requirements and project scope.</p>
+                                <p class="text-sm text-gold-700">Final pricing depends on your specific requirements and project scope.</p>
                             </div>
                         </div>
                     {% elif tab.tab_type == 'bom' and service.has_bom %}
@@ -280,19 +280,19 @@
 {% endif %}
 
 <!-- Call to Action -->
-<section class="py-16 bg-primary-600">
+<section class="py-16 bg-gold-600">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-        <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+        <p class="text-xl text-gold-100 mb-8 max-w-2xl mx-auto">
             Contact us today to discuss your project requirements and get a customized quote.
         </p>
         <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
             <a href="{% url 'service_inquiry' service.slug %}" 
-               class="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+               class="bg-white text-gold-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                 Request Quote
             </a>
             <a href="{% url 'contact' %}" 
-               class="bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors">
+               class="bg-gold-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gold-800 transition-colors">
                 Contact Us
             </a>
         </div>

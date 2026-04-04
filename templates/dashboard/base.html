@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Apply dark mode instantly before any paint to prevent flash
+        if (localStorage.getItem('dashDarkMode') !== 'false') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <title>{% block title %}Dashboard - Sumithra KP{% endblock %}</title>
     
     <!-- Google Fonts -->
@@ -258,11 +264,11 @@
         /* Backgrounds */
         .dark body,
         .dark .bg-champagne-50 { background-color: #1a2021 !important; }
-        .dark .bg-white { background-color: #2d3436 !important; }
-        .dark .bg-gray-50 { background-color: #252b2d !important; }
-        .dark .bg-gray-100 { background-color: #2d3436 !important; }
-        .dark .bg-gray-200 { background-color: #3d4446 !important; }
-        .dark .bg-champagne-100 { background-color: #3a3225 !important; }
+        .dark .bg-white { background-color: #222829 !important; }
+        .dark .bg-gray-50 { background-color: #1e2324 !important; }
+        .dark .bg-gray-100 { background-color: #222829 !important; }
+        .dark .bg-gray-200 { background-color: #2d3233 !important; }
+        .dark .bg-champagne-100 { background-color: #2a2519 !important; }
 
         /* Text colors */
         .dark .text-gray-900 { color: #f7e7ce !important; }
@@ -273,21 +279,21 @@
         .dark .text-gray-400 { color: #8a7e71 !important; }
 
         /* Borders */
-        .dark .border-gray-200 { border-color: #3d4446 !important; }
-        .dark .border-gray-300 { border-color: #4a4e50 !important; }
-        .dark .border-gray-100 { border-color: #353b3d !important; }
-        .dark .border { border-color: #3d4446 !important; }
-        .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #3d4446 !important; }
+        .dark .border-gray-200 { border-color: #2d3233 !important; }
+        .dark .border-gray-300 { border-color: #363c3d !important; }
+        .dark .border-gray-100 { border-color: #262c2d !important; }
+        .dark .border { border-color: #2d3233 !important; }
+        .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #2d3233 !important; }
 
-        /* Shadows */
-        .dark .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.4) !important; }
-        .dark .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3) !important; }
-        .dark .shadow-lg { box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important; }
+        /* Shadows - subtle in dark mode */
+        .dark .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.15) !important; }
+        .dark .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important; }
+        .dark .shadow-lg { box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important; }
 
         /* Hover states */
-        .dark .hover\:bg-gray-100:hover { background-color: #353b3d !important; }
-        .dark .hover\:bg-gray-50:hover { background-color: #313738 !important; }
-        .dark .hover\:bg-gray-200:hover { background-color: #3d4446 !important; }
+        .dark .hover\:bg-gray-100:hover { background-color: #282e2f !important; }
+        .dark .hover\:bg-gray-50:hover { background-color: #252a2b !important; }
+        .dark .hover\:bg-gray-200:hover { background-color: #2d3233 !important; }
         .dark .hover\:text-gray-900:hover { color: #f7e7ce !important; }
 
         /* Form inputs */
@@ -307,9 +313,9 @@
         }
 
         /* Tables */
-        .dark thead.bg-gray-50 { background-color: #252b2d !important; }
-        .dark tbody .bg-white { background-color: #2d3436 !important; }
-        .dark tr.hover\:bg-gray-50:hover { background-color: #313738 !important; }
+        .dark thead.bg-gray-50 { background-color: #1e2324 !important; }
+        .dark tbody .bg-white { background-color: #222829 !important; }
+        .dark tr.hover\:bg-gray-50:hover { background-color: #252a2b !important; }
 
         /* Cards and panels */
         .dark .card-hover:hover {
@@ -348,7 +354,7 @@
         .dark .bg-gold-200 { background-color: #3a3225 !important; }
 
         /* Scrollbars */
-        .dark ::-webkit-scrollbar-track { background: #1a2021; }
+        .dark ::-webkit-scrollbar-track { background: #1a2021 !important; }
         .dark ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.4); }
         .dark ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.7); }
 
@@ -375,39 +381,53 @@
             
             <nav class="mt-8 dashboard-sidebar overflow-y-auto max-h-[calc(100vh-4rem)]">
                 <div class="px-4 space-y-1">
-                    <a href="{% url 'dashboard_home' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if request.resolver_match.url_name == 'dashboard_home' %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_home' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if request.resolver_match.url_name == 'dashboard_home' %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if request.resolver_match.url_name != 'dashboard_home' %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="home" class="h-5 w-5 mr-3"></i>
                         Dashboard
                     </a>
 
                     <!-- Home Page Management -->
-                    <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'homepage' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_homepage_sections' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'homepage' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'homepage' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="layout-template" class="h-5 w-5 mr-3"></i>
                         Home Page
                     </a>
 
-                    <a href="{% url 'dashboard_portfolio_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'portfolio' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_portfolio_list' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'portfolio' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'portfolio' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="briefcase" class="h-5 w-5 mr-3"></i>
                         Portfolio
                     </a>
 
-                    <a href="{% url 'dashboard_category_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'category' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_category_list' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'category' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'category' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="tag" class="h-5 w-5 mr-3"></i>
                         Categories
                     </a>
 
-                    <a href="{% url 'dashboard_resume_overview' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'resume' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_resume_overview' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'resume' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'resume' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="file-text" class="h-5 w-5 mr-3"></i>
                         Resume
                     </a>
 
-                    <a href="{% url 'dashboard_service_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'service' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_service_list' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'service' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'service' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="briefcase" class="h-5 w-5 mr-3"></i>
                         Services
                     </a>
 
                     <!-- Contact Messages -->
-                    <a href="{% url 'dashboard_contact_list' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {% if 'contact' in request.resolver_match.url_name %}bg-primary-50 text-primary-600 border-r-2 border-primary-600{% endif %}">
+                    <a href="{% url 'dashboard_contact_list' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'contact' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'contact' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
                         <i data-lucide="mail" class="h-5 w-5 mr-3"></i>
                         <span class="flex-1">Contact Messages</span>
                         {% load contact_tags %}
@@ -422,14 +442,18 @@
                             </span>
                         {% endif %}
                     </a>
-                    
-                    <div class="border-t border-gray-200 mt-4 pt-4">
-                        <a href="{% url 'home' %}" target="_blank" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100">
+
+                    <div class="mt-4 pt-4" :class="darkMode ? 'border-t border-charcoal-700' : 'border-t border-gray-200'">
+                        <a href="{% url 'home' %}" target="_blank"
+                           class="flex items-center px-4 py-2 rounded-lg transition-colors"
+                           :class="darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'">
                             <i data-lucide="external-link" class="h-5 w-5 mr-3"></i>
                             View Website
                         </a>
-                        
-                        <a href="{% url 'dashboard_logout' %}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100">
+
+                        <a href="{% url 'dashboard_logout' %}"
+                           class="flex items-center px-4 py-2 rounded-lg transition-colors"
+                           :class="darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'">
                             <i data-lucide="log-out" class="h-5 w-5 mr-3"></i>
                             Logout
                         </a>
@@ -439,45 +463,17 @@
         </div>
 
         <!-- Main content -->
-        <div class="flex-1 flex flex-col h-screen">
+        <div class="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
             <!-- Top bar -->
-            <header class="shadow-sm border-b" :class="darkMode ? 'bg-charcoal border-charcoal-700' : 'bg-white border-gray-200'">
+            <header class="shadow-sm border-b" :class="darkMode ? 'bg-charcoal-800 border-charcoal-700' : 'bg-white border-gray-200'">
                 <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
                         <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden">
                             <i data-lucide="menu" class="h-6 w-6 text-gray-600"></i>
                         </button>
-                        <h2 class="ml-4 lg:ml-0 text-xl font-semibold" :class="darkMode ? 'text-champagne-200' : 'text-gray-900'">
+                        <h2 class="ml-4 lg:ml-0 text-xl font-display font-bold" :class="darkMode ? 'text-champagne-200' : 'text-gray-900'">
                             {% block page_title %}Dashboard{% endblock %}
                         </h2>
-                    </div>
-                    
-                    <!-- Top Navigation Links -->
-                    <div class="hidden md:flex items-center space-x-1">
-                        <a href="{% url 'dashboard_home' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if request.resolver_match.url_name == 'dashboard_home' %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="home" class="h-4 w-4 mr-2"></i>
-                            Dashboard
-                        </a>
-                        <a href="{% url 'dashboard_homepage_sections' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'homepage' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="layout-template" class="h-4 w-4 mr-2"></i>
-                            Home Page
-                        </a>
-                        <a href="{% url 'dashboard_portfolio_list' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'portfolio' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="briefcase" class="h-4 w-4 mr-2"></i>
-                            Portfolio
-                        </a>
-                        <a href="{% url 'dashboard_resume_overview' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'resume' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="file-text" class="h-4 w-4 mr-2"></i>
-                            Resume
-                        </a>
-                        <a href="{% url 'dashboard_service_list' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'service' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="settings" class="h-4 w-4 mr-2"></i>
-                            Services
-                        </a>
-                        <a href="{% url 'dashboard_category_list' %}" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if 'category' in request.resolver_match.url_name %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-100{% endif %}">
-                            <i data-lucide="tag" class="h-4 w-4 mr-2"></i>
-                            Categories
-                        </a>
                     </div>
                     
                     <div class="flex items-center space-x-4">
@@ -517,7 +513,7 @@
                         <!-- User Profile Dropdown -->
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none">
-                                <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
+                                <div class="w-8 h-8 bg-gold-600 rounded-full flex items-center justify-center">
                                     <span class="text-white text-sm font-semibold">{{ user.username.0|upper }}</span>
                                 </div>
                                 <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
@@ -532,36 +528,41 @@
                                  x-transition:leave-start="transform opacity-100 scale-100"
                                  x-transition:leave-end="transform opacity-0 scale-95"
                                  @click.away="open = false"
-                                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                                
+                                 class="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 z-50 border"
+                                 :class="darkMode ? 'bg-charcoal-800 border-charcoal-700' : 'bg-white border-gray-200'">
+
                                 <!-- User Info -->
-                                <div class="px-4 py-3 border-b border-gray-100">
-                                    <p class="text-sm font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</p>
-                                    <p class="text-sm text-gray-500">{{ user.email|default:"No email" }}</p>
+                                <div class="px-4 py-3 border-b" :class="darkMode ? 'border-charcoal-700' : 'border-gray-100'">
+                                    <p class="text-sm font-medium" :class="darkMode ? 'text-champagne-200' : 'text-gray-900'">{{ user.get_full_name|default:user.username }}</p>
+                                    <p class="text-sm" :class="darkMode ? 'text-champagne-300/70' : 'text-gray-500'">{{ user.email|default:"No email" }}</p>
                                 </div>
-                                
+
                                 <!-- Menu Items -->
-                                <a href="{% url 'site_settings' %}" 
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                <a href="{% url 'site_settings' %}"
+                                   class="flex items-center px-4 py-2 text-sm transition-colors duration-150"
+                                   :class="darkMode ? 'text-champagne-300 hover:bg-charcoal-700' : 'text-gray-700 hover:bg-gray-100'">
                                     <i data-lucide="settings" class="h-4 w-4 mr-3"></i>
                                     Site Settings
                                 </a>
-                                
-                                <a href="{% url 'dashboard_theme_settings' %}" 
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+
+                                <a href="{% url 'dashboard_theme_settings' %}"
+                                   class="flex items-center px-4 py-2 text-sm transition-colors duration-150"
+                                   :class="darkMode ? 'text-champagne-300 hover:bg-charcoal-700' : 'text-gray-700 hover:bg-gray-100'">
                                     <i data-lucide="palette" class="h-4 w-4 mr-3"></i>
                                     Theme Settings
                                 </a>
-                                
+
                                 <a href="{% url 'home' %}" target="_blank"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                                   class="flex items-center px-4 py-2 text-sm transition-colors duration-150"
+                                   :class="darkMode ? 'text-champagne-300 hover:bg-charcoal-700' : 'text-gray-700 hover:bg-gray-100'">
                                     <i data-lucide="external-link" class="h-4 w-4 mr-3"></i>
                                     View Website
                                 </a>
-                                
-                                <div class="border-t border-gray-100 mt-1 pt-1">
-                                    <a href="{% url 'dashboard_logout' %}" 
-                                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+
+                                <div class="border-t mt-1 pt-1" :class="darkMode ? 'border-charcoal-700' : 'border-gray-100'">
+                                    <a href="{% url 'dashboard_logout' %}"
+                                       class="flex items-center px-4 py-2 text-sm transition-colors duration-150"
+                                       :class="darkMode ? 'text-champagne-300 hover:bg-charcoal-700' : 'text-gray-700 hover:bg-gray-100'">
                                         <i data-lucide="log-out" class="h-4 w-4 mr-3"></i>
                                         Sign Out
                                     </a>
@@ -609,7 +610,7 @@
             {% endif %}
 
             <!-- Page content -->
-            <main class="flex-1 overflow-y-auto p-6 dashboard-main-content min-h-0">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden p-6 dashboard-main-content min-h-0">
                 {% block content %}{% endblock %}
             </main>
         </div>

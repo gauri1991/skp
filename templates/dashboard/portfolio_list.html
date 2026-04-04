@@ -10,7 +10,7 @@
         <p class="text-gray-600">Manage your portfolio projects and content</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="{% url 'dashboard_project_create' %}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+        <a href="{% url 'dashboard_project_create' %}" class="inline-flex items-center px-4 py-2 btn-premium-primary rounded-lg transition-colors">
             <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
             Add Project
         </a>
@@ -22,10 +22,10 @@
     <form method="get" class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
             <input type="text" name="search" value="{{ search }}" placeholder="Search projects..." 
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
         </div>
         <div>
-            <select name="category" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            <select name="category" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
                 <option value="">All Categories</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
@@ -35,12 +35,12 @@
             </select>
         </div>
         <div>
-            <select name="featured" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            <select name="featured" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
                 <option value="">All Projects</option>
                 <option value="true" {% if featured_filter == "true" %}selected{% endif %}>Featured Only</option>
             </select>
         </div>
-        <button type="submit" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+        <button type="submit" class="px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
             <i data-lucide="search" class="h-4 w-4"></i>
         </button>
     </form>
@@ -56,14 +56,14 @@
                     {% if project.thumbnail %}
                         <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="w-full h-full object-cover">
                     {% else %}
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
-                            <i data-lucide="image" class="h-16 w-16 text-primary-400"></i>
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-100 to-gold-200">
+                            <i data-lucide="image" class="h-16 w-16 text-gold-400"></i>
                         </div>
                     {% endif %}
                     
                     {% if project.featured %}
                         <div class="absolute top-2 right-2">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gold-100 text-gold-800">
                                 <i data-lucide="star" class="h-3 w-3 mr-1"></i>
                                 Featured
                             </span>
@@ -74,7 +74,7 @@
                 <!-- Project Content -->
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        <a href="{% url 'dashboard_project_detail' project.pk %}" class="hover:text-primary-600 transition-colors cursor-pointer">
+                        <a href="{% url 'dashboard_project_detail' project.pk %}" class="hover:text-gold-600 transition-colors cursor-pointer">
                             {{ project.title }}
                         </a>
                     </h3>
@@ -91,7 +91,7 @@
                     <!-- Categories -->
                     <div class="flex flex-wrap gap-1 mb-4">
                         {% for category in project.categories.all %}
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gold-100 text-gold-800">
                                 {{ category.name }}
                             </span>
                         {% endfor %}
@@ -101,23 +101,23 @@
                     <div class="flex items-center justify-between">
                         <div class="flex space-x-2">
                             <a href="{% url 'dashboard_project_detail' project.pk %}" 
-                               class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors text-sm">
+                               class="inline-flex items-center px-3 py-1 bg-gold-100 text-gold-800 rounded-lg hover:bg-gold-200 transition-colors text-sm">
                                 <i data-lucide="eye" class="h-3 w-3 mr-1"></i>
                                 View
                             </a>
                             <a href="{% url 'dashboard_project_edit' project.pk %}" 
-                               class="inline-flex items-center px-3 py-1 bg-gold-100 text-gold-800 rounded-full hover:bg-gold-200 transition-colors text-sm">
+                               class="inline-flex items-center px-3 py-1 bg-gold-100 text-gold-800 rounded-lg hover:bg-gold-200 transition-colors text-sm">
                                 <i data-lucide="edit" class="h-3 w-3 mr-1"></i>
                                 Edit
                             </a>
                             <a href="{% url 'dashboard_project_images' project.pk %}" 
-                               class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition-colors text-sm">
+                               class="inline-flex items-center px-3 py-1 bg-gold-100 text-gold-800 rounded-lg hover:bg-gold-200 transition-colors text-sm">
                                 <i data-lucide="image" class="h-3 w-3 mr-1"></i>
                                 Images
                             </a>
                         </div>
                         <a href="{% url 'dashboard_project_delete' project.pk %}" 
-                           class="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition-colors text-sm">
+                           class="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors text-sm">
                             <i data-lucide="trash-2" class="h-3 w-3 mr-1"></i>
                             Delete
                         </a>
@@ -153,7 +153,7 @@
     {% endif %}
 {% else %}
     <!-- Empty State -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
         <i data-lucide="folder-open" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
         <h3 class="text-lg font-semibold text-gray-900 mb-2">No projects found</h3>
         <p class="text-gray-600 mb-6">
@@ -164,7 +164,7 @@
             {% endif %}
         </p>
         {% if not search and not selected_category and not featured_filter %}
-            <a href="{% url 'dashboard_project_create' %}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <a href="{% url 'dashboard_project_create' %}" class="inline-flex items-center px-4 py-2 btn-premium-primary rounded-lg transition-colors">
                 <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
                 Create First Project
             </a>

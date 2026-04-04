@@ -38,12 +38,12 @@
     </nav>
 
     <!-- Service Header -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
@@ -64,7 +64,7 @@
 
     <!-- Quote Statistics -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Quotes</p>
@@ -76,35 +76,35 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Value</p>
-                    <p class="text-2xl font-bold text-green-600">
+                    <p class="text-2xl font-bold text-gold-600">
                         ₹{% if quotes %}{{ quotes|length|add:0 }}{% else %}0{% endif %}
                     </p>
                 </div>
-                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="dollar-sign" class="h-4 w-4 text-green-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="dollar-sign" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Avg. Quote</p>
-                    <p class="text-2xl font-bold text-purple-600">
+                    <p class="text-2xl font-bold text-gold-600">
                         ₹{% if quotes %}{{ quotes.0.quote_amount|default:0|floatformat:0 }}{% else %}0{% endif %}
                     </p>
                 </div>
-                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="trending-up" class="h-4 w-4 text-purple-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="trending-up" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Conversion Rate</p>
@@ -120,7 +120,7 @@
     </div>
 
     <!-- Quotes List -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="flex justify-between items-center mb-6">
                 <div>
@@ -138,8 +138,8 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
-                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                    <i data-lucide="calculator" class="h-5 w-5 text-green-600"></i>
+                                <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="calculator" class="h-5 w-5 text-gold-600"></i>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -210,7 +210,7 @@
                                     <div class="flex justify-between">
                                         <dt class="text-sm text-gray-500">Email:</dt>
                                         <dd class="text-sm text-gray-900">
-                                            <a href="mailto:{{ quote.inquiry.client_email }}" class="text-primary-600 hover:text-primary-700">
+                                            <a href="mailto:{{ quote.inquiry.client_email }}" class="text-gold-600 hover:text-gold-700">
                                                 {{ quote.inquiry.client_email }}
                                             </a>
                                         </dd>
@@ -265,12 +265,12 @@
                         <!-- Action Buttons -->
                         <div class="mt-6 flex items-center justify-end space-x-3">
                             <a href="mailto:{{ quote.inquiry.client_email }}?subject=Quote for {{ quote.inquiry.project_title }}&body=Hi {{ quote.inquiry.client_name }},%0A%0AThank you for your inquiry regarding {{ quote.inquiry.project_title }}. We have prepared a detailed quote for you:%0A%0AQuote Amount: ₹{{ quote.quote_amount|floatformat:0 }}%0A%0A{% if quote.breakdown %}Cost Breakdown:%0A{% for key, value in quote.breakdown.items %}- {{ key|title }}: ₹{{ value|floatformat:0 }}%0A{% endfor %}{% endif %}%0APlease let us know if you have any questions or need any modifications.%0A%0ABest regards,%0ASumithra KP" 
-                               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                               class="btn-premium-primary px-4 py-2 rounded-lg transition-colors text-sm font-medium flex items-center space-x-2">
                                 <i data-lucide="mail" class="h-4 w-4"></i>
                                 <span>Send Quote</span>
                             </a>
                             <button onclick="exportQuotePDF({{ quote.id }})"
-                                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                    class="bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors text-sm font-medium flex items-center space-x-2">
                                 <i data-lucide="download" class="h-4 w-4"></i>
                                 <span>Export PDF</span>
                             </button>
@@ -287,11 +287,11 @@
                 <p class="text-gray-500 mb-4">Quotes will appear here when clients submit inquiries and estimates are calculated.</p>
                 <div class="flex justify-center space-x-3">
                     <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
-                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                       class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                         View Inquiries
                     </a>
                     <a href="{% url 'service_detail' service.slug %}" target="_blank"
-                       class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium">
+                       class="bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors font-medium">
                         View Service Page
                     </a>
                 </div>
@@ -301,7 +301,7 @@
     </div>
 
     <!-- Quote Analytics -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Quote Analytics & Tips</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -43,15 +43,24 @@
         animation-play-state: paused;
     }
 
+    @media (max-width: 1024px) {
+        .logo-carousel {
+            animation-duration: 20s;
+        }
+    }
     @media (max-width: 640px) {
         .testimonials-slow-scroll {
             animation-duration: 40s;
+        }
+        .logo-carousel {
+            animation-duration: 15s;
         }
     }
 
     /* Testimonial card styling */
     .testimonial-card {
-        height: 300px;
+        min-height: 280px;
+        max-height: 320px;
         display: flex;
         flex-direction: column;
     }
@@ -219,9 +228,9 @@
         </div>
 
         <div class="logo-carousel-container overflow-hidden">
-            <div class="logo-carousel flex items-center space-x-16">
+            <div class="logo-carousel flex items-center space-x-8 md:space-x-12 lg:space-x-16">
                 {% for logo in client_logos %}
-                <div class="flex-shrink-0 w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                <div class="flex-shrink-0 w-32 md:w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
                     {% if logo.website %}
                     <a href="{{ logo.website }}" target="_blank" rel="noopener noreferrer" title="{{ logo.name }}">
                         <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain">
@@ -233,7 +242,7 @@
                 {% endfor %}
                 <!-- Duplicate for seamless loop -->
                 {% for logo in client_logos %}
-                <div class="flex-shrink-0 w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
+                <div class="flex-shrink-0 w-32 md:w-40 h-16 flex items-center justify-center opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
                     {% if logo.website %}
                     <a href="{{ logo.website }}" target="_blank" rel="noopener noreferrer" title="{{ logo.name }}">
                         <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="max-h-12 max-w-full object-contain">
@@ -256,7 +265,7 @@
         </div>
 
         <div class="logo-carousel-container overflow-hidden">
-            <div class="logo-carousel flex items-center space-x-16">
+            <div class="logo-carousel flex items-center space-x-8 md:space-x-12 lg:space-x-16">
                 <div class="flex-shrink-0 w-32 h-12 flex items-center justify-center opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300">
                     <i data-lucide="building-2" class="h-10 w-10 text-charcoal-600 dark:text-gray-400"></i>
                 </div>

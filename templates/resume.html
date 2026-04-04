@@ -169,7 +169,7 @@
 
                 {% for experience in experiences %}
                 <div class="horizontal-item">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Left: Date and Company -->
                         <div class="lg:col-span-1">
                             <div class="flex items-center mb-3">
@@ -264,7 +264,7 @@
 
                 {% for edu in education %}
                 <div class="horizontal-item">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Left: Years and Institution -->
                         <div class="lg:col-span-1">
                             <p class="text-sm font-semibold text-charcoal-500 dark:text-champagne-400/70 mb-2">{{ edu.start_year }} - {{ edu.end_year }}</p>
@@ -339,7 +339,7 @@
                 {% regroup skills by category as skill_groups %}
                 {% for group in skill_groups %}
                 <div class="horizontal-item">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
                         <!-- Left: Category -->
                         <div class="lg:col-span-1">
                             <div class="flex items-center">
@@ -381,7 +381,7 @@
                 <!-- Certifications -->
                 {% for certification in certifications %}
                 <div class="horizontal-item">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Left: Date and Organization -->
                         <div class="lg:col-span-1">
                             <div class="flex items-center mb-3">
@@ -432,7 +432,7 @@
                 <!-- Achievements -->
                 {% for achievement in achievements %}
                 <div class="horizontal-item">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Left: Date and Organization -->
                         <div class="lg:col-span-1">
                             <div class="flex items-center mb-3">

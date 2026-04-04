@@ -15,8 +15,8 @@
     }
     
     input[type="checkbox"]:checked {
-        background-color: #2563eb;
-        border-color: #2563eb;
+        background-color: #d4af37;
+        border-color: #d4af37;
         background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
         background-size: 100% 100%;
         background-position: center;
@@ -24,7 +24,7 @@
     }
     
     input[type="checkbox"]:hover {
-        border-color: #2563eb;
+        border-color: #d4af37;
     }
 </style>
 {% endblock %}
@@ -198,7 +198,7 @@
                     class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                 Cancel
             </button>
-            <button type="submit" class="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <button type="submit" class="px-6 py-2 btn-premium-primary rounded-lg transition-colors">
                 {% if form.instance.pk %}
                     Update Project
                 {% else %}
@@ -220,15 +220,15 @@
                     <h4 class="font-semibold text-gray-900">Title Guidelines</h4>
                     <p>Use descriptive, professional titles that clearly identify your project. Examples: "Residential Complex Design - Phase 1", "USPTO Patent Illustration for Medical Device".</p>
                 </div>
-                <div class="border-l-4 border-green-400 pl-4">
+                <div class="border-l-4 border-gold-400 pl-4">
                     <h4 class="font-semibold text-gray-900">Description Best Practices</h4>
                     <p>Provide comprehensive project details including objectives, scope, deliverables, and outcomes. Include technical specifications, challenges overcome, and innovative solutions implemented.</p>
                 </div>
-                <div class="border-l-4 border-yellow-400 pl-4">
+                <div class="border-l-4 border-gold-300 pl-4">
                     <h4 class="font-semibold text-gray-900">Category Selection</h4>
                     <p>Select all relevant categories to improve project discoverability. Multiple categories help visitors find your work through different search paths.</p>
                 </div>
-                <div class="border-l-4 border-purple-400 pl-4">
+                <div class="border-l-4 border-gold-500 pl-4">
                     <h4 class="font-semibold text-gray-900">Technology Documentation</h4>
                     <p>List all software, tools, and technologies used. Common examples: AutoCAD, MS Visio, Civil 3D, ArcGIS, AERMOD, MATLAB, Python, etc.</p>
                 </div>
@@ -236,11 +236,11 @@
                     <h4 class="font-semibold text-gray-900">Image Requirements</h4>
                     <p>Upload high-quality images that showcase your work. Recommended formats: JPG, PNG. Optimal dimensions: 1200x800px or higher for thumbnails.</p>
                 </div>
-                <div class="border-l-4 border-indigo-400 pl-4">
+                <div class="border-l-4 border-gold-400 pl-4">
                     <h4 class="font-semibold text-gray-900">Featured Projects</h4>
                     <p>Mark your best work as featured to highlight it on the homepage. Featured projects should represent your top-quality work and diverse skills.</p>
                 </div>
-                <div class="border-l-4 border-pink-400 pl-4">
+                <div class="border-l-4 border-gold-300 pl-4">
                     <h4 class="font-semibold text-gray-900">Client Information</h4>
                     <p>Include client names only if you have permission. For confidential projects, use generic terms like "Private Client" or "Government Agency".</p>
                 </div>

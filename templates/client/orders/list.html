@@ -100,7 +100,8 @@
         </div>
 
         {% if orders %}
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-gray-50">
                     <tr>
@@ -133,7 +134,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
                                 {% if order.status == 'requested' %}bg-yellow-100 text-yellow-800
                                 {% elif order.status == 'quoted' %}bg-blue-100 text-blue-800
                                 {% elif order.status == 'approved' %}bg-purple-100 text-purple-800
@@ -155,10 +156,10 @@
                             {{ order.created_at|timesince }} ago
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{% url 'client_order_detail' order.pk %}" 
+                            <a href="{% url 'client_order_detail' order.pk %}"
                                class="text-primary-600 hover:text-primary-700 mr-3">View Details</a>
                             {% if order.status == 'completed' or order.status == 'delivered' %}
-                            <a href="{% url 'client_deliverables' %}?order={{ order.pk }}" 
+                            <a href="{% url 'client_deliverables' %}?order={{ order.pk }}"
                                class="text-green-600 hover:text-green-700">Downloads</a>
                             {% endif %}
                         </td>
@@ -166,6 +167,53 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden divide-y divide-gray-200">
+            {% for order in orders %}
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            {% include 'includes/service_icon.html' with service=order.service_inquiry.service icon_class="h-4 w-4" %}
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">{{ order.service_inquiry.service.title }}</div>
+                            <div class="text-xs text-gray-500">{{ order.order_number }}</div>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        {% if order.status == 'requested' %}bg-yellow-100 text-yellow-800
+                        {% elif order.status == 'quoted' %}bg-blue-100 text-blue-800
+                        {% elif order.status == 'approved' %}bg-purple-100 text-purple-800
+                        {% elif order.status == 'in_progress' %}bg-orange-100 text-orange-800
+                        {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                        {% elif order.status == 'delivered' %}bg-green-100 text-green-800
+                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="text-gray-500">
+                        {% if order.quoted_amount %}
+                            <span class="text-gray-900 font-medium">₹{{ order.quoted_amount|floatformat:0 }}</span>
+                        {% else %}
+                            Pending quote
+                        {% endif %}
+                        &middot; {{ order.created_at|timesince }} ago
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <a href="{% url 'client_order_detail' order.pk %}"
+                           class="text-primary-600 hover:text-primary-700 text-sm font-medium">View</a>
+                        {% if order.status == 'completed' or order.status == 'delivered' %}
+                        <a href="{% url 'client_deliverables' %}?order={{ order.pk }}"
+                           class="text-green-600 hover:text-green-700 text-sm font-medium">Downloads</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
 
         <!-- Pagination -->

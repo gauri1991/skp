@@ -25,23 +25,23 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                <div class="w-8 h-8 bg-gold-100 rounded-lg flex items-center justify-center">
                     {% if section_type == 'hero' %}
-                        <i data-lucide="home" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="home" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'about' %}
-                        <i data-lucide="user" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="user" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'services' %}
-                        <i data-lucide="briefcase" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="briefcase" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'portfolio' %}
-                        <i data-lucide="folder" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="folder" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'testimonials' %}
-                        <i data-lucide="message-circle" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="message-circle" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'contact' %}
-                        <i data-lucide="mail" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="mail" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'stats' %}
-                        <i data-lucide="bar-chart" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="bar-chart" class="h-4 w-4 text-gold-600"></i>
                     {% elif section_type == 'skills' %}
-                        <i data-lucide="zap" class="h-4 w-4 text-primary-600"></i>
+                        <i data-lucide="zap" class="h-4 w-4 text-gold-600"></i>
                     {% endif %}
                 </div>
                 <div>
@@ -72,7 +72,7 @@
                         <p class="mb-2"><strong>Available Services:</strong> {{ current_data.total_services }} active services</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {% for service in current_data.available_services %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gold-100 text-gold-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-gold-100 text-gold-800">
                                     {{ service.title }}
                                 </span>
                             {% endfor %}
@@ -83,7 +83,7 @@
                         <p class="mb-2"><strong>Currently Featured:</strong></p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {% for project in current_data.featured_projects %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-green-100 text-green-800">
                                     {{ project.title }}
                                 </span>
                             {% endfor %}
@@ -103,7 +103,7 @@
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             {% for skill in current_data.available_skills %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gold-100 text-gold-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-gold-100 text-gold-800">
                                     {{ skill.name }} ({{ skill.percentage }}%)
                                 </span>
                             {% endfor %}
@@ -165,7 +165,7 @@
             <div class="mt-8 flex items-center justify-between pt-6 border-t border-gray-200">
                 <div class="flex space-x-4">
                     <button type="submit" 
-                            class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors">
+                            class="inline-flex items-center px-6 py-3 btn-premium-primary font-medium rounded-lg transition-colors">
                         <i data-lucide="save" class="h-4 w-4 mr-2"></i>
                         Save Changes
                     </button>

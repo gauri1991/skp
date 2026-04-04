@@ -38,12 +38,12 @@
     </nav>
 
     <!-- Service Header -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
@@ -64,7 +64,7 @@
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Pending</p>
@@ -88,23 +88,23 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Completed</p>
-                    <p class="text-2xl font-bold text-green-600">{{ completed_inquiries }}</p>
+                    <p class="text-2xl font-bold text-gold-600">{{ completed_inquiries }}</p>
                 </div>
-                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="check-circle" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Avg. Value</p>
-                    <p class="text-2xl font-bold text-purple-600">
+                    <p class="text-2xl font-bold text-gold-600">
                         {% if inquiries %}
                             ₹{{ inquiries|length|floatformat:0 }}
                         {% else %}
@@ -112,15 +112,15 @@
                         {% endif %}
                     </p>
                 </div>
-                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="trending-up" class="h-4 w-4 text-purple-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="trending-up" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Inquiries Management -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <!-- Header with Filters -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 mb-6">
@@ -132,7 +132,7 @@
                 <!-- Status Filter -->
                 <form method="get" class="flex items-center space-x-3">
                     <select name="status" 
-                            class="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                            class="rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                             onchange="this.form.submit()">
                         <option value="">All Status</option>
                         {% for status_value, status_label in status_choices %}
@@ -204,7 +204,7 @@
                                 <div x-show="open" 
                                      @click.away="open = false"
                                      x-transition
-                                     class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 border border-gray-200">
                                     <div class="py-1">
                                         <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'pending')"
                                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -247,7 +247,7 @@
                                     <div class="flex justify-between">
                                         <dt class="text-sm text-gray-500">Email:</dt>
                                         <dd class="text-sm text-gray-900">
-                                            <a href="mailto:{{ inquiry.client_email }}" class="text-primary-600 hover:text-primary-700">
+                                            <a href="mailto:{{ inquiry.client_email }}" class="text-gold-600 hover:text-gold-700">
                                                 {{ inquiry.client_email }}
                                             </a>
                                         </dd>
@@ -256,7 +256,7 @@
                                     <div class="flex justify-between">
                                         <dt class="text-sm text-gray-500">Phone:</dt>
                                         <dd class="text-sm text-gray-900">
-                                            <a href="tel:{{ inquiry.client_phone }}" class="text-primary-600 hover:text-primary-700">
+                                            <a href="tel:{{ inquiry.client_phone }}" class="text-gold-600 hover:text-gold-700">
                                                 {{ inquiry.client_phone }}
                                             </a>
                                         </dd>
@@ -319,7 +319,7 @@
                         <!-- Action Buttons -->
                         <div class="mt-6 flex items-center justify-end space-x-3">
                             <a href="mailto:{{ inquiry.client_email }}?subject=Re: {{ inquiry.project_title }}&body=Hi {{ inquiry.client_name }},{% if inquiry.estimated_cost %}%0A%0AThank you for your inquiry regarding {{ inquiry.project_title }}. Based on your requirements, we have prepared an estimate of ₹{{ inquiry.estimated_cost|floatformat:0 }}.{% endif %}%0A%0ABest regards,%0ASumithra KP" 
-                               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                               class="btn-premium-primary px-4 py-2 rounded-lg transition-colors text-sm font-medium flex items-center space-x-2">
                                 <i data-lucide="mail" class="h-4 w-4"></i>
                                 <span>Reply to Client</span>
                             </a>
@@ -330,7 +330,7 @@
                             </button>
                             {% elif inquiry.status == 'in_progress' %}
                             <button onclick="updateInquiryStatus({{ inquiry.pk }}, 'completed')"
-                                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                                    class="bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors text-sm font-medium">
                                 Mark Complete
                             </button>
                             {% endif %}
@@ -353,7 +353,7 @@
                 </p>
                 {% if current_status %}
                 <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
-                   class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                   class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                     View All Inquiries
                 </a>
                 {% endif %}
@@ -363,7 +363,7 @@
     </div>
 
     <!-- Tips for Managing Inquiries -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Inquiry Management Tips</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

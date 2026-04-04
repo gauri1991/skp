@@ -38,12 +38,12 @@
     </nav>
 
     <!-- Service Header -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
@@ -63,7 +63,7 @@
     </div>
 
     <!-- Tab Management Interface -->
-    <div class="bg-white shadow rounded-lg" x-data="tabManager()">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg" x-data="tabManager()">
         <div class="px-4 py-5 sm:p-6">
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
@@ -72,7 +72,7 @@
                     <p class="text-sm text-gray-500">Configure the tabs that appear on your service page</p>
                 </div>
                 <button @click="addTab()" 
-                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium flex items-center space-x-2">
                     <i data-lucide="plus" class="h-4 w-4"></i>
                     <span>Add Tab</span>
                 </button>
@@ -119,7 +119,7 @@
                                     <i :data-lucide="tab.icon || 'folder'" class="h-4 w-4 text-gray-600"></i>
                                     <input type="text" 
                                            x-model="tab.title"
-                                           class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                           class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                            placeholder="Tab title">
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                             <!-- Tab Type -->
                             <div>
                                 <select x-model="tab.tab_type" 
-                                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                                        class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm">
                                     <option value="info">Info</option>
                                     <option value="requirements">Requirements</option>
                                     <option value="quote">Quote</option>
@@ -141,7 +141,7 @@
                             <div>
                                 <input type="text" 
                                        x-model="tab.icon"
-                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                        placeholder="Icon name">
                             </div>
 
@@ -149,7 +149,7 @@
                             <div>
                                 <input type="number" 
                                        x-model="tab.display_order"
-                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                       class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                        min="0"
                                        placeholder="Order">
                             </div>
@@ -159,7 +159,7 @@
                                 <label class="flex items-center">
                                     <input type="checkbox" 
                                            x-model="tab.is_active"
-                                           class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                           class="rounded border-gray-300 text-gold-600 focus:ring-gold-500">
                                     <span class="ml-2 text-sm text-gray-600">Active</span>
                                 </label>
                                 <button @click="removeTab(index)" 
@@ -174,7 +174,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Custom Content</label>
                             <textarea x-model="tab.content"
                                       rows="4"
-                                      class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                      class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                       placeholder="Enter custom HTML content for this tab..."></textarea>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No tabs configured</h3>
                 <p class="text-gray-500 mb-4">Add tabs to organize your service content for clients.</p>
                 <button @click="addTab()" 
-                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                     Add First Tab
                 </button>
             </div>
@@ -195,12 +195,12 @@
             <!-- Actions -->
             <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200" x-show="tabs.length > 0">
                 <button @click="resetTabs()" 
-                        class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        class="bg-white border border-gray-300 rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
                     Reset
                 </button>
                 <button @click="saveTabs()" 
                         :disabled="saving"
-                        class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50">
+                        class="btn-premium-primary border border-transparent rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 disabled:opacity-50">
                     <span x-show="!saving">Save Changes</span>
                     <span x-show="saving" class="flex items-center">
                         <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -215,7 +215,7 @@
     </div>
 
     <!-- Usage Tips -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Tips for Effective Tab Management</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,7 +230,7 @@
                 <div>
                     <h4 class="font-medium text-gray-900 mb-2">Icon Guidelines</h4>
                     <ul class="text-sm text-gray-600 space-y-1">
-                        <li>• Use descriptive <a href="https://lucide.dev/icons/" target="_blank" class="text-primary-600">Lucide icons</a></li>
+                        <li>• Use descriptive <a href="https://lucide.dev/icons/" target="_blank" class="text-gold-600">Lucide icons</a></li>
                         <li>• Common choices: info, list, calculator, package</li>
                         <li>• Keep icons consistent with your brand</li>
                     </ul>

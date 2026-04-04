@@ -38,12 +38,12 @@
     </nav>
 
     <!-- Service Header -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ service.title }}</h1>
@@ -72,7 +72,7 @@
 
     {% if service.has_bom %}
     <!-- BOM Management Interface -->
-    <div class="bg-white shadow rounded-lg" x-data="bomManager()">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg" x-data="bomManager()">
         <div class="px-4 py-5 sm:p-6">
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
@@ -81,7 +81,7 @@
                     <p class="text-sm text-gray-500">Manage material lists and pricing for this service</p>
                 </div>
                 <button @click="addBOM()" 
-                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                        class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium flex items-center space-x-2">
                     <i data-lucide="plus" class="h-4 w-4"></i>
                     <span>Add BOM Template</span>
                 </button>
@@ -138,23 +138,23 @@
                                     <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <input type="text" 
                                                x-model="bom.name"
-                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                                placeholder="BOM Template Name">
                                         <input type="text" 
                                                x-model="bom.description"
-                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                                placeholder="Description">
                                         <div class="flex items-center space-x-3">
                                             <label class="flex items-center text-sm">
                                                 <input type="checkbox" 
                                                        x-model="bom.is_active"
-                                                       class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                                       class="rounded border-gray-300 text-gold-600 focus:ring-gold-500">
                                                 <span class="ml-2">Active</span>
                                             </label>
                                             <label class="flex items-center text-sm">
                                                 <input type="checkbox" 
                                                        x-model="bom.is_template"
-                                                       class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                                       class="rounded border-gray-300 text-gold-600 focus:ring-gold-500">
                                                 <span class="ml-2">Template</span>
                                             </label>
                                         </div>
@@ -175,7 +175,7 @@
                             <!-- Add Item Button -->
                             <div class="mb-4">
                                 <button @click="addBOMItem(bomIndex)" 
-                                        class="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                                        class="bg-gold-600 text-white px-3 py-2 rounded-lg hover:bg-gold-700 transition-colors text-sm font-medium flex items-center space-x-2">
                                     <i data-lucide="plus" class="h-4 w-4"></i>
                                     <span>Add Item</span>
                                 </button>
@@ -200,7 +200,7 @@
                                             <tr>
                                                 <td class="px-3 py-2">
                                                     <select x-model="item.category" 
-                                                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+                                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm">
                                                         <option value="Materials">Materials</option>
                                                         <option value="Labor">Labor</option>
                                                         <option value="Equipment">Equipment</option>
@@ -215,20 +215,20 @@
                                                 <td class="px-3 py-2">
                                                     <input type="text" 
                                                            x-model="item.item_name"
-                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm"
                                                            placeholder="Item name">
                                                 </td>
                                                 <td class="px-3 py-2">
                                                     <input type="number" 
                                                            x-model="item.quantity"
                                                            @input="updateItemTotal(item)"
-                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm"
                                                            step="0.01"
                                                            min="0">
                                                 </td>
                                                 <td class="px-3 py-2">
                                                     <select x-model="item.unit" 
-                                                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+                                                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm">
                                                         <option value="nos">nos</option>
                                                         <option value="kg">kg</option>
                                                         <option value="mt">mt</option>
@@ -245,7 +245,7 @@
                                                     <input type="number" 
                                                            x-model="item.unit_price"
                                                            @input="updateItemTotal(item)"
-                                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                                           class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm"
                                                            step="0.01"
                                                            min="0">
                                                 </td>
@@ -275,7 +275,7 @@
                                 <div class="mt-2 pl-4 border-l-2 border-gray-200">
                                     <input type="text" 
                                            x-model="item.specification"
-                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
+                                           class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 text-sm"
                                            :placeholder="'Specification for ' + (item.item_name || 'item')">
                                 </div>
                             </template>
@@ -290,7 +290,7 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No BOM templates created</h3>
                 <p class="text-gray-500 mb-4">Create bill of materials templates to standardize your service pricing.</p>
                 <button @click="addBOM()" 
-                        class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                     Create First BOM
                 </button>
             </div>
@@ -298,12 +298,12 @@
             <!-- Actions -->
             <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200" x-show="boms.length > 0">
                 <button @click="resetBOMs()" 
-                        class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        class="bg-white border border-gray-300 rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
                     Reset
                 </button>
                 <button @click="saveBOMs()" 
                         :disabled="saving"
-                        class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50">
+                        class="btn-premium-primary border border-transparent rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 disabled:opacity-50">
                     <span x-show="!saving">Save All BOMs</span>
                     <span x-show="saving" class="flex items-center">
                         <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -318,13 +318,13 @@
     </div>
     {% else %}
     <!-- BOM Disabled Message -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6 text-center">
             <i data-lucide="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
             <h3 class="text-lg font-medium text-gray-900 mb-2">BOM Not Enabled</h3>
             <p class="text-gray-500 mb-4">This service doesn't have Bill of Materials enabled. Enable it in service settings to manage materials and pricing.</p>
             <a href="{% url 'dashboard_service_edit' service.pk %}" 
-               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+               class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                 Edit Service Settings
             </a>
         </div>
@@ -332,7 +332,7 @@
     {% endif %}
 
     <!-- Usage Tips -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">BOM Management Tips</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

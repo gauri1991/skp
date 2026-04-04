@@ -11,7 +11,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">{{ project.title }} - Images</h1>
                 <p class="text-gray-600">Upload and manage images for this project</p>
             </div>
-            <a href="{% url 'dashboard_portfolio_list' %}" class="text-primary-600 hover:text-primary-700">
+            <a href="{% url 'dashboard_portfolio_list' %}" class="text-gold-600 hover:text-gold-700">
                 <i data-lucide="arrow-left" class="h-4 w-4 inline mr-2"></i>
                 Back to Portfolio
             </a>
@@ -27,7 +27,7 @@
             <div @drop.prevent="handleDrop($event)"
                  @dragover.prevent
                  @dragenter.prevent
-                 class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors">
+                 class="border-2 border-dashed border-gold-300 rounded-lg p-8 text-center hover:border-gold-500 transition-colors">
                 <i data-lucide="upload-cloud" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
                 <p class="text-gray-600 mb-2">Drag and drop images here, or click to browse</p>
                 <input type="file" 
@@ -37,7 +37,7 @@
                        class="hidden"
                        id="file-input">
                 <label for="file-input" 
-                       class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors cursor-pointer">
+                       class="btn-premium-primary inline-flex items-center px-4 py-2 rounded-lg transition-colors cursor-pointer">
                     <i data-lucide="folder-open" class="h-4 w-4 mr-2"></i>
                     Choose Files
                 </label>
@@ -51,7 +51,7 @@
                     </p>
                 </div>
                 <button @click="uploadFiles()" 
-                        class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        class="w-full px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
                     Upload Images
                 </button>
             </div>
@@ -87,7 +87,7 @@
                         
                         {% if image.is_thumbnail %}
                             <div class="absolute top-2 right-2">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gold-100 text-gold-800">
                                     Thumbnail
                                 </span>
                             </div>

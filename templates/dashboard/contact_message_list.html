@@ -39,8 +39,8 @@
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-green-100 rounded-lg">
-                <i data-lucide="reply" class="h-6 w-6 text-green-600"></i>
+            <div class="p-2 bg-gold-100 rounded-lg">
+                <i data-lucide="reply" class="h-6 w-6 text-gold-600"></i>
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600">Replied</p>
@@ -51,8 +51,8 @@
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div class="flex items-center">
-            <div class="p-2 bg-yellow-100 rounded-lg">
-                <i data-lucide="calendar" class="h-6 w-6 text-yellow-600"></i>
+            <div class="p-2 bg-gold-100 rounded-lg">
+                <i data-lucide="calendar" class="h-6 w-6 text-gold-600"></i>
             </div>
             <div class="ml-4">
                 <p class="text-sm font-medium text-gray-600">Today</p>
@@ -67,10 +67,10 @@
     <form method="get" class="flex flex-col lg:flex-row gap-4">
         <div class="flex-1">
             <input type="text" name="search" value="{{ search }}" placeholder="Search by name, email, subject, or message..." 
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
         </div>
         <div>
-            <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
                 <option value="">All Status</option>
                 <option value="unread" {% if status == 'unread' %}selected{% endif %}>Unread</option>
                 <option value="read" {% if status == 'read' %}selected{% endif %}>Read</option>
@@ -80,18 +80,18 @@
         </div>
         <div>
             <input type="date" name="date_from" value="{{ date_from }}" placeholder="From date"
-                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
         </div>
         <div>
             <input type="date" name="date_to" value="{{ date_to }}" placeholder="To date"
-                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                   class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-gold-500">
         </div>
         <div class="flex gap-2">
-            <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <button type="submit" class="px-4 py-2 btn-premium-primary rounded-lg transition-colors">
                 <i data-lucide="search" class="h-4 w-4 mr-2 inline"></i>
                 Filter
             </button>
-            <a href="{% url 'dashboard_contact_list' %}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+            <a href="{% url 'dashboard_contact_list' %}" class="px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
                 <i data-lucide="x" class="h-4 w-4 mr-2 inline"></i>
                 Clear
             </a>
@@ -165,7 +165,7 @@
                 <button @click="performBulkAction('mark_read')" class="px-3 py-1 bg-gold-600 text-white text-sm rounded hover:bg-gold-700">
                     Mark as Read
                 </button>
-                <button @click="performBulkAction('mark_replied')" class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                <button @click="performBulkAction('mark_replied')" class="px-3 py-1 bg-gold-600 text-white text-sm rounded hover:bg-gold-700">
                     Mark as Replied
                 </button>
                 <button @click="performBulkAction('delete')" class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
@@ -175,15 +175,16 @@
         </div>
     </div>
 
-    <!-- Messages Table -->
+    <!-- Messages Table (desktop) / Cards (mobile) -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         {% if messages %}
-        <div class="overflow-x-auto table-container">
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto table-container">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            <input type="checkbox" @change="toggleSelectAll()" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                            <input type="checkbox" @change="toggleSelectAll()" class="rounded border-gray-300 text-gold-600 focus:ring-gold-500">
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
@@ -209,7 +210,7 @@
                     {% for message in messages %}
                     <tr class="hover:bg-gray-50 {% if not message.is_read %}bg-champagne-100{% endif %}">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <input type="checkbox" value="{{ message.id }}" class="message-checkbox rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                            <input type="checkbox" value="{{ message.id }}" class="message-checkbox rounded border-gray-300 text-gold-600 focus:ring-gold-500"
                                    @change="toggleMessage('{{ message.id }}')">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -225,9 +226,9 @@
                                         Read
                                     </span>
                                 {% endif %}
-                                
+
                                 {% if message.is_replied %}
-                                    <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">
+                                    <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full font-medium">
                                         <i data-lucide="reply" class="h-3 w-3 mr-1"></i>
                                         Replied
                                     </span>
@@ -256,22 +257,22 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center space-x-2">
-                                <a href="{% url 'dashboard_contact_detail' message.pk %}" 
-                                   class="text-primary-600 hover:text-primary-900" title="View Details">
+                                <a href="{% url 'dashboard_contact_detail' message.pk %}"
+                                   class="text-gold-600 hover:text-gold-700" title="View Details">
                                     <i data-lucide="eye" class="h-4 w-4"></i>
                                 </a>
                                 <button onclick="toggleReadStatus({{ message.id }}, {{ message.is_read|yesno:'true,false' }})"
-                                        class="text-gold-600 hover:text-gold-900" 
+                                        class="text-gold-600 hover:text-gold-900"
                                         title="{% if message.is_read %}Mark as Unread{% else %}Mark as Read{% endif %}">
                                     <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-4 w-4"></i>
                                 </button>
                                 <button onclick="toggleReplyStatus({{ message.id }}, {{ message.is_replied|yesno:'true,false' }})"
-                                        class="text-green-600 hover:text-green-900"
+                                        class="text-gold-600 hover:text-gold-700"
                                         title="{% if message.is_replied %}Mark as Not Replied{% else %}Mark as Replied{% endif %}">
                                     <i data-lucide="reply" class="h-4 w-4"></i>
                                 </button>
                                 <a href="{% url 'dashboard_contact_send_email' message.pk %}"
-                                   class="text-indigo-600 hover:text-indigo-900" title="Reply via Email">
+                                   class="text-gold-600 hover:text-gold-700" title="Reply via Email">
                                     <i data-lucide="send" class="h-4 w-4"></i>
                                 </a>
                                 <a href="{% url 'dashboard_contact_delete' message.pk %}"
@@ -286,10 +287,72 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile Card View -->
+        <div class="md:hidden divide-y divide-gray-200">
+            {% for message in messages %}
+            <div class="p-4 {% if not message.is_read %}bg-champagne-100{% endif %}">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" value="{{ message.id }}" class="message-checkbox rounded border-gray-300 text-gold-600 focus:ring-gold-500"
+                               @change="toggleMessage('{{ message.id }}')">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900 {% if not message.is_read %}font-bold{% endif %}">
+                                {{ message.name }}
+                            </div>
+                            <div class="text-xs text-gray-500">{{ message.email }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1 flex-shrink-0">
+                        {% if not message.is_read %}
+                            <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full font-medium">
+                                Unread
+                            </span>
+                        {% endif %}
+                        {% if message.is_replied %}
+                            <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full font-medium">
+                                Replied
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-sm text-gray-900 {% if not message.is_read %}font-semibold{% endif %} mb-1">
+                    {{ message.subject|truncatechars:50 }}
+                </div>
+                <div class="text-sm text-gray-600 mb-2">
+                    {{ message.message|truncatechars:80 }}
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="text-xs text-gray-500">
+                        {{ message.created_at|date:"M j, Y" }} &middot; {{ message.created_at|time:"g:i A" }}
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <a href="{% url 'dashboard_contact_detail' message.pk %}"
+                           class="text-gold-600 hover:text-gold-700" title="View Details">
+                            <i data-lucide="eye" class="h-4 w-4"></i>
+                        </a>
+                        <button onclick="toggleReadStatus({{ message.id }}, {{ message.is_read|yesno:'true,false' }})"
+                                class="text-gold-600 hover:text-gold-900">
+                            <i data-lucide="{% if message.is_read %}mail{% else %}mail-open{% endif %}" class="h-4 w-4"></i>
+                        </button>
+                        <a href="{% url 'dashboard_contact_send_email' message.pk %}"
+                           class="text-gold-600 hover:text-gold-700" title="Reply">
+                            <i data-lucide="send" class="h-4 w-4"></i>
+                        </a>
+                        <a href="{% url 'dashboard_contact_delete' message.pk %}"
+                           class="text-red-600 hover:text-red-900" title="Delete"
+                           onclick="return confirm('Are you sure you want to delete this message?')">
+                            <i data-lucide="trash-2" class="h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         {% else %}
         <div class="p-8 text-center">
             <i data-lucide="mail" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No contact messages found</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">No contact messages found</h3>
             <p class="text-gray-500">
                 {% if search or status or date_from or date_to %}
                     No messages match your current filters. Try adjusting your search criteria.
@@ -298,7 +361,7 @@
                 {% endif %}
             </p>
             {% if search or status or date_from or date_to %}
-            <a href="{% url 'dashboard_contact_list' %}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <a href="{% url 'dashboard_contact_list' %}" class="mt-4 inline-flex items-center px-4 py-2 btn-premium-primary rounded-lg transition-colors">
                 <i data-lucide="x" class="h-4 w-4 mr-2"></i>
                 Clear Filters
             </a>
@@ -319,20 +382,20 @@
     <div class="flex items-center space-x-2">
         {% if page_obj.has_previous %}
             <a href="?page=1{% if search %}&search={{ search }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" 
-               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">First</a>
+               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50">First</a>
             <a href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" 
-               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">Previous</a>
+               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Previous</a>
         {% endif %}
         
-        <span class="px-3 py-2 text-sm bg-primary-600 text-white rounded-md">
+        <span class="px-3 py-2 text-sm bg-gold-600 text-white rounded-lg">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
         </span>
         
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" 
-               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">Next</a>
+               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Next</a>
             <a href="?page={{ page_obj.paginator.num_pages }}{% if search %}&search={{ search }}{% endif %}{% if status %}&status={{ status }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" 
-               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50">Last</a>
+               class="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Last</a>
         {% endif %}
     </div>
 </div>

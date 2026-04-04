@@ -10,7 +10,7 @@
         <p class="text-gray-600">Manage project categories for better organization</p>
     </div>
     <div class="mt-4 sm:mt-0">
-        <a href="{% url 'dashboard_category_create' %}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+        <a href="{% url 'dashboard_category_create' %}" class="btn-premium-primary inline-flex items-center px-4 py-2 rounded-lg transition-colors">
             <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
             Add Category
         </a>
@@ -51,7 +51,7 @@
                             <div class="text-sm text-gray-500">{{ category.slug }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gold-100 text-gold-800">
                                 {{ category.project_count }} project{{ category.project_count|pluralize }}
                             </span>
                         </td>
@@ -59,7 +59,7 @@
                             <div class="text-sm text-gray-500">{{ category.description|truncatewords:10 }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="{% url 'dashboard_category_edit' category.pk %}" class="text-primary-600 hover:text-primary-900 mr-3">
+                            <a href="{% url 'dashboard_category_edit' category.pk %}" class="text-gold-600 hover:text-gold-700 mr-3">
                                 <i data-lucide="edit" class="h-4 w-4 inline"></i>
                             </a>
                             <a href="{% url 'dashboard_category_delete' category.pk %}" class="text-red-600 hover:text-red-900">
@@ -95,11 +95,11 @@
     {% endif %}
 {% else %}
     <!-- Empty State -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
         <i data-lucide="tag" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
         <h3 class="text-lg font-semibold text-gray-900 mb-2">No categories yet</h3>
         <p class="text-gray-600 mb-6">Create your first category to organize your portfolio projects.</p>
-        <a href="{% url 'dashboard_category_create' %}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+        <a href="{% url 'dashboard_category_create' %}" class="btn-premium-primary inline-flex items-center px-4 py-2 rounded-lg transition-colors">
             <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
             Create First Category
         </a>

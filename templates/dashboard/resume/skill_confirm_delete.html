@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-6 py-6">
             <div class="flex items-center mb-6">
                 <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
                     <i data-lucide="alert-triangle" class="h-6 w-6 text-red-600"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-medium text-gray-900">Delete Skill</h1>
+                    <h1 class="text-lg font-semibold text-gray-900">Delete Skill</h1>
                     <p class="text-sm text-gray-600">This action cannot be undone.</p>
                 </div>
             </div>
@@ -29,10 +29,10 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="flex justify-end space-x-3">
-                    <a href="{% url 'dashboard_resume_skill_list' %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <a href="{% url 'dashboard_resume_skill_list' %}" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                         Cancel
                     </a>
-                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700">
                         <i data-lucide="trash-2" class="h-4 w-4 mr-2 inline"></i>
                         Delete Skill
                     </button>

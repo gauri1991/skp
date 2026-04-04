@@ -11,7 +11,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-white mb-2">Service Management</h1>
-                    <p class="text-primary-100 text-lg">
+                    <p class="text-gold-100 text-lg">
                         Manage your services, track inquiries, and analyze performance from one central location.
                     </p>
                 </div>
@@ -26,7 +26,7 @@
 
     <!-- Key Metrics -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Services</p>
@@ -41,37 +41,37 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
-                    <p class="text-3xl font-bold text-green-600">{{ total_inquiries }}</p>
+                    <p class="text-3xl font-bold text-gold-600">{{ total_inquiries }}</p>
                     <p class="text-xs text-gray-500 mt-1">
                         {{ pending_inquiries }} pending
                     </p>
                 </div>
-                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="mail" class="h-6 w-6 text-green-600"></i>
+                <div class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="mail" class="h-6 w-6 text-gold-600"></i>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Quotes Generated</p>
-                    <p class="text-3xl font-bold text-purple-600">{{ total_quotes }}</p>
+                    <p class="text-3xl font-bold text-gold-600">{{ total_quotes }}</p>
                     <p class="text-xs text-gray-500 mt-1">
                         This month: {{ monthly_quotes }}
                     </p>
                 </div>
-                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="calculator" class="h-6 w-6 text-purple-600"></i>
+                <div class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="calculator" class="h-6 w-6 text-gold-600"></i>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Value</p>
@@ -90,16 +90,16 @@
     </div>
 
     <!-- Quick Actions -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
         </div>
         <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <a href="{% url 'dashboard_service_create' %}" 
-                   class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-primary-200">
-                        <i data-lucide="plus" class="h-5 w-5 text-primary-600"></i>
+                   class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-gold-500 hover:bg-gold-50 transition-colors group">
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gold-200">
+                        <i data-lucide="plus" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-900">Create New Service</h3>
@@ -120,8 +120,8 @@
 
                 <a href="{% url 'services' %}" target="_blank"
                    class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                        <i data-lucide="external-link" class="h-5 w-5 text-green-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-4">
+                        <i data-lucide="external-link" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-900">View Public Page</h3>
@@ -135,11 +135,11 @@
     <!-- Recent Activity & Service Performance -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Inquiries -->
-        <div class="bg-white rounded-lg shadow">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-gray-900">Recent Inquiries</h2>
-                    <a href="{% url 'dashboard_service_list' %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                    <a href="{% url 'dashboard_service_list' %}" class="text-gold-600 hover:text-gold-700 text-sm font-medium">
                         View All →
                     </a>
                 </div>
@@ -178,7 +178,7 @@
         </div>
 
         <!-- Top Performing Services -->
-        <div class="bg-white rounded-lg shadow">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-semibold text-gray-900">Top Performing Services</h2>
             </div>
@@ -188,8 +188,8 @@
                     {% for service in service_performance %}
                     <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                                <i data-lucide="{{ service.icon|default:'settings' }}" class="h-4 w-4 text-primary-600"></i>
+                            <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                                <i data-lucide="{{ service.icon|default:'settings' }}" class="h-4 w-4 text-gold-600"></i>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-900">{{ service.title }}</p>
@@ -216,7 +216,7 @@
     </div>
 
     <!-- Service Management Tips -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">Service Management Tips</h2>
         </div>
@@ -230,15 +230,15 @@
                     <p class="text-sm text-gray-600">Clear, detailed descriptions help clients understand your offerings and increase inquiry quality.</p>
                 </div>
                 <div>
-                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
-                        <i data-lucide="trending-up" class="h-5 w-5 text-green-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mb-3">
+                        <i data-lucide="trending-up" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <h3 class="font-medium text-gray-900 mb-2">Track Performance Metrics</h3>
                     <p class="text-sm text-gray-600">Monitor which services get the most inquiries and highest conversion rates to focus your efforts.</p>
                 </div>
                 <div>
-                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
-                        <i data-lucide="clock" class="h-5 w-5 text-purple-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mb-3">
+                        <i data-lucide="clock" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <h3 class="font-medium text-gray-900 mb-2">Respond Quickly</h3>
                     <p class="text-sm text-gray-600">Fast response times to inquiries significantly improve conversion rates and client satisfaction.</p>
@@ -248,7 +248,7 @@
     </div>
 
     <!-- Status Summary -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">System Status</h2>
         </div>

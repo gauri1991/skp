@@ -7,7 +7,7 @@
 <div class="space-y-6">
     <!-- Services Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Services</p>
@@ -19,11 +19,11 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Active Services</p>
-                    <p class="text-2xl font-bold text-green-600">{{ active_services }}</p>
+                    <p class="text-2xl font-bold text-gold-600">{{ active_services }}</p>
                 </div>
                 <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                     <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Inactive Services</p>
@@ -43,21 +43,21 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Total Inquiries</p>
-                    <p class="text-2xl font-bold text-purple-600">{{ total_inquiries }}</p>
+                    <p class="text-2xl font-bold text-gold-600">{{ total_inquiries }}</p>
                 </div>
-                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <i data-lucide="mail" class="h-4 w-4 text-purple-600"></i>
+                <div class="w-8 h-8 bg-gold-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="mail" class="h-4 w-4 text-gold-600"></i>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Filters and Search -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <div class="p-4 border-b border-gray-200">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                 <div class="flex items-center space-x-2">
@@ -67,7 +67,7 @@
                 
                 <div class="flex items-center space-x-3">
                     <a href="{% url 'dashboard_service_create' %}" 
-                       class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center space-x-2">
+                       class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium flex items-center space-x-2">
                         <i data-lucide="plus" class="h-4 w-4"></i>
                         <span>Add Service</span>
                     </a>
@@ -86,15 +86,15 @@
                            name="search" 
                            value="{{ current_search }}"
                            placeholder="Search services..."
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                           class="mt-1 block w-full rounded-lg border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-500 sm:text-sm">
                 </div>
 
                 <!-- Category Filter -->
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                    <select id="category" 
-                            name="category" 
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                    <select id="category"
+                            name="category"
+                            class="mt-1 block w-full rounded-lg border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-500 sm:text-sm">
                         <option value="">All Categories</option>
                         {% for value, label in categories %}
                             <option value="{{ value }}" {% if current_category == value %}selected{% endif %}>{{ label }}</option>
@@ -107,7 +107,7 @@
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <select id="status" 
                             name="status" 
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                            class="mt-1 block w-full rounded-lg border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-500 sm:text-sm">
                         <option value="">All Status</option>
                         <option value="active" {% if current_status == 'active' %}selected{% endif %}>Active</option>
                         <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>Inactive</option>
@@ -117,11 +117,11 @@
                 <!-- Filter Buttons -->
                 <div class="flex items-end space-x-2">
                     <button type="submit" 
-                            class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors font-medium">
+                            class="bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors font-medium">
                         Filter
                     </button>
                     <a href="{% url 'dashboard_service_list' %}" 
-                       class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors font-medium">
+                       class="bg-gold-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gold-300 transition-colors font-medium">
                         Clear
                     </a>
                 </div>
@@ -147,8 +147,8 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                                    {% include 'includes/service_icon.html' with service=service icon_class="h-5 w-5" icon_color="text-primary-600" %}
+                                <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                                    {% include 'includes/service_icon.html' with service=service icon_class="h-5 w-5" icon_color="text-gold-600" %}
                                 </div>
                                 <div>
                                     <div class="text-sm font-medium text-gray-900">{{ service.title }}</div>
@@ -183,7 +183,7 @@
                                 <span class="text-sm text-gray-900">{{ service.inquiries.count }}</span>
                                 {% if service.inquiries.count > 0 %}
                                     <a href="{% url 'dashboard_service_inquiries' service.pk %}" 
-                                       class="text-primary-600 hover:text-primary-700">
+                                       class="text-gold-600 hover:text-gold-700">
                                         <i data-lucide="eye" class="h-4 w-4"></i>
                                     </a>
                                 {% endif %}
@@ -195,7 +195,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
                                 <a href="{% url 'dashboard_service_detail' service.pk %}" 
-                                   class="text-indigo-600 hover:text-indigo-900" title="View Details">
+                                   class="text-gold-600 hover:text-gold-700" title="View Details">
                                     <i data-lucide="eye" class="h-4 w-4"></i>
                                 </a>
                                 <a href="{% url 'dashboard_service_edit' service.pk %}" 
@@ -203,7 +203,7 @@
                                     <i data-lucide="edit" class="h-4 w-4"></i>
                                 </a>
                                 <a href="{% url 'dashboard_service_preview' service.pk %}" 
-                                   class="text-green-600 hover:text-green-900" title="Preview" target="_blank">
+                                   class="text-gold-600 hover:text-gold-700" title="Preview" target="_blank">
                                     <i data-lucide="external-link" class="h-4 w-4"></i>
                                 </a>
                                 <a href="{% url 'dashboard_service_delete' service.pk %}" 
@@ -221,7 +221,7 @@
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">No services found</h3>
                                 <p class="text-gray-500 mb-4">Get started by creating your first service.</p>
                                 <a href="{% url 'dashboard_service_create' %}" 
-                                   class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                                   class="btn-premium-primary px-4 py-2 rounded-lg transition-colors font-medium">
                                     Create Service
                                 </a>
                             </div>
@@ -238,13 +238,13 @@
             <div class="flex-1 flex justify-between sm:hidden">
                 {% if page_obj.has_previous %}
                     <a href="?page={{ page_obj.previous_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
-                       class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                       class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                         Previous
                     </a>
                 {% endif %}
                 {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
-                       class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                       class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                         Next
                     </a>
                 {% endif %}
@@ -262,17 +262,17 @@
                     </p>
                 </div>
                 <div>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
                         {% if page_obj.has_previous %}
                             <a href="?page={{ page_obj.previous_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
-                               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                               class="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                 <i data-lucide="chevron-left" class="h-4 w-4"></i>
                             </a>
                         {% endif %}
                         
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
-                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary-50 text-sm font-medium text-primary-600">
+                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-gold-50 text-sm font-medium text-gold-600">
                                     {{ num }}
                                 </span>
                             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
@@ -285,7 +285,7 @@
                         
                         {% if page_obj.has_next %}
                             <a href="?page={{ page_obj.next_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" 
-                               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                               class="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                 <i data-lucide="chevron-right" class="h-4 w-4"></i>
                             </a>
                         {% endif %}

@@ -32,7 +32,7 @@
     </nav>
 
     <!-- Form Card -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <form method="post" enctype="multipart/form-data" class="space-y-6" x-data="serviceForm()">
                 {% csrf_token %}
@@ -75,7 +75,7 @@
                                 <p class="mt-1 text-sm text-red-600">{{ form.icon.errors.0 }}</p>
                             {% endif %}
                             <p class="mt-1 text-xs text-gray-500">
-                                Use icons from <a href="https://lucide.dev/icons/" target="_blank" class="text-primary-600 hover:text-primary-700">Lucide</a>
+                                Use icons from <a href="https://lucide.dev/icons/" target="_blank" class="text-gold-600 hover:text-gold-700">Lucide</a>
                             </p>
                         </div>
 
@@ -144,7 +144,7 @@
                                     <div class="flex items-center space-x-2">
                                         <input type="text" 
                                                x-model="features[index]"
-                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                                placeholder="Feature description">
                                         <button type="button" 
                                                 @click="removeFeature(index)"
@@ -155,7 +155,7 @@
                                 </template>
                                 <button type="button" 
                                         @click="addFeature()"
-                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                                     <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
                                     Add Feature
                                 </button>
@@ -174,10 +174,10 @@
                                 </div>
                                 <template x-for="(step, index) in process_steps" :key="index">
                                     <div class="flex items-center space-x-2">
-                                        <span class="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-800 rounded-full flex items-center justify-center text-xs font-bold" x-text="index + 1"></span>
+                                        <span class="flex-shrink-0 w-6 h-6 bg-gold-100 text-gold-800 rounded-full flex items-center justify-center text-xs font-bold" x-text="index + 1"></span>
                                         <input type="text" 
                                                x-model="process_steps[index]"
-                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                                placeholder="Process step description">
                                         <button type="button" 
                                                 @click="removeProcessStep(index)"
@@ -188,7 +188,7 @@
                                 </template>
                                 <button type="button" 
                                         @click="addProcessStep()"
-                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                                     <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
                                     Add Process Step
                                 </button>
@@ -209,7 +209,7 @@
                                     <div class="flex items-center space-x-2">
                                         <input type="text" 
                                                x-model="deliverables[index]"
-                                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                               class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-gold-500 focus:ring-gold-500 sm:text-sm"
                                                placeholder="Deliverable description">
                                         <button type="button" 
                                                 @click="removeDeliverable(index)"
@@ -220,7 +220,7 @@
                                 </template>
                                 <button type="button" 
                                         @click="addDeliverable()"
-                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
                                     <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
                                     Add Deliverable
                                 </button>
@@ -299,11 +299,11 @@
                 <div class="pt-6">
                     <div class="flex justify-end space-x-3">
                         <a href="{% url 'dashboard_service_list' %}" 
-                           class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
+                           class="bg-white border border-gray-300 rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50">
                             Cancel
                         </a>
                         <button type="submit" 
-                                class="bg-primary-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                class="btn-premium-primary border border-transparent rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500">
                             {% if object %}Update Service{% else %}Create Service{% endif %}
                         </button>
                     </div>

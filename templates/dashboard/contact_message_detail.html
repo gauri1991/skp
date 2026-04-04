@@ -10,7 +10,7 @@
         <p class="text-gray-600">Received on {{ message.created_at|date:"F j, Y \a\t g:i A" }}</p>
     </div>
     <div class="mt-4 sm:mt-0 flex gap-2">
-        <a href="{% url 'dashboard_contact_list' %}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+        <a href="{% url 'dashboard_contact_list' %}" class="inline-flex items-center px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
             <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
             Back to Messages
         </a>
@@ -48,12 +48,12 @@
         {% endif %}
         
         {% if message.is_replied %}
-            <span class="flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full">
+            <span class="flex items-center px-2 py-1 bg-gold-100 text-gold-800 rounded-full">
                 <i data-lucide="reply" class="h-3 w-3 mr-1"></i>
                 Replied
             </span>
         {% else %}
-            <span class="flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">
+            <span class="flex items-center px-2 py-1 bg-gold-100 text-gold-800 rounded-full">
                 <i data-lucide="clock" class="h-3 w-3 mr-1"></i>
                 Awaiting Reply
             </span>
@@ -85,8 +85,8 @@
             <div class="border-b border-gray-200 pb-4 mb-6">
                 <div class="flex items-start justify-between">
                     <div class="flex items-center">
-                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                            <span class="text-primary-600 font-semibold text-lg">
+                        <div class="w-12 h-12 bg-gold-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-gold-600 font-semibold text-lg">
                                 {{ message.name|first|upper }}
                             </span>
                         </div>
@@ -108,7 +108,7 @@
                 </div>
                 
                 <div class="mt-4">
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ message.subject }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ message.subject }}</h3>
                 </div>
             </div>
             
@@ -120,7 +120,7 @@
         
         <!-- Quick Actions -->
         <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <button onclick="toggleReadStatus()" 
                         class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
@@ -132,7 +132,7 @@
                 
                 <button onclick="toggleReplyStatus()" 
                         class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i data-lucide="reply" class="h-6 w-6 text-green-600 mb-2"></i>
+                    <i data-lucide="reply" class="h-6 w-6 text-gold-600 mb-2"></i>
                     <span class="text-sm font-medium">
                         {% if message.is_replied %}Mark Not Replied{% else %}Mark Replied{% endif %}
                     </span>
@@ -140,7 +140,7 @@
                 
                 <a href="{% url 'dashboard_contact_send_email' message.pk %}" 
                    class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i data-lucide="send" class="h-6 w-6 text-indigo-600 mb-2"></i>
+                    <i data-lucide="send" class="h-6 w-6 text-gold-600 mb-2"></i>
                     <span class="text-sm font-medium">Send Email Reply</span>
                 </a>
                 
@@ -158,7 +158,7 @@
     <div class="lg:col-span-1">
         <!-- Message Info -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Message Information</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Message Information</h3>
             <dl class="space-y-3">
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Message ID</dt>
@@ -187,7 +187,7 @@
                             {% endif %}
                             
                             {% if message.is_replied %}
-                                <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                <span class="inline-flex items-center px-2 py-1 bg-gold-100 text-gold-800 text-xs rounded-full">
                                     <i data-lucide="reply" class="h-3 w-3 mr-1"></i>
                                     Replied
                                 </span>
@@ -200,7 +200,7 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Phone</dt>
                     <dd class="text-sm text-gray-900">
-                        <a href="tel:{{ message.phone }}" class="text-primary-600 hover:text-primary-700">
+                        <a href="tel:{{ message.phone }}" class="text-gold-600 hover:text-gold-700">
                             {{ message.phone }}
                         </a>
                     </dd>
@@ -225,24 +225,24 @@
         
         <!-- Contact Actions -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Actions</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Actions</h3>
             <div class="space-y-3">
                 <a href="{% url 'dashboard_contact_send_email' message.pk %}" 
-                   class="w-full flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                   class="w-full flex items-center justify-center px-4 py-2 btn-premium-primary rounded-lg transition-colors">
                     <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
                     Send Email
                 </a>
                 
                 {% if message.phone %}
                 <a href="tel:{{ message.phone }}" 
-                   class="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                   class="w-full flex items-center justify-center px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
                     <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
                     Call {{ message.name }}
                 </a>
                 {% endif %}
                 
                 <button onclick="copyContactInfo()" 
-                        class="w-full flex items-center justify-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        class="w-full flex items-center justify-center px-4 py-2 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors">
                     <i data-lucide="copy" class="h-4 w-4 mr-2"></i>
                     Copy Contact Info
                 </button>
@@ -318,13 +318,13 @@ Message:
         const button = event.target.closest('button');
         const originalText = button.innerHTML;
         button.innerHTML = '<i data-lucide="check" class="h-4 w-4 mr-2"></i>Copied!';
-        button.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+        button.classList.remove('bg-gold-600', 'hover:bg-gold-700');
         button.classList.add('bg-green-600', 'hover:bg-green-700');
-        
+
         setTimeout(() => {
             button.innerHTML = originalText;
             button.classList.remove('bg-green-600', 'hover:bg-green-700');
-            button.classList.add('bg-gray-600', 'hover:bg-gray-700');
+            button.classList.add('bg-gold-600', 'hover:bg-gold-700');
             lucide.createIcons();
         }, 2000);
     }).catch(function(err) {

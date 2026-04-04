@@ -32,7 +32,7 @@
     </nav>
 
     <!-- Warning Card -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <!-- Warning Icon and Title -->
             <div class="flex items-center mb-6">
@@ -48,8 +48,8 @@
             <!-- Service Information -->
             <div class="bg-gray-50 rounded-lg p-4 mb-6">
                 <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-primary-600"></i>
+                    <div class="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center mr-3">
+                        <i data-lucide="{{ service.icon|default:'settings' }}" class="h-5 w-5 text-gold-600"></i>
                     </div>
                     <div>
                         <h4 class="font-medium text-gray-900">{{ service.title }}</h4>
@@ -79,7 +79,7 @@
             </div>
 
             <!-- Warning Message -->
-            <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <div class="flex">
                     <div class="flex-shrink-0">
                         <i data-lucide="alert-circle" class="h-5 w-5 text-red-400"></i>
@@ -131,11 +131,11 @@
                 <!-- Action Buttons -->
                 <div class="flex justify-end space-x-3 pt-6">
                     <a href="{% url 'dashboard_service_detail' service.pk %}" 
-                       class="bg-white border border-gray-300 rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                       class="bg-white border border-gray-300 rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         Cancel
                     </a>
                     <button type="submit" 
-                            class="bg-red-600 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            class="bg-red-600 border border-transparent rounded-lg py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
                         Delete Service
                     </button>
@@ -146,7 +146,7 @@
 
     <!-- Related Data Summary -->
     {% if service.inquiries.exists or service.tabs.exists or service.requirements.exists or service.bom_templates.exists %}
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow-sm border border-gray-200 rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Related Data That Will Be Deleted</h3>
             
