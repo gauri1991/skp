@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.theme_context',
                 'main.context_processors.site_settings_context',
+                'main.context_processors.client_portal_context',
             ],
         },
     },
@@ -129,6 +130,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Media files (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Private files (client deliverables, AI outputs) - never URL-served
+PRIVATE_MEDIA_ROOT = BASE_DIR / 'private_media'
+
+# Allow client sketch/plan uploads up to 15 MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 15 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 15 * 1024 * 1024
 
 # Authentication Backends
 AUTHENTICATION_BACKENDS = [

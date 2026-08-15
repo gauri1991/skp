@@ -229,10 +229,13 @@
                     <i data-lucide="external-link" class="h-4 w-4 mr-2"></i>
                     Back to Website
                 </a>
-                <a href="{% url 'dashboard_logout' %}" class="text-sm text-red-600 hover:text-red-700 flex items-center">
-                    <i data-lucide="log-out" class="h-4 w-4 mr-1"></i>
-                    Logout
-                </a>
+                <form method="post" action="{% url 'client_logout' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-sm text-red-600 hover:text-red-700 flex items-center">
+                        <i data-lucide="log-out" class="h-4 w-4 mr-1"></i>
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </div>

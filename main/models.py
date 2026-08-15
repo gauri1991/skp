@@ -1,6 +1,15 @@
+from datetime import timedelta
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+
+from .storage import private_storage
+
+
+def default_deliverable_expiry():
+    from django.utils import timezone
+    return timezone.now() + timedelta(days=90)
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -517,6 +526,11 @@ class ServiceInquiry(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='inquiries')
     client_name = models.CharField(max_length=200)
     client_email = models.EmailField()
+    client = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='service_inquiries',
+        help_text="Linked client account, when the inquiry came from a logged-in client"
+    )
     client_phone = models.CharField(max_length=20, blank=True)
     company = models.CharField(max_length=200, blank=True)
     project_title = models.CharField(max_length=300)
@@ -648,6 +662,13 @@ class ClientProfile(models.Model):
         default='both'
     )
     
+    # AI access controls
+    ai_enabled = models.BooleanField(default=True, help_text="Allow this client to use AI features")
+    ai_daily_limit = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text="Per-client daily AI generation limit override (blank = use each feature's default)"
+    )
+
     # Account settings
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -750,14 +771,14 @@ class ClientDeliverable(models.Model):
     order = models.ForeignKey(ClientOrder, on_delete=models.CASCADE, related_name='deliverables')
     title = models.CharField(max_length=200, help_text="Title of the deliverable")
     description = models.TextField(blank=True, help_text="Description of the deliverable")
-    file = models.FileField(upload_to='client_deliverables/', help_text="Secure file storage")
+    file = models.FileField(storage=private_storage, upload_to='client_deliverables/', help_text="Private file storage (not URL-served)")
     file_type = models.CharField(max_length=50, blank=True, help_text="File type/category")
     file_size = models.PositiveIntegerField(help_text="File size in bytes")
     
     # Access control
     status = models.CharField(max_length=20, choices=DELIVERABLE_STATUS_CHOICES, default='preparing')
     access_token = models.CharField(max_length=100, unique=True, help_text="Secure access token")
-    expires_at = models.DateTimeField(help_text="When access expires")
+    expires_at = models.DateTimeField(default=default_deliverable_expiry, help_text="When access expires")
     download_count = models.PositiveIntegerField(default=0)
     max_downloads = models.PositiveIntegerField(default=10, help_text="Maximum allowed downloads")
     
@@ -788,7 +809,7 @@ class ClientDeliverable(models.Model):
         from datetime import datetime
         from django.utils import timezone
         
-        if self.status != 'ready':
+        if self.status not in ('ready', 'downloaded'):
             return False
         if self.expires_at < timezone.now():
             return False

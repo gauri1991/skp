@@ -115,6 +115,7 @@ urlpatterns = [
     # Client Deliverables
     path('client/deliverables/', views.ClientDeliverablesView.as_view(), name='client_deliverables'),
     path('client/deliverables/<int:pk>/download/', views.ClientDeliverableDownloadView.as_view(), name='client_deliverable_download'),
+    path('client/logout/', views.ClientLogoutView.as_view(), name='client_logout'),
     
     # Homepage Management
     path('dashboard/homepage/', views.HomepageSectionListView.as_view(), name='dashboard_homepage_sections'),

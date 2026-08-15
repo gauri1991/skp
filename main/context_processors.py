@@ -29,3 +29,20 @@ def site_settings_context(request):
     return {
         'site_settings': site_settings
     }
+
+def client_portal_context(request):
+    """Sidebar badge counts for the client portal, available on every page."""
+    if not request.user.is_authenticated or not hasattr(request.user, 'client_profile'):
+        return {}
+    from .models import ClientOrder, ClientDeliverable, ClientMessage, ClientNotification
+    user = request.user
+    return {
+        'unread_notifications_count': ClientNotification.objects.filter(
+            client=user, is_read=False).count(),
+        'unread_messages_count': ClientMessage.objects.filter(
+            client=user, status__in=['open', 'in_progress', 'waiting_client']).count(),
+        'active_orders': ClientOrder.objects.filter(
+            client=user, status__in=['requested', 'quoted', 'approved', 'in_progress', 'review']).count(),
+        'ready_deliverables_count': ClientDeliverable.objects.filter(
+            order__client=user, status='ready').count(),
+    }

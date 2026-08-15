@@ -70,3 +70,4 @@ collect_static.sh
 deploy.sh
 deploy-webhook.php
 create_sample_resume.py
+private_media/

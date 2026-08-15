@@ -1,14 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from .mixins import StaffRequiredMixin, ClientRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+def _is_staff(u):
+    return u.is_authenticated and (u.is_staff or u.is_superuser)
+
+
+staff_required = user_passes_test(_is_staff, login_url='/dashboard/login/')
 from django.contrib import messages
 from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView, 
     TemplateView, DetailView, View
 )
-from django.urls import reverse_lazy
-from django.http import JsonResponse, HttpResponse
+from django.urls import reverse, reverse_lazy
+import os
+
+from django.http import JsonResponse, HttpResponse, FileResponse, Http404
 from django.utils import timezone
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
@@ -166,13 +176,18 @@ class DashboardLoginView(auth_views.LoginView):
 class DashboardLogoutView(auth_views.LogoutView):
     template_name = 'dashboard/logout.html'
     http_method_names = ['get', 'post']
-    
+
     def dispatch(self, request, *args, **kwargs):
         messages.info(request, 'You have been logged out successfully.')
         return super().dispatch(request, *args, **kwargs)
 
+
+class ClientLogoutView(auth_views.LogoutView):
+    http_method_names = ['get', 'post']
+    next_page = '/client/login/?type=client'
+
 # Dashboard Views
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(StaffRequiredMixin, TemplateView):
     template_name = 'dashboard/home.html'
     
     def get_context_data(self, **kwargs):
@@ -194,7 +209,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         
         return context
 
-class PortfolioListView(LoginRequiredMixin, ListView):
+class PortfolioListView(StaffRequiredMixin, ListView):
     model = Project
     template_name = 'dashboard/portfolio_list.html'
     context_object_name = 'projects'
@@ -232,7 +247,7 @@ class PortfolioListView(LoginRequiredMixin, ListView):
         context['featured_filter'] = self.request.GET.get('featured', '')
         return context
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(StaffRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm
     template_name = 'dashboard/project_form.html'
@@ -247,7 +262,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         messages.error(self.request, 'Please correct the errors below.')
         return super().form_invalid(form)
 
-class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+class ProjectUpdateView(StaffRequiredMixin, UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'dashboard/project_form.html'
@@ -261,7 +276,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         messages.error(self.request, 'Please correct the errors below.')
         return super().form_invalid(form)
 
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class ProjectDeleteView(StaffRequiredMixin, DeleteView):
     model = Project
     template_name = 'dashboard/project_confirm_delete.html'
     success_url = reverse_lazy('dashboard_portfolio_list')
@@ -270,7 +285,7 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(request, 'Project deleted successfully!')
         return super().delete(request, *args, **kwargs)
 
-class ProjectDetailView(LoginRequiredMixin, DetailView):
+class ProjectDetailView(StaffRequiredMixin, DetailView):
     model = Project
     template_name = 'dashboard/project_detail.html'
     context_object_name = 'project'
@@ -283,7 +298,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         ).exclude(id=self.object.id).distinct()[:3]
         return context
 
-class ProjectImagesView(LoginRequiredMixin, DetailView):
+class ProjectImagesView(StaffRequiredMixin, DetailView):
     model = Project
     template_name = 'dashboard/project_images.html'
     context_object_name = 'project'
@@ -293,7 +308,7 @@ class ProjectImagesView(LoginRequiredMixin, DetailView):
         context['images'] = self.object.images.all().order_by('display_order')
         return context
 
-class CategoryListView(LoginRequiredMixin, ListView):
+class CategoryListView(StaffRequiredMixin, ListView):
     model = Category
     template_name = 'dashboard/category_list.html'
     context_object_name = 'categories'
@@ -304,7 +319,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
             project_count=Count('projects')
         ).order_by('name')
 
-class CategoryCreateView(LoginRequiredMixin, CreateView):
+class CategoryCreateView(StaffRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     template_name = 'dashboard/category_form.html'
@@ -314,7 +329,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Category created successfully!')
         return super().form_valid(form)
 
-class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+class CategoryUpdateView(StaffRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = 'dashboard/category_form.html'
@@ -324,7 +339,7 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Category updated successfully!')
         return super().form_valid(form)
 
-class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+class CategoryDeleteView(StaffRequiredMixin, DeleteView):
     model = Category
     template_name = 'dashboard/category_confirm_delete.html'
     success_url = reverse_lazy('dashboard_category_list')
@@ -334,7 +349,7 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # AJAX Views
-@login_required
+@staff_required
 @require_POST
 def upload_project_image(request):
     """Handle AJAX image upload for projects"""
@@ -372,7 +387,7 @@ def upload_project_image(request):
             'error': str(e)
         }, status=400)
 
-@login_required
+@staff_required
 @require_POST
 def delete_project_image(request, pk):
     """Handle AJAX image deletion"""
@@ -386,7 +401,7 @@ def delete_project_image(request, pk):
             'error': str(e)
         }, status=400)
 
-@login_required
+@staff_required
 @require_POST
 def reorder_images(request):
     """Handle AJAX image reordering"""
@@ -407,7 +422,7 @@ def reorder_images(request):
         }, status=400)
 
 # Theme Settings View
-@login_required
+@staff_required
 def theme_settings(request):
     """Handle theme settings page"""
     from .models import ThemeSettings
@@ -433,7 +448,7 @@ def theme_settings(request):
 
 
 # Theme Settings View
-@login_required
+@staff_required
 def theme_settings(request):
     """Handle theme settings"""
     if request.method == 'POST':
@@ -460,7 +475,7 @@ def theme_settings(request):
     })
 
 # Resume Management Views
-class ResumeManagementView(LoginRequiredMixin, TemplateView):
+class ResumeManagementView(StaffRequiredMixin, TemplateView):
     template_name = 'dashboard/resume/overview.html'
     
     def get_context_data(self, **kwargs):
@@ -476,7 +491,7 @@ class ResumeManagementView(LoginRequiredMixin, TemplateView):
         return context
 
 # Professional Summary Views
-class ProfessionalSummaryUpdateView(LoginRequiredMixin, UpdateView):
+class ProfessionalSummaryUpdateView(StaffRequiredMixin, UpdateView):
     model = ProfessionalSummary
     form_class = ProfessionalSummaryForm
     template_name = 'dashboard/resume/summary_form.html'
@@ -497,13 +512,13 @@ class ProfessionalSummaryUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 # Experience Management Views
-class ResumeExperienceListView(LoginRequiredMixin, ListView):
+class ResumeExperienceListView(StaffRequiredMixin, ListView):
     model = ResumeExperience
     template_name = 'dashboard/resume/experience_list.html'
     context_object_name = 'experiences'
     ordering = ['display_order', '-start_date']
 
-class ResumeExperienceCreateView(LoginRequiredMixin, CreateView):
+class ResumeExperienceCreateView(StaffRequiredMixin, CreateView):
     model = ResumeExperience
     form_class = ResumeExperienceForm
     template_name = 'dashboard/resume/experience_form.html'
@@ -513,7 +528,7 @@ class ResumeExperienceCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Experience added successfully!')
         return super().form_valid(form)
 
-class ResumeExperienceUpdateView(LoginRequiredMixin, UpdateView):
+class ResumeExperienceUpdateView(StaffRequiredMixin, UpdateView):
     model = ResumeExperience
     form_class = ResumeExperienceForm
     template_name = 'dashboard/resume/experience_form.html'
@@ -523,7 +538,7 @@ class ResumeExperienceUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Experience updated successfully!')
         return super().form_valid(form)
 
-class ResumeExperienceDeleteView(LoginRequiredMixin, DeleteView):
+class ResumeExperienceDeleteView(StaffRequiredMixin, DeleteView):
     model = ResumeExperience
     template_name = 'dashboard/resume/experience_confirm_delete.html'
     success_url = reverse_lazy('dashboard_resume_experience_list')
@@ -533,13 +548,13 @@ class ResumeExperienceDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # Education Management Views
-class ResumeEducationListView(LoginRequiredMixin, ListView):
+class ResumeEducationListView(StaffRequiredMixin, ListView):
     model = ResumeEducation
     template_name = 'dashboard/resume/education_list.html'
     context_object_name = 'education_list'
     ordering = ['display_order', '-end_year']
 
-class ResumeEducationCreateView(LoginRequiredMixin, CreateView):
+class ResumeEducationCreateView(StaffRequiredMixin, CreateView):
     model = ResumeEducation
     form_class = ResumeEducationForm
     template_name = 'dashboard/resume/education_form.html'
@@ -549,7 +564,7 @@ class ResumeEducationCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Education added successfully!')
         return super().form_valid(form)
 
-class ResumeEducationUpdateView(LoginRequiredMixin, UpdateView):
+class ResumeEducationUpdateView(StaffRequiredMixin, UpdateView):
     model = ResumeEducation
     form_class = ResumeEducationForm
     template_name = 'dashboard/resume/education_form.html'
@@ -559,7 +574,7 @@ class ResumeEducationUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Education updated successfully!')
         return super().form_valid(form)
 
-class ResumeEducationDeleteView(LoginRequiredMixin, DeleteView):
+class ResumeEducationDeleteView(StaffRequiredMixin, DeleteView):
     model = ResumeEducation
     template_name = 'dashboard/resume/education_confirm_delete.html'
     success_url = reverse_lazy('dashboard_resume_education_list')
@@ -569,13 +584,13 @@ class ResumeEducationDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # Skills Management Views
-class ResumeSkillListView(LoginRequiredMixin, ListView):
+class ResumeSkillListView(StaffRequiredMixin, ListView):
     model = ResumeSkill
     template_name = 'dashboard/resume/skill_list.html'
     context_object_name = 'skills'
     ordering = ['category__display_order', 'display_order']
 
-class ResumeSkillCreateView(LoginRequiredMixin, CreateView):
+class ResumeSkillCreateView(StaffRequiredMixin, CreateView):
     model = ResumeSkill
     form_class = ResumeSkillForm
     template_name = 'dashboard/resume/skill_form.html'
@@ -585,7 +600,7 @@ class ResumeSkillCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Skill added successfully!')
         return super().form_valid(form)
 
-class ResumeSkillUpdateView(LoginRequiredMixin, UpdateView):
+class ResumeSkillUpdateView(StaffRequiredMixin, UpdateView):
     model = ResumeSkill
     form_class = ResumeSkillForm
     template_name = 'dashboard/resume/skill_form.html'
@@ -595,7 +610,7 @@ class ResumeSkillUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Skill updated successfully!')
         return super().form_valid(form)
 
-class ResumeSkillDeleteView(LoginRequiredMixin, DeleteView):
+class ResumeSkillDeleteView(StaffRequiredMixin, DeleteView):
     model = ResumeSkill
     template_name = 'dashboard/resume/skill_confirm_delete.html'
     success_url = reverse_lazy('dashboard_resume_skill_list')
@@ -605,7 +620,7 @@ class ResumeSkillDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # Skill Reorder View
-@login_required
+@staff_required
 @require_http_methods(["POST"])
 def resume_skill_reorder(request):
     import json
@@ -632,13 +647,13 @@ def resume_skill_reorder(request):
         return JsonResponse({'success': False, 'error': str(e)})
 
 # Skill Category Management Views
-class SkillCategoryListView(LoginRequiredMixin, ListView):
+class SkillCategoryListView(StaffRequiredMixin, ListView):
     model = SkillCategory
     template_name = 'dashboard/resume/skill_category_list.html'
     context_object_name = 'categories'
     ordering = ['display_order', 'name']
 
-class SkillCategoryCreateView(LoginRequiredMixin, CreateView):
+class SkillCategoryCreateView(StaffRequiredMixin, CreateView):
     model = SkillCategory
     form_class = SkillCategoryForm
     template_name = 'dashboard/resume/skill_category_form.html'
@@ -648,7 +663,7 @@ class SkillCategoryCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Skill category created successfully!')
         return super().form_valid(form)
 
-class SkillCategoryUpdateView(LoginRequiredMixin, UpdateView):
+class SkillCategoryUpdateView(StaffRequiredMixin, UpdateView):
     model = SkillCategory
     form_class = SkillCategoryForm
     template_name = 'dashboard/resume/skill_category_form.html'
@@ -658,7 +673,7 @@ class SkillCategoryUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Skill category updated successfully!')
         return super().form_valid(form)
 
-class SkillCategoryDeleteView(LoginRequiredMixin, DeleteView):
+class SkillCategoryDeleteView(StaffRequiredMixin, DeleteView):
     model = SkillCategory
     template_name = 'dashboard/resume/skill_category_confirm_delete.html'
     success_url = reverse_lazy('dashboard_skill_category_list')
@@ -668,13 +683,13 @@ class SkillCategoryDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # Certification Management Views
-class CertificationListView(LoginRequiredMixin, ListView):
+class CertificationListView(StaffRequiredMixin, ListView):
     model = Certification
     template_name = 'dashboard/resume/certification_list.html'
     context_object_name = 'certifications'
     ordering = ['display_order', '-issue_date']
 
-class CertificationCreateView(LoginRequiredMixin, CreateView):
+class CertificationCreateView(StaffRequiredMixin, CreateView):
     model = Certification
     form_class = CertificationForm
     template_name = 'dashboard/resume/certification_form.html'
@@ -684,7 +699,7 @@ class CertificationCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Certification added successfully!')
         return super().form_valid(form)
 
-class CertificationUpdateView(LoginRequiredMixin, UpdateView):
+class CertificationUpdateView(StaffRequiredMixin, UpdateView):
     model = Certification
     form_class = CertificationForm
     template_name = 'dashboard/resume/certification_form.html'
@@ -694,7 +709,7 @@ class CertificationUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Certification updated successfully!')
         return super().form_valid(form)
 
-class CertificationDeleteView(LoginRequiredMixin, DeleteView):
+class CertificationDeleteView(StaffRequiredMixin, DeleteView):
     model = Certification
     template_name = 'dashboard/resume/certification_confirm_delete.html'
     success_url = reverse_lazy('dashboard_resume_certification_list')
@@ -704,13 +719,13 @@ class CertificationDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 # Achievement Management Views
-class AchievementListView(LoginRequiredMixin, ListView):
+class AchievementListView(StaffRequiredMixin, ListView):
     model = Achievement
     template_name = 'dashboard/resume/achievement_list.html'
     context_object_name = 'achievements'
     ordering = ['display_order', '-date_achieved']
 
-class AchievementCreateView(LoginRequiredMixin, CreateView):
+class AchievementCreateView(StaffRequiredMixin, CreateView):
     model = Achievement
     form_class = AchievementForm
     template_name = 'dashboard/resume/achievement_form.html'
@@ -720,7 +735,7 @@ class AchievementCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Achievement added successfully!')
         return super().form_valid(form)
 
-class AchievementUpdateView(LoginRequiredMixin, UpdateView):
+class AchievementUpdateView(StaffRequiredMixin, UpdateView):
     model = Achievement
     form_class = AchievementForm
     template_name = 'dashboard/resume/achievement_form.html'
@@ -730,7 +745,7 @@ class AchievementUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Achievement updated successfully!')
         return super().form_valid(form)
 
-class AchievementDeleteView(LoginRequiredMixin, DeleteView):
+class AchievementDeleteView(StaffRequiredMixin, DeleteView):
     model = Achievement
     template_name = 'dashboard/resume/achievement_confirm_delete.html'
     success_url = reverse_lazy('dashboard_resume_achievement_list')
@@ -788,6 +803,10 @@ def service_inquiry(request, slug):
         form = DynamicServiceInquiryForm(service, request.POST, request.FILES)
         if form.is_valid():
             inquiry = form.save()
+            # Link inquiry to the logged-in client account, if any
+            if request.user.is_authenticated and hasattr(request.user, 'client_profile'):
+                inquiry.client = request.user
+                inquiry.save(update_fields=['client'])
             messages.success(
                 request, 
                 f'Thank you! Your inquiry for {service.title} has been submitted. '
@@ -948,7 +967,7 @@ def service_get_bom(request):
 # DASHBOARD SERVICE MANAGEMENT VIEWS
 # ============================================================================
 
-class DashboardServiceListView(LoginRequiredMixin, ListView):
+class DashboardServiceListView(StaffRequiredMixin, ListView):
     """List all services in the dashboard with management options."""
     model = Service
     template_name = 'dashboard/services/list.html'
@@ -994,7 +1013,7 @@ class DashboardServiceListView(LoginRequiredMixin, ListView):
         return context
 
 
-class DashboardServiceCreateView(LoginRequiredMixin, CreateView):
+class DashboardServiceCreateView(StaffRequiredMixin, CreateView):
     """Create a new service."""
     model = Service
     template_name = 'dashboard/services/form.html'
@@ -1005,7 +1024,7 @@ class DashboardServiceCreateView(LoginRequiredMixin, CreateView):
         return reverse('dashboard_service_detail', kwargs={'pk': self.object.pk})
 
 
-class DashboardServiceDetailView(LoginRequiredMixin, DetailView):
+class DashboardServiceDetailView(StaffRequiredMixin, DetailView):
     """View service details with management options."""
     model = Service
     template_name = 'dashboard/services/detail.html'
@@ -1023,7 +1042,7 @@ class DashboardServiceDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class DashboardServiceUpdateView(LoginRequiredMixin, UpdateView):
+class DashboardServiceUpdateView(StaffRequiredMixin, UpdateView):
     """Update service details."""
     model = Service
     template_name = 'dashboard/services/form.html'
@@ -1034,7 +1053,7 @@ class DashboardServiceUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('dashboard_service_detail', kwargs={'pk': self.object.pk})
 
 
-class DashboardServiceDeleteView(LoginRequiredMixin, DeleteView):
+class DashboardServiceDeleteView(StaffRequiredMixin, DeleteView):
     """Delete a service with confirmation."""
     model = Service
     template_name = 'dashboard/services/delete.html'
@@ -1045,7 +1064,7 @@ class DashboardServiceDeleteView(LoginRequiredMixin, DeleteView):
         return reverse('dashboard_service_list')
 
 
-class DashboardServicePreviewView(LoginRequiredMixin, DetailView):
+class DashboardServicePreviewView(StaffRequiredMixin, DetailView):
     """Preview how the service will appear on the public site."""
     model = Service
     template_name = 'dashboard/services/preview.html'
@@ -1060,7 +1079,7 @@ class DashboardServicePreviewView(LoginRequiredMixin, DetailView):
         return context
 
 
-class DashboardServiceTabsView(LoginRequiredMixin, DetailView):
+class DashboardServiceTabsView(StaffRequiredMixin, DetailView):
     """Manage service tabs."""
     model = Service
     template_name = 'dashboard/services/tabs.html'
@@ -1117,7 +1136,7 @@ class DashboardServiceTabsView(LoginRequiredMixin, DetailView):
             })
 
 
-class DashboardServiceRequirementsView(LoginRequiredMixin, DetailView):
+class DashboardServiceRequirementsView(StaffRequiredMixin, DetailView):
     """Manage service requirements."""
     model = Service
     template_name = 'dashboard/services/requirements.html'
@@ -1184,7 +1203,7 @@ class DashboardServiceRequirementsView(LoginRequiredMixin, DetailView):
             })
 
 
-class DashboardServiceBOMView(LoginRequiredMixin, DetailView):
+class DashboardServiceBOMView(StaffRequiredMixin, DetailView):
     """Manage service BOM (Bill of Materials)."""
     model = Service
     template_name = 'dashboard/services/bom.html'
@@ -1264,7 +1283,7 @@ class DashboardServiceBOMView(LoginRequiredMixin, DetailView):
             })
 
 
-class DashboardServiceInquiriesView(LoginRequiredMixin, DetailView):
+class DashboardServiceInquiriesView(StaffRequiredMixin, DetailView):
     """Manage service inquiries."""
     model = Service
     template_name = 'dashboard/services/inquiries.html'
@@ -1289,7 +1308,7 @@ class DashboardServiceInquiriesView(LoginRequiredMixin, DetailView):
         return context
 
 
-class DashboardServiceQuotesView(LoginRequiredMixin, DetailView):
+class DashboardServiceQuotesView(StaffRequiredMixin, DetailView):
     """Manage service quotes."""
     model = Service
     template_name = 'dashboard/services/quotes.html'
@@ -1301,7 +1320,7 @@ class DashboardServiceQuotesView(LoginRequiredMixin, DetailView):
         return context
 
 
-@login_required
+@staff_required
 def service_toggle_status(request, pk):
     """Toggle service active status via AJAX."""
     if request.method == 'POST':
@@ -1324,7 +1343,7 @@ def service_toggle_status(request, pk):
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
 
-@login_required
+@staff_required
 def update_inquiry_status(request, inquiry_id):
     """Update inquiry status via AJAX."""
     if request.method == 'POST':
@@ -1358,7 +1377,7 @@ def update_inquiry_status(request, inquiry_id):
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
 
-class DashboardServiceOverviewView(LoginRequiredMixin, TemplateView):
+class DashboardServiceOverviewView(StaffRequiredMixin, TemplateView):
     """Service management overview dashboard."""
     template_name = 'dashboard/services/overview.html'
     
@@ -1492,13 +1511,32 @@ class ClientSignupView(View):
         if form.is_valid():
             try:
                 user, client_profile = form.save()
-                
-                # Send OTP for mobile verification (placeholder)
-                # TODO: Implement OTP sending logic
-                
-                messages.success(request, 
-                    f'Account created successfully! Please check your mobile for verification code.')
-                return redirect('client_login')
+
+                # Activate immediately; email stays unverified until confirmed later.
+                if not user.is_active:
+                    user.is_active = True
+                    user.save(update_fields=['is_active'])
+
+                try:
+                    send_mail(
+                        subject='Welcome to Sumithra KP - Account Created',
+                        message=(
+                            f'Hi {user.first_name or user.username},\n\n'
+                            'Your client account has been created successfully. '
+                            'You can now log in to track orders, download deliverables, '
+                            'and use our AI-assisted service tools.\n\n'
+                            'Login: https://sumithrakp.com/client/login/?type=client\n'
+                        ),
+                        from_email=None,
+                        recipient_list=[user.email],
+                        fail_silently=True,
+                    )
+                except Exception:
+                    pass
+
+                messages.success(request,
+                    'Account created successfully! You can log in now.')
+                return redirect(f"{reverse('client_login')}?type=client")
                 
             except Exception as e:
                 messages.error(request, f'Error creating account: {str(e)}')
@@ -1510,7 +1548,7 @@ class ClientSignupView(View):
         return redirect('client_login')
 
 
-class ClientDashboardView(LoginRequiredMixin, TemplateView):
+class ClientDashboardView(ClientRequiredMixin, TemplateView):
     """Client dashboard overview"""
     template_name = 'client/dashboard.html'
     
@@ -1571,7 +1609,7 @@ class ClientDashboardView(LoginRequiredMixin, TemplateView):
 
 
 # Client Order Views
-class ClientOrderListView(LoginRequiredMixin, ListView):
+class ClientOrderListView(ClientRequiredMixin, ListView):
     model = ClientOrder
     template_name = 'client/orders/list.html'
     context_object_name = 'orders'
@@ -1623,7 +1661,7 @@ class ClientOrderListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ClientOrderDetailView(LoginRequiredMixin, DetailView):
+class ClientOrderDetailView(ClientRequiredMixin, DetailView):
     model = ClientOrder
     template_name = 'client/orders/detail.html'
     context_object_name = 'order'
@@ -1659,7 +1697,7 @@ class ClientOrderDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class ClientDeliverablesView(LoginRequiredMixin, ListView):
+class ClientDeliverablesView(ClientRequiredMixin, ListView):
     model = ClientDeliverable
     template_name = 'client/deliverables/list.html'
     context_object_name = 'deliverables'
@@ -1710,7 +1748,7 @@ class ClientDeliverablesView(LoginRequiredMixin, ListView):
         return context
 
 
-class ClientDeliverableDownloadView(LoginRequiredMixin, DetailView):
+class ClientDeliverableDownloadView(ClientRequiredMixin, DetailView):
     model = ClientDeliverable
     
     def dispatch(self, request, *args, **kwargs):
@@ -1722,52 +1760,45 @@ class ClientDeliverableDownloadView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         return ClientDeliverable.objects.filter(
             order__client=self.request.user,
-            status='ready'
+            status__in=['ready', 'downloaded']
         )
     
     def get(self, request, *args, **kwargs):
         try:
             deliverable = self.get_object()
-            
-            # Check if file exists
-            if not deliverable.file or not deliverable.file.storage.exists(deliverable.file.name):
-                messages.error(request, 'File not found or no longer available.')
-                return redirect('client_deliverables')
-            
-            # Update download count
-            deliverable.download_count += 1
-            deliverable.last_downloaded_at = timezone.now()
-            deliverable.save(update_fields=['download_count', 'last_downloaded_at'])
-            
-            # Create download response
-            response = HttpResponse(
-                deliverable.file.read(),
-                content_type='application/octet-stream'
-            )
-            response['Content-Disposition'] = f'attachment; filename="{deliverable.file_name}"'
-            response['Content-Length'] = deliverable.file.size
-            
-            # Log download activity
-            ClientNotification.objects.create(
-                client=request.user,
-                title='File Downloaded',
-                message=f'You downloaded "{deliverable.title}" from order {deliverable.order.order_number}',
-                notification_type='download',
-                is_read=False
-            )
-            
-            return response
-            
-        except ClientDeliverable.DoesNotExist:
+        except Http404:
             messages.error(request, 'Deliverable not found.')
             return redirect('client_deliverables')
-        except Exception as e:
-            messages.error(request, 'Error downloading file. Please try again.')
+
+        if not deliverable.can_download:
+            messages.error(request, 'This file is no longer available for download.')
             return redirect('client_deliverables')
+
+        if not deliverable.file or not deliverable.file.storage.exists(deliverable.file.name):
+            messages.error(request, 'File not found or no longer available.')
+            return redirect('client_deliverables')
+
+        now = timezone.now()
+        if deliverable.first_downloaded_at is None:
+            deliverable.first_downloaded_at = now
+        deliverable.download_count += 1
+        deliverable.last_downloaded_at = now
+        if deliverable.status == 'ready':
+            deliverable.status = 'downloaded'
+        deliverable.save(update_fields=[
+            'download_count', 'last_downloaded_at', 'first_downloaded_at', 'status'
+        ])
+
+        filename = os.path.basename(deliverable.file.name)
+        return FileResponse(
+            deliverable.file.open('rb'),
+            as_attachment=True,
+            filename=filename,
+        )
 
 
 # Homepage Content Management Views
-class HomepageSectionListView(LoginRequiredMixin, ListView):
+class HomepageSectionListView(StaffRequiredMixin, ListView):
     """List and manage homepage sections"""
     model = HomepageSection
     template_name = 'dashboard/homepage/sections.html'
@@ -1819,7 +1850,7 @@ class HomepageSectionListView(LoginRequiredMixin, ListView):
         return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
-class HomepageSectionUpdateView(LoginRequiredMixin, UpdateView):
+class HomepageSectionUpdateView(StaffRequiredMixin, UpdateView):
     """Update homepage section settings"""
     model = HomepageSection
     fields = ['title', 'is_enabled', 'order']
@@ -1831,7 +1862,7 @@ class HomepageSectionUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class HomepageContentEditView(LoginRequiredMixin, UpdateView):
+class HomepageContentEditView(StaffRequiredMixin, UpdateView):
     """Edit homepage section content"""
     model = HomepageContent
     template_name = 'dashboard/homepage/content_edit.html'
@@ -1943,7 +1974,7 @@ class HomepageContentEditView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class HomepagePreviewView(LoginRequiredMixin, TemplateView):
+class HomepagePreviewView(StaffRequiredMixin, TemplateView):
     """Preview homepage with current content"""
     template_name = 'dashboard/homepage/preview.html'
     
@@ -1977,7 +2008,7 @@ class HomepagePreviewView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class SiteSettingsUpdateView(LoginRequiredMixin, UpdateView):
+class SiteSettingsUpdateView(StaffRequiredMixin, UpdateView):
     """Site settings update view for header/footer/meta content management"""
     model = SiteSettings
     form_class = SiteSettingsForm
@@ -2004,7 +2035,7 @@ class SiteSettingsUpdateView(LoginRequiredMixin, UpdateView):
 
 
 # Testimonial CRUD Views for Homepage
-class TestimonialCreateAPIView(LoginRequiredMixin, View):
+class TestimonialCreateAPIView(StaffRequiredMixin, View):
     """Create testimonial via AJAX"""
     
     def post(self, request):
@@ -2034,7 +2065,7 @@ class TestimonialCreateAPIView(LoginRequiredMixin, View):
             }, status=500)
 
 
-class TestimonialUpdateAPIView(LoginRequiredMixin, View):
+class TestimonialUpdateAPIView(StaffRequiredMixin, View):
     """Update testimonial via AJAX"""
     
     def post(self, request, pk):
@@ -2062,7 +2093,7 @@ class TestimonialUpdateAPIView(LoginRequiredMixin, View):
             }, status=500)
 
 
-class TestimonialEditAPIView(LoginRequiredMixin, View):
+class TestimonialEditAPIView(StaffRequiredMixin, View):
     """Get testimonial data for editing via AJAX"""
     
     def get(self, request, pk):
@@ -2087,7 +2118,7 @@ class TestimonialEditAPIView(LoginRequiredMixin, View):
             }, status=500)
 
 
-class TestimonialDeleteAPIView(LoginRequiredMixin, View):
+class TestimonialDeleteAPIView(StaffRequiredMixin, View):
     """Delete testimonial via AJAX"""
     
     def delete(self, request, pk):
@@ -2110,7 +2141,7 @@ class TestimonialDeleteAPIView(LoginRequiredMixin, View):
 # CONTACT MESSAGES MANAGEMENT VIEWS
 # ============================================================================
 
-class ContactMessageListView(LoginRequiredMixin, ListView):
+class ContactMessageListView(StaffRequiredMixin, ListView):
     """Dashboard view for listing contact messages with filters and search"""
     model = ContactMessage
     template_name = 'dashboard/contact_message_list.html'
@@ -2174,7 +2205,7 @@ class ContactMessageListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ContactMessageDetailView(LoginRequiredMixin, DetailView):
+class ContactMessageDetailView(StaffRequiredMixin, DetailView):
     """Dashboard view for displaying individual contact message details"""
     model = ContactMessage
     template_name = 'dashboard/contact_message_detail.html'
@@ -2203,7 +2234,7 @@ class ContactMessageDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class ContactMessageDeleteView(LoginRequiredMixin, DeleteView):
+class ContactMessageDeleteView(StaffRequiredMixin, DeleteView):
     """Dashboard view for deleting contact messages"""
     model = ContactMessage
     template_name = 'dashboard/contact_message_confirm_delete.html'
@@ -2215,7 +2246,7 @@ class ContactMessageDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-@login_required
+@staff_required
 @require_POST
 def mark_contact_read(request, pk):
     """AJAX view to mark contact message as read/unread"""
@@ -2236,7 +2267,7 @@ def mark_contact_read(request, pk):
         }, status=500)
 
 
-@login_required
+@staff_required
 @require_POST
 def mark_contact_replied(request, pk):
     """AJAX view to mark contact message as replied/not replied"""
@@ -2257,7 +2288,7 @@ def mark_contact_replied(request, pk):
         }, status=500)
 
 
-@login_required
+@staff_required
 @require_POST
 def contact_bulk_actions(request):
     """Handle bulk actions for contact messages"""
@@ -2306,7 +2337,7 @@ def contact_bulk_actions(request):
         }, status=500)
 
 
-@login_required
+@staff_required
 def contact_message_stats(request):
     """API endpoint to get real-time contact message statistics"""
     try:
@@ -2331,7 +2362,7 @@ def contact_message_stats(request):
         }, status=500)
 
 
-@login_required
+@staff_required
 def send_email_reply(request, pk):
     """Send email reply to contact message"""
     message = get_object_or_404(ContactMessage, pk=pk)
