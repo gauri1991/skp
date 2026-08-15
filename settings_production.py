@@ -7,7 +7,9 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# This file lives at the repo root, so BASE_DIR is its own directory
+# (unlike sumithrakp_website/settings.py, which is one level down).
+BASE_DIR = Path(__file__).resolve().parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', get_random_secret_key())
