@@ -18,10 +18,13 @@ django.setup()
 
 from django.contrib.auth.models import User
 
-# Superuser credentials
-username = 'admin'
-email = 'admin@sumithrakp.com'
-password = 'Sumi#420'
+# Superuser credentials come from environment variables — never hardcode them.
+username = os.environ.get('DJANGO_SU_NAME', 'admin')
+email = os.environ.get('DJANGO_SU_EMAIL', 'admin@sumithrakp.com')
+password = os.environ.get('DJANGO_SU_PASSWORD')
+
+if not password:
+    raise SystemExit('Set DJANGO_SU_PASSWORD before running this script.')
 
 try:
     if not User.objects.filter(username=username).exists():
