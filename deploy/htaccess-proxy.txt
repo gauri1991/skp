@@ -1,0 +1,11 @@
+# Prepend this block to /home/meenvstf/public_html/.htaccess
+# (above the cPanel-generated sections). It forwards all requests
+# for the domain to gunicorn, except AutoSSL validation files.
+
+# BEGIN django gunicorn proxy
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule ^(.*)$ http://127.0.0.1:8090/$1 [P,L]
+</IfModule>
+# END django gunicorn proxy
