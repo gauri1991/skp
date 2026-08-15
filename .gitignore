@@ -56,3 +56,17 @@ yarn-error.log
 tmp/
 stderr.log
 *.log
+
+# Local-only files (removed from repo 2026-08-16)
+data.json
+.env.production
+*_PROGRESS.md
+DEPLOYMENT_*.md
+CPANEL_DEPLOYMENT_STEPS.md
+DJANGO_SETUP_INSTRUCTIONS.md
+GITHUB_CPANEL_DEPLOYMENT.md
+GIT_QUICK_REFERENCE.md
+collect_static.sh
+deploy.sh
+deploy-webhook.php
+create_sample_resume.py
