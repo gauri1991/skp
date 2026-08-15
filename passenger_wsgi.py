@@ -7,8 +7,8 @@ This file is required for deploying Django on cPanel with Python apps support.
 import os
 import sys
 
-# Set the project path
-project_home = '/home/meenvstf/public_html/sumithrakp'
+# Project root is wherever this file lives (works on any host/username)
+project_home = os.path.dirname(os.path.abspath(__file__))
 
 # Add project to Python path
 if project_home not in sys.path:
@@ -17,8 +17,8 @@ if project_home not in sys.path:
 # Change to project directory
 os.chdir(project_home)
 
-# Set Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sumithrakp_website.settings')
+# Set Django settings module (override via env var in the cPanel Python App UI)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings_production')
 
 # Import Django WSGI application
 from django.core.wsgi import get_wsgi_application

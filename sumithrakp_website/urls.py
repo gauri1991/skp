@@ -33,6 +33,13 @@ urlpatterns = [
     path('', include('main.urls')),
 ]
 
-# Serve media files during development
+# Serve media files (uploads). On shared cPanel hosting there is no separate
+# web server route for /media/, so Django serves them in production too.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    from django.views.static import serve as media_serve
+    from django.urls import re_path
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', media_serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
