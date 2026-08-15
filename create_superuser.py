@@ -7,10 +7,10 @@ import os
 import django
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sumithrakp_website.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings_production')
 
-# Change to the project directory
-project_path = '/home/meenvstf/public_html/sumithrakp'
+# Change to the project directory (wherever this script lives)
+project_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(project_path)
 
 # Setup Django
