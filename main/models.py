@@ -1455,3 +1455,100 @@ class AIGeneration(models.Model):
             client=client, feature=feature,
             created_at__date=timezone.localdate()
         ).exclude(status='failed').count()
+
+
+# ============ Payments (Phase 5) ============
+
+class PaymentGateway(models.Model):
+    GATEWAY_CHOICES = [('razorpay', 'Razorpay'), ('stripe', 'Stripe'), ('manual', 'Manual / UPI')]
+
+    gateway_type = models.CharField(max_length=10, choices=GATEWAY_CHOICES, unique=True)
+    display_name = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    key_id = models.CharField(max_length=255, blank=True,
+        help_text="Razorpay Key ID / Stripe publishable key")
+    key_secret = models.CharField(max_length=255, blank=True,
+        help_text="Razorpay Key Secret / Stripe secret key")
+    webhook_secret = models.CharField(max_length=255, blank=True)
+    extra_config = models.JSONField(default=dict, blank=True,
+        help_text='Manual gateway: {"upi_id", "bank_name", "account_no", "ifsc", "account_name", "note"}')
+    display_order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order']
+        verbose_name = 'Payment Gateway'
+
+    def __str__(self):
+        return self.display_name
+
+
+class PaymentTransaction(models.Model):
+    STATUS_CHOICES = [
+        ('created', 'Created'), ('pending', 'Pending Confirmation'),
+        ('paid', 'Paid'), ('failed', 'Failed'), ('refunded', 'Refunded'),
+    ]
+
+    order = models.ForeignKey(ClientOrder, on_delete=models.CASCADE, related_name='payments')
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
+    gateway = models.ForeignKey(PaymentGateway, on_delete=models.PROTECT)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    currency = models.CharField(max_length=3, default='INR')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created', db_index=True)
+    gateway_order_id = models.CharField(max_length=200, blank=True)
+    gateway_payment_id = models.CharField(max_length=200, blank=True)
+    gateway_signature = models.CharField(max_length=300, blank=True)
+    reference_note = models.CharField(max_length=200, blank=True,
+        help_text="UPI/bank reference submitted by the client (manual payments)")
+    receipt_no = models.CharField(max_length=50, blank=True)
+    confirmed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                     related_name='confirmed_payments')
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Payment Transaction'
+
+    def __str__(self):
+        return f"₹{self.amount} {self.get_status_display()} on {self.order.order_number}"
+
+    def save(self, *args, **kwargs):
+        if not self.receipt_no:
+            from django.utils import timezone
+            year = timezone.now().year
+            count = PaymentTransaction.objects.filter(created_at__year=year).count() + 1
+            self.receipt_no = f"RCPT-{year}-{count:04d}"
+        super().save(*args, **kwargs)
+
+    def mark_paid(self, payment_id='', signature='', confirmed_by=None):
+        """Idempotently mark paid and roll the amount into the order."""
+        from django.db import transaction as db_transaction
+        from django.utils import timezone as tz
+        with db_transaction.atomic():
+            fresh = PaymentTransaction.objects.select_for_update().get(pk=self.pk)
+            if fresh.status == 'paid':
+                return False
+            fresh.status = 'paid'
+            if payment_id:
+                fresh.gateway_payment_id = payment_id
+            if signature:
+                fresh.gateway_signature = signature
+            if confirmed_by is not None:
+                fresh.confirmed_by = confirmed_by
+            fresh.save()
+            order = ClientOrder.objects.select_for_update().get(pk=fresh.order_id)
+            order.paid_amount = (order.paid_amount or 0) + fresh.amount
+            order.save(update_fields=['paid_amount'])
+        ClientNotification.objects.create(
+            client=fresh.client,
+            title='Payment Received',
+            message=f'We received your payment of ₹{fresh.amount} for order '
+                    f'{fresh.order.order_number}. Receipt: {fresh.receipt_no}',
+            notification_type='order_update',
+            order=fresh.order,
+        )
+        self.refresh_from_db()
+        return True

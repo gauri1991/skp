@@ -468,6 +468,14 @@
                         Client Messages
                     </a>
 
+                    <!-- Payments -->
+                    <a href="{% url 'dashboard_payments' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'payment' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'payment' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
+                        <i data-lucide="indian-rupee" class="h-5 w-5 mr-3"></i>
+                        Payments
+                    </a>
+
                     <!-- Contact Messages -->
                     <a href="{% url 'dashboard_contact_list' %}"
                        class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'contact' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"

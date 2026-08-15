@@ -1861,3 +1861,40 @@ def build_feature_input_form(feature, data=None, files=None):
                                            widget=forms.TextInput(attrs=attrs))
     form_cls = type('FeatureInputForm', (forms.Form,), fields)
     return form_cls(data=data, files=files)
+
+
+# ============ Payment Forms (Phase 5) ============
+
+from .models import PaymentGateway
+
+
+class PaymentGatewayForm(forms.ModelForm):
+    key_secret = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(render_value=False,
+                                   attrs={'class': TW_INPUT,
+                                          'placeholder': 'Leave blank to keep current secret'}))
+    webhook_secret = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(render_value=False,
+                                   attrs={'class': TW_INPUT,
+                                          'placeholder': 'Leave blank to keep current secret'}))
+
+    class Meta:
+        model = PaymentGateway
+        fields = ['display_name', 'is_active', 'key_id', 'key_secret',
+                  'webhook_secret', 'extra_config', 'display_order']
+        widgets = {
+            'display_name': forms.TextInput(attrs={'class': TW_INPUT}),
+            'key_id': forms.TextInput(attrs={'class': TW_INPUT}),
+            'extra_config': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-xs', 'rows': 5}),
+            'display_order': forms.NumberInput(attrs={'class': TW_INPUT}),
+        }
+
+    def clean_key_secret(self):
+        value = self.cleaned_data.get('key_secret', '')
+        return value or (self.instance.key_secret if self.instance.pk else '')
+
+    def clean_webhook_secret(self):
+        value = self.cleaned_data.get('webhook_secret', '')
+        return value or (self.instance.webhook_secret if self.instance.pk else '')

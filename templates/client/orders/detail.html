@@ -235,10 +235,10 @@
                     </button>
                     {% endif %}
                     {% if order.is_payment_due %}
-                    <button class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center">
+                    <a href="{% url 'client_order_pay' order.pk %}" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center">
                         <i data-lucide="credit-card" class="h-4 w-4 mr-2"></i>
                         Make Payment
-                    </button>
+                    </a>
                     {% endif %}
                     <button class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center">
                         <i data-lucide="message-circle" class="h-4 w-4 mr-2"></i>

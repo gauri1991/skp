@@ -3,6 +3,7 @@ from . import views
 from . import client_views
 from . import portal_admin_views
 from . import ai_views
+from . import payment_views
 
 urlpatterns = [
     # Public pages
@@ -155,6 +156,21 @@ urlpatterns = [
     path('client/ai/generations/<int:pk>/status/', ai_views.ClientAIStatusView.as_view(), name='client_ai_status'),
     path('client/ai/generations/<int:pk>/file/', ai_views.ClientAIFileView.as_view(), name='client_ai_file'),
     path('client/ai/<slug:service_slug>/', ai_views.ClientAIServiceView.as_view(), name='client_ai_service'),
+    # Client - payments
+    path('client/orders/<int:pk>/pay/', payment_views.ClientOrderPayView.as_view(), name='client_order_pay'),
+    path('client/payments/razorpay/<int:order_pk>/create/', payment_views.RazorpayCreateView.as_view(), name='razorpay_create'),
+    path('client/payments/razorpay/callback/', payment_views.RazorpayCallbackView.as_view(), name='razorpay_callback'),
+    path('client/payments/stripe/<int:order_pk>/checkout/', payment_views.StripeCheckoutView.as_view(), name='stripe_checkout'),
+    path('client/payments/stripe/success/', payment_views.StripeSuccessView.as_view(), name='stripe_success'),
+    path('client/payments/stripe/cancel/', payment_views.StripeCancelView.as_view(), name='stripe_cancel'),
+    path('client/payments/manual/<int:order_pk>/submit/', payment_views.ManualPaymentSubmitView.as_view(), name='manual_payment_submit'),
+    # Webhooks
+    path('webhooks/razorpay/', payment_views.webhook_razorpay, name='webhook_razorpay'),
+    path('webhooks/stripe/', payment_views.webhook_stripe, name='webhook_stripe'),
+    # Dashboard - payments
+    path('dashboard/payments/', payment_views.DashboardPaymentListView.as_view(), name='dashboard_payments'),
+    path('dashboard/payments/<int:pk>/confirm/', payment_views.DashboardPaymentConfirmView.as_view(), name='dashboard_payment_confirm'),
+    path('dashboard/payment-gateways/<int:pk>/edit/', payment_views.DashboardGatewayUpdateView.as_view(), name='dashboard_gateway_edit'),
     
     # Homepage Management
     path('dashboard/homepage/', views.HomepageSectionListView.as_view(), name='dashboard_homepage_sections'),

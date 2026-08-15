@@ -2,7 +2,7 @@
 AI features. Never overwrites existing rows (safe to re-run after dashboard edits)."""
 from django.core.management.base import BaseCommand
 
-from main.models import AIProvider, Service, ServiceAIFeature
+from main.models import AIProvider, PaymentGateway, Service, ServiceAIFeature
 
 PROVIDERS = [
     dict(slug='anthropic', name='Anthropic Claude', adapter_type='anthropic',
@@ -207,6 +207,20 @@ class Command(BaseCommand):
             created_p += was_created
             existing_p += (not was_created)
         self.stdout.write(f'Providers: {created_p} created, {existing_p} existing')
+
+        gateways = [
+            dict(gateway_type='razorpay', display_name='Razorpay (UPI / Cards / Netbanking)', display_order=1),
+            dict(gateway_type='stripe', display_name='Stripe (International Cards)', display_order=2),
+            dict(gateway_type='manual', display_name='Direct UPI / Bank Transfer', display_order=3,
+                 extra_config={'upi_id': '', 'bank_name': '', 'account_no': '', 'ifsc': '',
+                               'account_name': '', 'note': 'Share the transaction reference after paying.'}),
+        ]
+        created_g = 0
+        for spec in gateways:
+            gtype = spec.pop('gateway_type')
+            _, was_created = PaymentGateway.objects.get_or_create(gateway_type=gtype, defaults=spec)
+            created_g += was_created
+        self.stdout.write(f'Gateways: {created_g} created')
 
         created_f = existing_f = skipped = 0
         for service_slug, provider_slug, spec in FEATURES:
