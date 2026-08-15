@@ -1692,6 +1692,8 @@ class ClientOrderDetailView(ClientRequiredMixin, DetailView):
         
         # Get order timeline (status changes)
         context['timeline'] = []
+        order = self.object
+        context['balance_due'] = (order.quoted_amount or 0) - (order.paid_amount or 0)
         # In a real application, you'd track status changes in a separate model
         
         return context

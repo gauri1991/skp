@@ -1,0 +1,49 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ page_title }} - Dashboard{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+        <h3 class="font-semibold mb-3">Profile</h3>
+        <dl class="text-sm space-y-2">
+            <div><dt class="text-gray-500">Email</dt><dd>{{ client_profile.user.email }}</dd></div>
+            <div><dt class="text-gray-500">Mobile</dt><dd>{{ client_profile.mobile }}</dd></div>
+            <div><dt class="text-gray-500">Company</dt><dd>{{ client_profile.company|default:"—" }}</dd></div>
+            <div><dt class="text-gray-500">Address</dt><dd>{{ client_profile.full_address|default:"—" }}</dd></div>
+            <div><dt class="text-gray-500">Total paid</dt><dd>₹{{ total_paid }}</dd></div>
+            <div><dt class="text-gray-500">Joined</dt><dd>{{ client_profile.created_at|date:"M d, Y" }}</dd></div>
+        </dl>
+
+        <h3 class="font-semibold mt-6 mb-3">AI Access</h3>
+        <form method="post" class="space-y-3 text-sm">
+            {% csrf_token %}
+            <label class="flex items-center gap-2">{{ ai_form.ai_enabled }} Enable AI features</label>
+            <div>
+                <label class="block text-gray-500 mb-1">Daily limit override (blank = feature default)</label>
+                {{ ai_form.ai_daily_limit }}
+            </div>
+            <button type="submit" class="px-4 py-2 bg-gold-500 text-white rounded-lg">Save AI Settings</button>
+        </form>
+    </div>
+
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+        <h3 class="font-semibold mb-3">Orders ({{ orders|length }})</h3>
+        <ul class="text-sm space-y-2">
+            {% for o in orders %}
+            <li><a class="text-blue-600" href="{% url 'dashboard_order_detail' o.pk %}">{{ o.order_number }}</a>
+                <span class="text-gray-400">· {{ o.get_status_display }} · ₹{{ o.paid_amount }}/{{ o.quoted_amount|default:"—" }}</span></li>
+            {% empty %}<li class="text-gray-500">No orders.</li>{% endfor %}
+        </ul>
+    </div>
+
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+        <h3 class="font-semibold mb-3">Inquiries ({{ inquiries|length }})</h3>
+        <ul class="text-sm space-y-2">
+            {% for i in inquiries %}
+            <li>{{ i.project_title }} <span class="text-gray-400">· {{ i.service.title|truncatechars:22 }} · {{ i.get_status_display }}</span>
+                {% if not i.order %}<a class="text-blue-600 text-xs" href="{% url 'dashboard_order_create' %}?inquiry={{ i.pk }}">→ create order</a>{% endif %}</li>
+            {% empty %}<li class="text-gray-500">No inquiries.</li>{% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

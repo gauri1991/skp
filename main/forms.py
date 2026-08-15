@@ -6,7 +6,8 @@ from .models import (
     ProfessionalSummary, ResumeExperience, ResumeEducation, ResumeSkill, 
     SkillCategory, Certification, Achievement, Service, ServiceTab, ServiceRequirement, 
     ServiceInquiry, ServiceQuote, ServiceBOM, BOMItem, HomepageContent,
-    SiteSettings, ContactMessage
+    SiteSettings, ContactMessage, ClientOrder, ClientDeliverable, ClientMessage,
+    ClientProfile
 )
 import json
 
@@ -583,22 +584,34 @@ class DynamicServiceInquiryForm(forms.Form):
             'requirements': {}
         }
         
-        # Collect all requirement field values
+        # Collect all requirement field values (coerce to JSON-safe types)
+        from decimal import Decimal
+        from django.core.files.uploadedfile import UploadedFile
         for requirement in self.service.requirements.all():
             if requirement.field_name in self.cleaned_data:
-                inquiry_data['requirements'][requirement.field_name] = self.cleaned_data[requirement.field_name]
+                value = self.cleaned_data[requirement.field_name]
+                if isinstance(value, Decimal):
+                    value = float(value)
+                elif isinstance(value, UploadedFile):
+                    value = value.name  # uploads not persisted here; keep the name only
+                elif hasattr(value, 'isoformat'):
+                    value = value.isoformat()
+                inquiry_data['requirements'][requirement.field_name] = value
         
         # Calculate estimated cost based on pricing multipliers
-        estimated_cost = self.service.base_price or 0
+        estimated_cost = float(self.service.base_price or 0)
         for requirement in self.service.requirements.filter(affects_pricing=True):
             if requirement.field_name in self.cleaned_data:
                 value = self.cleaned_data[requirement.field_name]
-                if requirement.field_type == 'number' and value:
-                    estimated_cost *= float(value) * float(requirement.pricing_multiplier)
-                elif requirement.field_type == 'checkbox' and value:
-                    estimated_cost *= float(requirement.pricing_multiplier)
-        
-        inquiry_data['estimated_cost'] = estimated_cost
+                try:
+                    if requirement.field_type == 'number' and value:
+                        estimated_cost *= float(requirement.pricing_multiplier)
+                    elif requirement.field_type == 'checkbox' and value:
+                        estimated_cost *= float(requirement.pricing_multiplier)
+                except (TypeError, ValueError):
+                    continue
+
+        inquiry_data['estimated_cost'] = round(estimated_cost, 2)
         
         return ServiceInquiry.objects.create(**inquiry_data)
 
@@ -1616,3 +1629,132 @@ class ContactMessageForm(forms.ModelForm):
             self.fields[field_name].required = True
             self.fields[field_name].label = f"{self.fields[field_name].label} *"
 
+
+
+# ============ Client Portal / Staff Portal Forms (Phase 2) ============
+
+TW_INPUT = ('w-full px-4 py-3 border border-gray-300 rounded-lg '
+            'focus:ring-2 focus:ring-primary-500 focus:border-primary-500')
+
+
+class ClientOrderForm(forms.ModelForm):
+    class Meta:
+        model = ClientOrder
+        fields = ['client', 'service_inquiry', 'status', 'quoted_amount',
+                  'estimated_completion', 'internal_notes']
+        widgets = {
+            'client': forms.Select(attrs={'class': TW_INPUT}),
+            'service_inquiry': forms.Select(attrs={'class': TW_INPUT}),
+            'status': forms.Select(attrs={'class': TW_INPUT}),
+            'quoted_amount': forms.NumberInput(attrs={'class': TW_INPUT, 'step': '0.01'}),
+            'estimated_completion': forms.DateInput(attrs={'class': TW_INPUT, 'type': 'date'}),
+            'internal_notes': forms.Textarea(attrs={'class': TW_INPUT, 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['client'].queryset = User.objects.filter(
+            client_profile__isnull=False).order_by('email')
+        # Only inquiries without an order (plus the current one when editing)
+        qs = ServiceInquiry.objects.filter(order__isnull=True)
+        if self.instance.pk:
+            qs = qs | ServiceInquiry.objects.filter(pk=self.instance.service_inquiry_id)
+        self.fields['service_inquiry'].queryset = qs.distinct().order_by('-created_at')
+
+
+class ClientDeliverableUploadForm(forms.ModelForm):
+    class Meta:
+        model = ClientDeliverable
+        fields = ['title', 'description', 'file', 'status', 'expires_at', 'max_downloads']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': TW_INPUT}),
+            'description': forms.Textarea(attrs={'class': TW_INPUT, 'rows': 3}),
+            'file': forms.ClearableFileInput(attrs={'class': TW_INPUT}),
+            'status': forms.Select(attrs={'class': TW_INPUT}),
+            'expires_at': forms.DateTimeInput(attrs={'class': TW_INPUT, 'type': 'datetime-local'}),
+            'max_downloads': forms.NumberInput(attrs={'class': TW_INPUT}),
+        }
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        upload = self.cleaned_data.get('file')
+        if upload is not None and hasattr(upload, 'size'):
+            obj.file_size = upload.size
+            name = getattr(upload, 'name', '') or ''
+            obj.file_type = name.rsplit('.', 1)[-1].lower() if '.' in name else 'file'
+        if commit:
+            obj.save()
+        return obj
+
+
+class ClientMessageForm(forms.ModelForm):
+    """Client-side: open a new message/ticket."""
+    class Meta:
+        model = ClientMessage
+        fields = ['subject', 'message_type', 'order', 'priority', 'content', 'attachment']
+        widgets = {
+            'subject': forms.TextInput(attrs={'class': TW_INPUT}),
+            'message_type': forms.Select(attrs={'class': TW_INPUT}),
+            'order': forms.Select(attrs={'class': TW_INPUT}),
+            'priority': forms.Select(attrs={'class': TW_INPUT}),
+            'content': forms.Textarea(attrs={'class': TW_INPUT, 'rows': 5}),
+            'attachment': forms.ClearableFileInput(attrs={'class': TW_INPUT}),
+        }
+
+    def __init__(self, *args, client=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['order'].required = False
+        if client is not None:
+            self.fields['order'].queryset = ClientOrder.objects.filter(client=client)
+
+
+class AdminReplyForm(forms.ModelForm):
+    """Staff-side: respond to a client message."""
+    class Meta:
+        model = ClientMessage
+        fields = ['admin_response', 'status', 'priority']
+        widgets = {
+            'admin_response': forms.Textarea(attrs={'class': TW_INPUT, 'rows': 5}),
+            'status': forms.Select(attrs={'class': TW_INPUT}),
+            'priority': forms.Select(attrs={'class': TW_INPUT}),
+        }
+
+
+class ClientProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=150, required=False,
+                                 widget=forms.TextInput(attrs={'class': TW_INPUT}))
+    last_name = forms.CharField(max_length=150, required=False,
+                                widget=forms.TextInput(attrs={'class': TW_INPUT}))
+
+    class Meta:
+        model = ClientProfile
+        fields = ['company', 'address', 'city', 'state', 'pincode', 'country',
+                  'preferred_communication']
+        widgets = {f: forms.TextInput(attrs={'class': TW_INPUT})
+                   for f in ['company', 'address', 'city', 'state', 'pincode', 'country']}
+        widgets['preferred_communication'] = forms.Select(attrs={'class': TW_INPUT})
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+
+    def save(self, commit=True):
+        profile = super().save(commit=commit)
+        user = profile.user
+        user.first_name = self.cleaned_data.get('first_name', '')
+        user.last_name = self.cleaned_data.get('last_name', '')
+        if commit:
+            user.save(update_fields=['first_name', 'last_name'])
+        return profile
+
+
+class ClientAILimitForm(forms.ModelForm):
+    """Staff-side: per-client AI controls."""
+    class Meta:
+        model = ClientProfile
+        fields = ['ai_enabled', 'ai_daily_limit']
+        widgets = {
+            'ai_daily_limit': forms.NumberInput(attrs={'class': TW_INPUT}),
+        }

@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ ticket.subject }} - Dashboard{% endblock %}
+{% block page_title %}Client Message{% endblock %}
+{% block content %}
+<div class="max-w-3xl space-y-6">
+    <a href="{% url 'dashboard_client_messages' %}" class="text-sm text-blue-600 hover:underline">&larr; All messages</a>
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+        <div class="flex items-center justify-between mb-2">
+            <h2 class="text-lg font-semibold">{{ ticket.subject }}</h2>
+            <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">{{ ticket.get_status_display }}</span>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">
+            From <a class="text-blue-600" href="{% url 'dashboard_client_detail' ticket.client.client_profile.pk %}">{{ ticket.client.email }}</a>
+            · {{ ticket.get_message_type_display }} · {{ ticket.created_at|date:"M d, Y H:i" }}
+            {% if ticket.order %}· <a class="text-blue-600" href="{% url 'dashboard_order_detail' ticket.order.pk %}">{{ ticket.order.order_number }}</a>{% endif %}
+        </p>
+        <div class="text-gray-800 dark:text-champagne-200 whitespace-pre-line">{{ ticket.content }}</div>
+    </div>
+
+    <form method="post" class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6 space-y-4">
+        {% csrf_token %}
+        <h3 class="font-semibold">Reply {% if ticket.admin_response %}(edits existing reply){% endif %}</h3>
+        {% for field in reply_form %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-champagne-300 mb-1">{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="px-6 py-2 bg-gold-500 text-white rounded-lg font-medium">Send Reply</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Orders - Dashboard{% endblock %}
+{% block page_title %}Client Orders{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <form method="get" class="flex gap-2">
+            <input type="text" name="q" value="{{ q }}" placeholder="Search order / client / project"
+                   class="px-3 py-2 border border-gray-300 rounded-lg text-sm w-64">
+            <select name="status" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="">All statuses</option>
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm">Filter</button>
+        </form>
+        <a href="{% url 'dashboard_order_create' %}" class="px-4 py-2 bg-gold-500 text-white rounded-lg text-sm font-medium">+ New Order</a>
+    </div>
+
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-charcoal-700 text-left text-gray-600 dark:text-champagne-300">
+                <tr>
+                    <th class="px-4 py-3">Order</th><th class="px-4 py-3">Client</th>
+                    <th class="px-4 py-3">Service</th><th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3">Quoted</th><th class="px-4 py-3">Paid</th>
+                    <th class="px-4 py-3">Files</th><th class="px-4 py-3">Created</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-charcoal-700">
+                {% for order in orders %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-charcoal-700">
+                    <td class="px-4 py-3"><a class="text-blue-600 font-medium" href="{% url 'dashboard_order_detail' order.pk %}">{{ order.order_number }}</a></td>
+                    <td class="px-4 py-3">{{ order.client.email }}</td>
+                    <td class="px-4 py-3">{{ order.service_inquiry.service.title|truncatechars:28 }}</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{{ order.get_status_display }}</span></td>
+                    <td class="px-4 py-3">{% if order.quoted_amount %}₹{{ order.quoted_amount }}{% else %}—{% endif %}</td>
+                    <td class="px-4 py-3">₹{{ order.paid_amount }}</td>
+                    <td class="px-4 py-3">{{ order.deliverable_count }}</td>
+                    <td class="px-4 py-3 text-gray-500">{{ order.created_at|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No orders yet. Create one from an inquiry or from scratch.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+    <div class="flex justify-center gap-2 text-sm">
+        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}&q={{ q }}" class="px-3 py-1 border rounded">Prev</a>{% endif %}
+        <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}&status={{ current_status }}&q={{ q }}" class="px-3 py-1 border rounded">Next</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

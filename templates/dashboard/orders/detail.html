@@ -1,0 +1,65 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ order.order_number }} - Dashboard{% endblock %}
+{% block page_title %}Order {{ order.order_number }}{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-wrap gap-3">
+        <a href="{% url 'dashboard_order_edit' order.pk %}" class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm">Edit Order</a>
+        <a href="{% url 'dashboard_deliverable_upload' order.pk %}" class="px-4 py-2 bg-gold-500 text-white rounded-lg text-sm">Upload Deliverable</a>
+        <a href="{% url 'dashboard_orders' %}" class="px-4 py-2 border border-gray-300 rounded-lg text-sm">All Orders</a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+            <h3 class="font-semibold mb-3">Order Info</h3>
+            <dl class="text-sm space-y-2">
+                <div><dt class="text-gray-500">Client</dt><dd><a class="text-blue-600" href="{% url 'dashboard_client_detail' order.client.client_profile.pk %}">{{ order.client.email }}</a></dd></div>
+                <div><dt class="text-gray-500">Service</dt><dd>{{ order.service_inquiry.service.title }}</dd></div>
+                <div><dt class="text-gray-500">Project</dt><dd>{{ order.service_inquiry.project_title }}</dd></div>
+                <div><dt class="text-gray-500">Status</dt><dd>{{ order.get_status_display }} ({{ order.progress_percentage }}%)</dd></div>
+                <div><dt class="text-gray-500">Quoted / Paid</dt><dd>₹{{ order.quoted_amount|default:"—" }} / ₹{{ order.paid_amount }}</dd></div>
+                <div><dt class="text-gray-500">Est. Completion</dt><dd>{{ order.estimated_completion|date:"M d, Y"|default:"—" }}</dd></div>
+            </dl>
+            {% if order.internal_notes %}
+            <div class="mt-4 p-3 bg-yellow-50 rounded text-sm"><strong>Internal notes:</strong> {{ order.internal_notes }}</div>
+            {% endif %}
+        </div>
+
+        <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+            <h3 class="font-semibold mb-3">Deliverables ({{ deliverables|length }})</h3>
+            <ul class="text-sm space-y-2">
+                {% for d in deliverables %}
+                <li class="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <span>{{ d.title }} <span class="text-gray-400">({{ d.file_type }}, {{ d.file_size_mb }} MB)</span></span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100">{{ d.get_status_display }} · {{ d.download_count }}⬇</span>
+                </li>
+                {% empty %}
+                <li class="text-gray-500">No deliverables uploaded.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+            <h3 class="font-semibold mb-3">Messages</h3>
+            <ul class="text-sm space-y-2">
+                {% for m in order_messages %}
+                <li><a class="text-blue-600" href="{% url 'dashboard_client_message_detail' m.pk %}">{{ m.subject }}</a>
+                    <span class="text-gray-400">· {{ m.get_status_display }}</span></li>
+                {% empty %}
+                <li class="text-gray-500">No messages on this order.</li>
+                {% endfor %}
+            </ul>
+            {% if payments %}
+            <h3 class="font-semibold mt-6 mb-3">Payments</h3>
+            <ul class="text-sm space-y-2">
+                {% for p in payments.all %}
+                <li>₹{{ p.amount }} · {{ p.gateway.display_name }} · {{ p.get_status_display }} · {{ p.created_at|date:"M d" }}</li>
+                {% empty %}
+                <li class="text-gray-500">No payments recorded.</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

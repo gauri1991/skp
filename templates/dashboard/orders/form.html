@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ page_title }} - Dashboard{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+    {% if from_inquiry %}
+    <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm">
+        Creating order from inquiry: <strong>{{ from_inquiry.project_title }}</strong>
+        ({{ from_inquiry.client_name }}, {{ from_inquiry.client_email }})
+        {% if no_client_match %}
+        <p class="mt-2 text-yellow-800 bg-yellow-50 p-2 rounded">No client account matches {{ from_inquiry.client_email }}.
+        Ask the client to sign up with this email first, or pick another client below.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+    <form method="post" class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6 space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-champagne-300 mb-1">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<p class="text-sm text-red-600 mt-1">{{ error }}</p>{% endfor %}
+        </div>
+        {% endfor %}
+        <div class="flex gap-3">
+            <button type="submit" class="px-6 py-2 bg-gold-500 text-white rounded-lg font-medium">Save Order</button>
+            <a href="{% url 'dashboard_orders' %}" class="px-6 py-2 border border-gray-300 rounded-lg">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

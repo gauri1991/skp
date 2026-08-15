@@ -143,9 +143,9 @@
                     </div>
                 </button>
                 <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Pending Quotes</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Payment History</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Invoices</a>
+                    <a href="{% url 'client_orders' %}?status=quoted" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Pending Quotes</a>
+                    <a href="{% url 'client_orders' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Payment History</a>
+                    <a href="{% url 'client_orders' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Invoices</a>
                 </div>
             </div>
             
@@ -186,9 +186,9 @@
                     </div>
                 </button>
                 <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Messages</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Support Tickets</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Inquiry</a>
+                    <a href="{% url 'client_messages' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Messages</a>
+                    <a href="{% url 'client_messages' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Support Tickets</a>
+                    <a href="{% url 'client_message_create' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Inquiry</a>
                 </div>
             </div>
             
@@ -204,19 +204,22 @@
                 </button>
                 <div x-show="open" x-transition class="ml-8 space-y-1 mt-2">
                     <a href="{% url 'services' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Browse Services</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Request</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Service History</a>
+                    <a href="{% url 'services' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">New Request</a>
+                    <a href="{% url 'client_orders' %}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">Service History</a>
                 </div>
             </div>
             
-            <!-- Meetings -->
-            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
-                <i data-lucide="calendar" class="h-5 w-5 mr-3"></i>
-                Meetings & Consultations
+            <!-- Notifications -->
+            <a href="{% url 'client_notifications' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+                <i data-lucide="bell" class="h-5 w-5 mr-3"></i>
+                <span class="flex-1">Notifications</span>
+                {% if unread_notifications_count %}
+                <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-red-600 rounded-full">{{ unread_notifications_count }}</span>
+                {% endif %}
             </a>
             
             <!-- Account Settings -->
-            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
+            <a href="{% url 'client_profile' %}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors">
                 <i data-lucide="settings" class="h-5 w-5 mr-3"></i>
                 Account Settings
             </a>

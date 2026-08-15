@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from . import client_views
+from . import portal_admin_views
 
 urlpatterns = [
     # Public pages
@@ -116,6 +118,24 @@ urlpatterns = [
     path('client/deliverables/', views.ClientDeliverablesView.as_view(), name='client_deliverables'),
     path('client/deliverables/<int:pk>/download/', views.ClientDeliverableDownloadView.as_view(), name='client_deliverable_download'),
     path('client/logout/', views.ClientLogoutView.as_view(), name='client_logout'),
+    # Client portal - messages, notifications, profile
+    path('client/messages/', client_views.ClientMessageListView.as_view(), name='client_messages'),
+    path('client/messages/new/', client_views.ClientMessageCreateView.as_view(), name='client_message_create'),
+    path('client/messages/<int:pk>/', client_views.ClientMessageDetailView.as_view(), name='client_message_detail'),
+    path('client/notifications/', client_views.ClientNotificationListView.as_view(), name='client_notifications'),
+    path('client/notifications/<int:pk>/read/', client_views.ClientNotificationReadView.as_view(), name='client_notification_read'),
+    path('client/notifications/read-all/', client_views.ClientNotificationReadAllView.as_view(), name='client_notifications_read_all'),
+    path('client/profile/', client_views.ClientProfileView.as_view(), name='client_profile'),
+    # Dashboard - orders / clients / client messages
+    path('dashboard/orders/', portal_admin_views.DashboardOrderListView.as_view(), name='dashboard_orders'),
+    path('dashboard/orders/create/', portal_admin_views.DashboardOrderCreateView.as_view(), name='dashboard_order_create'),
+    path('dashboard/orders/<int:pk>/', portal_admin_views.DashboardOrderDetailView.as_view(), name='dashboard_order_detail'),
+    path('dashboard/orders/<int:pk>/edit/', portal_admin_views.DashboardOrderUpdateView.as_view(), name='dashboard_order_edit'),
+    path('dashboard/orders/<int:order_pk>/deliverables/upload/', portal_admin_views.DashboardDeliverableUploadView.as_view(), name='dashboard_deliverable_upload'),
+    path('dashboard/clients/', portal_admin_views.DashboardClientListView.as_view(), name='dashboard_clients'),
+    path('dashboard/clients/<int:pk>/', portal_admin_views.DashboardClientDetailView.as_view(), name='dashboard_client_detail'),
+    path('dashboard/client-messages/', portal_admin_views.DashboardClientMessageListView.as_view(), name='dashboard_client_messages'),
+    path('dashboard/client-messages/<int:pk>/', portal_admin_views.DashboardClientMessageDetailView.as_view(), name='dashboard_client_message_detail'),
     
     # Homepage Management
     path('dashboard/homepage/', views.HomepageSectionListView.as_view(), name='dashboard_homepage_sections'),

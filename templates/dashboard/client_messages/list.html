@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Client Messages - Dashboard{% endblock %}
+{% block page_title %}Client Messages{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <form method="get">
+            <select name="status" onchange="this.form.submit()" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="">All statuses</option>
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <span class="text-sm text-gray-500">{{ open_count }} open</span>
+    </div>
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow divide-y divide-gray-100 dark:divide-charcoal-700">
+        {% for t in tickets %}
+        <a href="{% url 'dashboard_client_message_detail' t.pk %}" class="block p-4 hover:bg-gray-50 dark:hover:bg-charcoal-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-medium">{{ t.subject }}</p>
+                    <p class="text-sm text-gray-500">{{ t.client.email }} · {{ t.get_message_type_display }}
+                        · {{ t.created_at|date:"M d, H:i" }}{% if t.order %} · {{ t.order.order_number }}{% endif %}</p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span class="text-xs px-2 py-1 rounded-full {% if t.priority == 'urgent' %}bg-red-100 text-red-700{% elif t.priority == 'high' %}bg-orange-100 text-orange-700{% else %}bg-gray-100 text-gray-600{% endif %}">{{ t.get_priority_display }}</span>
+                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">{{ t.get_status_display }}</span>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="p-8 text-center text-gray-500">No client messages.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -200,7 +200,7 @@
                         {% if order.is_payment_due %}
                         <div class="flex justify-between">
                             <span class="text-gray-600">Balance Due:</span>
-                            <span class="font-bold text-red-600">₹{{ order.quoted_amount|sub:order.paid_amount|floatformat:0 }}</span>
+                            <span class="font-bold text-red-600">₹{{ balance_due|floatformat:0 }}</span>
                         </div>
                         {% endif %}
                     </div>

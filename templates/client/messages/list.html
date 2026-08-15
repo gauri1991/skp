@@ -1,0 +1,48 @@
+{% extends 'client/base.html' %}
+{% block title %}Messages - Client Portal{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <form method="get" class="flex gap-2">
+            <select name="status" onchange="this.form.submit()" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="">All statuses</option>
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <a href="{% url 'client_message_create' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
+            New Message
+        </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow divide-y divide-gray-100">
+        {% for ticket in tickets %}
+        <a href="{% url 'client_message_detail' ticket.pk %}" class="block p-4 hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-medium text-gray-900">{{ ticket.subject }}</p>
+                    <p class="text-sm text-gray-500">{{ ticket.get_message_type_display }} · {{ ticket.created_at|date:"M d, Y H:i" }}
+                        {% if ticket.order %}· {{ ticket.order.order_number }}{% endif %}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    {% if ticket.admin_response %}<span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Replied</span>{% endif %}
+                    <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{{ ticket.get_status_display }}</span>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="p-8 text-center text-gray-500">No messages yet. Start a conversation with us!</div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <div class="flex justify-center gap-2">
+        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}" class="px-3 py-1 border rounded">Prev</a>{% endif %}
+        <span class="px-3 py-1 text-gray-600">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}&status={{ current_status }}" class="px-3 py-1 border rounded">Next</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
