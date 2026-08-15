@@ -7,13 +7,12 @@ This file is required for deploying Django on cPanel with Python apps support.
 import os
 import sys
 
-# Re-exec under the app's virtualenv interpreter if Passenger launched us
-# with a different Python (cPanel Application Manager ignores custom
-# interpreter paths and always starts with the system python3).
-INTERP = os.path.expanduser(
-    '~/virtualenv/repositories/skp/3.11/bin/python'
-)
-if os.path.isfile(INTERP) and sys.executable != INTERP:
+# Re-exec under the app's virtualenv interpreter if the server launched us
+# with a Python outside the virtualenv (sys.prefix check keeps this inert
+# when lswsgi/python already runs from inside the venv).
+VENV = os.path.expanduser('~/virtualenv/repositories/skp/3.11')
+INTERP = os.path.join(VENV, 'bin', 'python')
+if os.path.isfile(INTERP) and not sys.prefix.startswith(VENV):
     os.execl(INTERP, INTERP, *sys.argv)
 
 # Project root is wherever this file lives (works on any host/username)
