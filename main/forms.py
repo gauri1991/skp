@@ -1758,3 +1758,106 @@ class ClientAILimitForm(forms.ModelForm):
         widgets = {
             'ai_daily_limit': forms.NumberInput(attrs={'class': TW_INPUT}),
         }
+
+
+# ============ AI Platform Forms (Phase 3) ============
+
+from .models import AIProvider, ServiceAIFeature
+
+
+class AIProviderForm(forms.ModelForm):
+    api_key = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(render_value=False,
+                                   attrs={'class': TW_INPUT,
+                                          'placeholder': 'Leave blank to keep the current key'}),
+        help_text='Stored securely; only the last 4 characters are shown.')
+
+    class Meta:
+        model = AIProvider
+        fields = ['name', 'slug', 'adapter_type', 'kind', 'api_key', 'base_url',
+                  'default_model', 'is_active', 'extra_config']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': TW_INPUT}),
+            'slug': forms.TextInput(attrs={'class': TW_INPUT}),
+            'adapter_type': forms.Select(attrs={'class': TW_INPUT}),
+            'kind': forms.Select(attrs={'class': TW_INPUT}),
+            'base_url': forms.URLInput(attrs={'class': TW_INPUT, 'placeholder': 'Optional endpoint override'}),
+            'default_model': forms.TextInput(attrs={'class': TW_INPUT}),
+            'extra_config': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-xs', 'rows': 4}),
+        }
+
+    def clean_api_key(self):
+        key = self.cleaned_data.get('api_key', '')
+        if not key and self.instance.pk:
+            return self.instance.api_key  # keep existing
+        return key
+
+
+class ServiceAIFeatureForm(forms.ModelForm):
+    class Meta:
+        model = ServiceAIFeature
+        fields = ['service', 'title', 'slug', 'description', 'feature_type', 'provider',
+                  'model_override', 'system_prompt', 'user_prompt_template', 'input_fields',
+                  'output_guidance', 'allow_file_upload', 'is_active', 'display_order',
+                  'daily_limit_per_client']
+        widgets = {
+            'service': forms.Select(attrs={'class': TW_INPUT}),
+            'title': forms.TextInput(attrs={'class': TW_INPUT}),
+            'slug': forms.TextInput(attrs={'class': TW_INPUT}),
+            'description': forms.Textarea(attrs={'class': TW_INPUT, 'rows': 2}),
+            'feature_type': forms.Select(attrs={'class': TW_INPUT}),
+            'provider': forms.Select(attrs={'class': TW_INPUT}),
+            'model_override': forms.TextInput(attrs={'class': TW_INPUT, 'placeholder': 'Blank = provider default'}),
+            'system_prompt': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-sm', 'rows': 8}),
+            'user_prompt_template': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-sm', 'rows': 5}),
+            'input_fields': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-xs', 'rows': 6}),
+            'output_guidance': forms.Textarea(attrs={'class': TW_INPUT + ' font-mono text-sm', 'rows': 3}),
+            'display_order': forms.NumberInput(attrs={'class': TW_INPUT}),
+            'daily_limit_per_client': forms.NumberInput(attrs={'class': TW_INPUT}),
+        }
+
+    def clean_input_fields(self):
+        value = self.cleaned_data.get('input_fields')
+        if isinstance(value, str):
+            try:
+                value = json.loads(value)
+            except json.JSONDecodeError:
+                raise forms.ValidationError('input_fields must be valid JSON.')
+        if not isinstance(value, list):
+            raise forms.ValidationError('input_fields must be a JSON list of field objects.')
+        for f in value:
+            if not isinstance(f, dict) or 'name' not in f:
+                raise forms.ValidationError('Each input field needs at least a "name".')
+        return value
+
+
+def build_feature_input_form(feature, data=None, files=None):
+    """Render a dynamic form from a ServiceAIFeature.input_fields spec."""
+    fields = {}
+    for spec in feature.input_fields:
+        name = spec['name']
+        label = spec.get('label', name.replace('_', ' ').title())
+        required = bool(spec.get('required', False))
+        ftype = spec.get('type', 'text')
+        help_text = spec.get('help', '')
+        attrs = {'class': TW_INPUT}
+        if ftype == 'textarea':
+            fields[name] = forms.CharField(label=label, required=required, help_text=help_text,
+                                           widget=forms.Textarea(attrs={**attrs, 'rows': 4}))
+        elif ftype == 'number':
+            fields[name] = forms.FloatField(label=label, required=required, help_text=help_text,
+                                            widget=forms.NumberInput(attrs=attrs))
+        elif ftype == 'select':
+            choices = [(c, c) for c in spec.get('choices', [])]
+            fields[name] = forms.ChoiceField(label=label, required=required, choices=choices,
+                                             help_text=help_text,
+                                             widget=forms.Select(attrs=attrs))
+        elif ftype == 'file':
+            fields[name] = forms.FileField(label=label, required=required, help_text=help_text,
+                                           widget=forms.ClearableFileInput(attrs=attrs))
+        else:
+            fields[name] = forms.CharField(label=label, required=required, help_text=help_text,
+                                           widget=forms.TextInput(attrs=attrs))
+    form_cls = type('FeatureInputForm', (forms.Form,), fields)
+    return form_cls(data=data, files=files)

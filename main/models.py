@@ -1321,3 +1321,137 @@ class ContactMessage(models.Model):
         if notes:
             self.reply_notes = notes
         self.save(update_fields=['is_replied', 'reply_notes', 'updated_at'])
+
+
+# ============ AI Platform (Phase 3) ============
+
+class AIProvider(models.Model):
+    """A configured AI provider (LLM / image / video API). Keys live here so the
+    dashboard can manage everything without code deploys."""
+    ADAPTER_CHOICES = [
+        ('anthropic', 'Anthropic (Claude)'),
+        ('openai_compatible', 'OpenAI-compatible (generic)'),
+        ('gemini', 'Google Gemini'),
+        ('deepseek', 'DeepSeek'),
+        ('seedance', 'Seedance (video)'),
+        ('wan', 'WAN / Alibaba (video)'),
+        ('higgsfield', 'Higgsfield (video)'),
+    ]
+    KIND_CHOICES = [
+        ('text', 'Text'), ('image', 'Image'), ('video', 'Video'),
+        ('multimodal', 'Multimodal'),
+    ]
+
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    adapter_type = models.CharField(max_length=30, choices=ADAPTER_CHOICES)
+    kind = models.CharField(max_length=20, choices=KIND_CHOICES, default='text')
+    api_key = models.CharField(max_length=255, blank=True)
+    base_url = models.URLField(blank=True, help_text="Override the adapter's default endpoint")
+    default_model = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    extra_config = models.JSONField(default=dict, blank=True,
+        help_text="Adapter knobs: max_tokens, timeout, submit_path/poll_path for video, etc.")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'AI Provider'
+
+    def __str__(self):
+        return f"{self.name} ({self.default_model})"
+
+    @property
+    def masked_key(self):
+        if not self.api_key:
+            return '(not set)'
+        return f"••••{self.api_key[-4:]}"
+
+
+class ServiceAIFeature(models.Model):
+    """A client-facing AI tool attached to a service, fully prompt-configurable."""
+    FEATURE_TYPE_CHOICES = [('text', 'Text'), ('image', 'Image'), ('video', 'Video')]
+
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='ai_features')
+    title = models.CharField(max_length=200)
+    slug = models.SlugField()
+    description = models.TextField(help_text="Client-facing explanation of what this tool does")
+    feature_type = models.CharField(max_length=10, choices=FEATURE_TYPE_CHOICES, default='text')
+    provider = models.ForeignKey(AIProvider, on_delete=models.PROTECT, related_name='features')
+    model_override = models.CharField(max_length=100, blank=True)
+    system_prompt = models.TextField()
+    user_prompt_template = models.TextField(
+        help_text="Use {field_name} placeholders matching input field names")
+    input_fields = models.JSONField(default=list,
+        help_text='[{"name","label","type","required","choices","help"}] - type: text/textarea/select/number/file')
+    output_guidance = models.TextField(blank=True,
+        help_text="Appended to the system prompt (formatting rules)")
+    allow_file_upload = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+    daily_limit_per_client = models.PositiveIntegerField(default=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order', 'title']
+        unique_together = ['service', 'slug']
+        verbose_name = 'Service AI Feature'
+
+    def __str__(self):
+        return f"{self.service.title} - {self.title}"
+
+    @property
+    def effective_model(self):
+        return self.model_override or self.provider.default_model
+
+
+class AIGeneration(models.Model):
+    """One AI run by a client. Text/image complete synchronously; video is queued
+    and completed by the process_ai_jobs cron worker."""
+    STATUS_CHOICES = [
+        ('queued', 'Queued'), ('running', 'Running'),
+        ('succeeded', 'Succeeded'), ('failed', 'Failed'),
+    ]
+
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ai_generations')
+    feature = models.ForeignKey(ServiceAIFeature, on_delete=models.SET_NULL, null=True,
+                                related_name='generations')
+    # Snapshots survive feature/provider deletion
+    feature_title = models.CharField(max_length=200, blank=True)
+    provider_name = models.CharField(max_length=100, blank=True)
+    model_used = models.CharField(max_length=100, blank=True)
+    order = models.ForeignKey(ClientOrder, on_delete=models.SET_NULL, null=True, blank=True)
+    inputs = models.JSONField(default=dict)
+    input_file = models.FileField(storage=private_storage, upload_to='ai_inputs/%Y/%m/',
+                                  null=True, blank=True)
+    rendered_prompt = models.TextField(blank=True)
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='queued', db_index=True)
+    output_text = models.TextField(blank=True)
+    output_file = models.FileField(storage=private_storage, upload_to='ai_outputs/%Y/%m/',
+                                   null=True, blank=True)
+    output_mime = models.CharField(max_length=50, blank=True)
+    provider_job_id = models.CharField(max_length=200, blank=True)
+    tokens_input = models.PositiveIntegerField(null=True, blank=True)
+    tokens_output = models.PositiveIntegerField(null=True, blank=True)
+    error = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [models.Index(fields=['client', 'created_at'])]
+        verbose_name = 'AI Generation'
+
+    def __str__(self):
+        return f"{self.feature_title or 'AI'} for {self.client} ({self.status})"
+
+    @classmethod
+    def used_today(cls, client, feature):
+        from django.utils import timezone
+        return cls.objects.filter(
+            client=client, feature=feature,
+            created_at__date=timezone.localdate()
+        ).exclude(status='failed').count()

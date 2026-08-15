@@ -424,6 +424,26 @@
                         Services
                     </a>
 
+                    <!-- AI Studio -->
+                    <a href="{% url 'dashboard_ai_providers' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'ai_provider' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'ai_provider' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
+                        <i data-lucide="cpu" class="h-5 w-5 mr-3"></i>
+                        AI Providers
+                    </a>
+                    <a href="{% url 'dashboard_ai_features' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'ai_feature' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"
+                       :class="{% if 'ai_feature' not in request.resolver_match.url_name %}darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'{% endif %}">
+                        <i data-lucide="sparkles" class="h-5 w-5 mr-3"></i>
+                        AI Features
+                    </a>
+                    <a href="{% url 'dashboard_ai_generations' %}"
+                       class="flex items-center px-4 py-2 rounded-lg transition-colors"
+                       :class="darkMode ? 'text-champagne-300/80 hover:bg-charcoal-700 hover:text-champagne-200' : 'text-gray-700 hover:bg-gray-100'">
+                        <i data-lucide="activity" class="h-5 w-5 mr-3"></i>
+                        AI Generations
+                    </a>
+
                     <!-- Orders -->
                     <a href="{% url 'dashboard_orders' %}"
                        class="flex items-center px-4 py-2 rounded-lg transition-colors {% if 'dashboard_order' in request.resolver_match.url_name %}bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-400 border-r-2 border-gold-600{% endif %}"

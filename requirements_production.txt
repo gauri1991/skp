@@ -7,4 +7,5 @@ mysqlclient==2.2.1
 python-decouple==3.8
 whitenoise==6.11.0
 gunicorn==23.0.0
-packaging==25.0
+packaging==25.0anthropic==0.122.0
+requests==2.34.2

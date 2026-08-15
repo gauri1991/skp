@@ -1,0 +1,31 @@
+{% extends 'client/base.html' %}
+{% block title %}AI Tools - Client Portal{% endblock %}
+{% block page_title %}AI Tools{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    {% if not ai_enabled %}
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
+        AI features are currently disabled for your account. Contact us if you think this is a mistake.
+    </div>
+    {% endif %}
+    <p class="text-gray-600">AI-assisted tools for each of our services — describe your project and get instant
+        professional drafts, checklists, concept images and more. Free for registered clients (daily limits apply).</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for service in services %}
+        <a href="{% url 'client_ai_service' service.slug %}"
+           class="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow block">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="font-semibold text-gray-900">{{ service.title }}</h3>
+                <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">{{ service.ai_features.count }} tool{{ service.ai_features.count|pluralize }}</span>
+            </div>
+            <p class="text-sm text-gray-500">{{ service.short_description|truncatechars:120 }}</p>
+        </a>
+        {% empty %}
+        <div class="col-span-2 bg-white rounded-lg shadow p-8 text-center text-gray-500">
+            AI tools are being configured. Check back soon!
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'client_ai_history' %}" class="inline-block text-sm text-blue-600 hover:underline">View my generation history →</a>
+</div>
+{% endblock %}

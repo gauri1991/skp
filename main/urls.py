@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from . import client_views
 from . import portal_admin_views
+from . import ai_views
 
 urlpatterns = [
     # Public pages
@@ -136,6 +137,24 @@ urlpatterns = [
     path('dashboard/clients/<int:pk>/', portal_admin_views.DashboardClientDetailView.as_view(), name='dashboard_client_detail'),
     path('dashboard/client-messages/', portal_admin_views.DashboardClientMessageListView.as_view(), name='dashboard_client_messages'),
     path('dashboard/client-messages/<int:pk>/', portal_admin_views.DashboardClientMessageDetailView.as_view(), name='dashboard_client_message_detail'),
+    # Dashboard - AI Studio
+    path('dashboard/ai/providers/', ai_views.AIProviderListView.as_view(), name='dashboard_ai_providers'),
+    path('dashboard/ai/providers/create/', ai_views.AIProviderCreateView.as_view(), name='dashboard_ai_provider_create'),
+    path('dashboard/ai/providers/<int:pk>/edit/', ai_views.AIProviderUpdateView.as_view(), name='dashboard_ai_provider_edit'),
+    path('dashboard/ai/providers/<int:pk>/delete/', ai_views.AIProviderDeleteView.as_view(), name='dashboard_ai_provider_delete'),
+    path('dashboard/ai/providers/<int:pk>/test/', ai_views.AIProviderTestView.as_view(), name='dashboard_ai_provider_test'),
+    path('dashboard/ai/features/', ai_views.AIFeatureListView.as_view(), name='dashboard_ai_features'),
+    path('dashboard/ai/features/create/', ai_views.AIFeatureCreateView.as_view(), name='dashboard_ai_feature_create'),
+    path('dashboard/ai/features/<int:pk>/edit/', ai_views.AIFeatureUpdateView.as_view(), name='dashboard_ai_feature_edit'),
+    path('dashboard/ai/features/<int:pk>/delete/', ai_views.AIFeatureDeleteView.as_view(), name='dashboard_ai_feature_delete'),
+    path('dashboard/ai/generations/', ai_views.AIGenerationLogView.as_view(), name='dashboard_ai_generations'),
+    # Client - AI workspace
+    path('client/ai/', ai_views.ClientAIIndexView.as_view(), name='client_ai_index'),
+    path('client/ai/history/', ai_views.ClientAIHistoryView.as_view(), name='client_ai_history'),
+    path('client/ai/feature/<int:pk>/run/', ai_views.ClientAIRunView.as_view(), name='client_ai_run'),
+    path('client/ai/generations/<int:pk>/status/', ai_views.ClientAIStatusView.as_view(), name='client_ai_status'),
+    path('client/ai/generations/<int:pk>/file/', ai_views.ClientAIFileView.as_view(), name='client_ai_file'),
+    path('client/ai/<slug:service_slug>/', ai_views.ClientAIServiceView.as_view(), name='client_ai_service'),
     
     # Homepage Management
     path('dashboard/homepage/', views.HomepageSectionListView.as_view(), name='dashboard_homepage_sections'),

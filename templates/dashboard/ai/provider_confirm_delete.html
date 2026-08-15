@@ -1,0 +1,12 @@
+{% extends 'dashboard/base.html' %}
+{% block page_title %}Delete Provider{% endblock %}
+{% block content %}
+<div class="max-w-lg bg-white dark:bg-charcoal-800 rounded-lg shadow p-6">
+    <p class="mb-4">Delete provider <strong>{{ object.name }}</strong>? Features using it must be reassigned first (deletion is blocked while features reference it).</p>
+    <form method="post" class="flex gap-3">
+        {% csrf_token %}
+        <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-lg">Delete</button>
+        <a href="{% url 'dashboard_ai_providers' %}" class="px-6 py-2 border border-gray-300 rounded-lg">Cancel</a>
+    </form>
+</div>
+{% endblock %}

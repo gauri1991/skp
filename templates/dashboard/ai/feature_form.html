@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ page_title }} - Dashboard{% endblock %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="max-w-3xl">
+    <form method="post" class="bg-white dark:bg-charcoal-800 rounded-lg shadow p-6 space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-champagne-300 mb-1">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>{% endif %}
+            {% for error in field.errors %}<p class="text-sm text-red-600 mt-1">{{ error }}</p>{% endfor %}
+        </div>
+        {% endfor %}
+        <details class="text-xs text-gray-500">
+            <summary class="cursor-pointer">input_fields JSON format</summary>
+            <pre class="mt-2 p-3 bg-gray-50 rounded overflow-x-auto">[
+  {"name": "project_type", "label": "Project Type", "type": "select",
+   "required": true, "choices": ["Residential", "Commercial"], "help": "..."},
+  {"name": "description", "label": "Describe your project", "type": "textarea", "required": true},
+  {"name": "built_area", "label": "Built-up area (sq ft)", "type": "number"},
+  {"name": "sketch", "label": "Upload sketch", "type": "file"}
+]</pre>
+        </details>
+        <div class="flex gap-3">
+            <button type="submit" class="px-6 py-2 bg-gold-500 text-white rounded-lg font-medium">Save Feature</button>
+            <a href="{% url 'dashboard_ai_features' %}" class="px-6 py-2 border border-gray-300 rounded-lg">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

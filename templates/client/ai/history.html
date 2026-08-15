@@ -1,0 +1,45 @@
+{% extends 'client/base.html' %}
+{% block title %}AI History - Client Portal{% endblock %}
+{% block page_title %}My AI Generations{% endblock %}
+{% block content %}
+<div class="space-y-6 max-w-4xl">
+    <a href="{% url 'client_ai_index' %}" class="text-sm text-blue-600 hover:underline">&larr; AI tools</a>
+    <div class="space-y-4">
+        {% for g in generations %}
+        <div class="bg-white rounded-lg shadow p-5" x-data="{ open: false }">
+            <div class="flex items-center justify-between cursor-pointer" @click="open = !open">
+                <div>
+                    <p class="font-medium text-gray-900">{{ g.feature_title }}</p>
+                    <p class="text-xs text-gray-500">{{ g.created_at|date:"M d, Y H:i" }} · {{ g.model_used }}</p>
+                </div>
+                <span class="px-2 py-1 text-xs rounded-full
+                    {% if g.status == 'succeeded' %}bg-green-100 text-green-700{% elif g.status == 'failed' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">{{ g.get_status_display }}</span>
+            </div>
+            <div x-show="open" x-transition class="mt-4 border-t border-gray-100 pt-4 text-sm">
+                {% if g.output_text %}
+                <div class="whitespace-pre-wrap text-gray-800 max-h-96 overflow-auto">{{ g.output_text }}</div>
+                {% endif %}
+                {% if g.output_file %}
+                {% if g.output_mime|slice:":6" == "image/" %}
+                <img src="{% url 'client_ai_file' g.pk %}" class="rounded-lg max-w-md" alt="Generated image">
+                {% elif g.output_mime|slice:":6" == "video/" %}
+                <video src="{% url 'client_ai_file' g.pk %}" controls class="rounded-lg max-w-md"></video>
+                {% endif %}
+                <a href="{% url 'client_ai_file' g.pk %}" download class="inline-block mt-2 text-blue-600 text-xs hover:underline">Download</a>
+                {% endif %}
+                {% if g.error %}<p class="text-red-600">{{ g.error }}</p>{% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="bg-white rounded-lg shadow p-8 text-center text-gray-500">No generations yet — try an AI tool!</div>
+        {% endfor %}
+    </div>
+    {% if is_paginated %}
+    <div class="flex justify-center gap-2 text-sm">
+        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 border rounded">Prev</a>{% endif %}
+        <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 border rounded">Next</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

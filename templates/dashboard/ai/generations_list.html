@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}AI Generations - Dashboard{% endblock %}
+{% block page_title %}AI Generations{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <form method="get" class="flex gap-2">
+        <input type="text" name="client" value="{{ client_q }}" placeholder="Client email"
+               class="px-3 py-2 border border-gray-300 rounded-lg text-sm w-56">
+        <select name="status" class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+            <option value="">All statuses</option>
+            {% for value, label in status_choices %}
+            <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm">Filter</button>
+    </form>
+    <div class="bg-white dark:bg-charcoal-800 rounded-lg shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-charcoal-700 text-left text-gray-600 dark:text-champagne-300">
+                <tr><th class="px-4 py-3">When</th><th class="px-4 py-3">Client</th>
+                    <th class="px-4 py-3">Feature</th><th class="px-4 py-3">Model</th>
+                    <th class="px-4 py-3">Status</th><th class="px-4 py-3">Tokens</th>
+                    <th class="px-4 py-3">Error</th></tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-charcoal-700">
+                {% for g in generations %}
+                <tr>
+                    <td class="px-4 py-3 text-gray-500 whitespace-nowrap">{{ g.created_at|date:"M d H:i" }}</td>
+                    <td class="px-4 py-3">{{ g.client.email }}</td>
+                    <td class="px-4 py-3">{{ g.feature_title }}</td>
+                    <td class="px-4 py-3 font-mono text-xs">{{ g.model_used }}</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full
+                        {% if g.status == 'succeeded' %}bg-green-100 text-green-700{% elif g.status == 'failed' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">{{ g.status }}</span></td>
+                    <td class="px-4 py-3 text-xs">{{ g.tokens_input|default:"—" }} / {{ g.tokens_output|default:"—" }}</td>
+                    <td class="px-4 py-3 text-xs text-red-600 max-w-[240px] truncate">{{ g.error }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No generations yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if is_paginated %}
+    <div class="flex justify-center gap-2 text-sm">
+        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}&client={{ client_q }}" class="px-3 py-1 border rounded">Prev</a>{% endif %}
+        <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}&status={{ current_status }}&client={{ client_q }}" class="px-3 py-1 border rounded">Next</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

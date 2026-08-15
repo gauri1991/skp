@@ -29,8 +29,17 @@ above whatever cPanel has generated there.
 ### 3. Keepalive cron job (cPanel → Cron Jobs, every minute: `* * * * *`):
 
 ```
-. /home/meenvstf/app_env.sh; cd /home/meenvstf/repositories/skp && git pull -q origin main 2>/dev/null; kill -0 $(cat /home/meenvstf/gunicorn.pid 2>/dev/null) 2>/dev/null || /home/meenvstf/virtualenv/repositories/skp/3.11/bin/gunicorn --chdir /home/meenvstf/repositories/skp -w 2 -b 127.0.0.1:8090 --daemon --pid /home/meenvstf/gunicorn.pid passenger_wsgi:application >> /home/meenvstf/gunicorn_cron.log 2>&1
+. /home/meenvstf/app_env.sh; cd /home/meenvstf/repositories/skp && git pull -q origin main 2>/dev/null; kill -0 $(cat /home/meenvstf/gunicorn.pid 2>/dev/null) 2>/dev/null || /home/meenvstf/virtualenv/repositories/skp/3.11/bin/gunicorn --chdir /home/meenvstf/repositories/skp -w 2 --threads 8 --timeout 180 -b 127.0.0.1:8090 --daemon --pid /home/meenvstf/gunicorn.pid passenger_wsgi:application >> /home/meenvstf/gunicorn_cron.log 2>&1
 ```
+
+### 4. AI job worker cron (every minute):
+
+```
+* * * * * . /home/meenvstf/app_env.sh; /home/meenvstf/virtualenv/repositories/skp/3.11/bin/python /home/meenvstf/repositories/skp/manage.py process_ai_jobs >> /home/meenvstf/ai_jobs.log 2>&1
+```
+
+(Threaded gunicorn — `--threads 8 --timeout 180` — is required so synchronous AI
+calls don't starve the two workers.)
 
 Then run once (cPanel Terminal or a temporary cron):
 

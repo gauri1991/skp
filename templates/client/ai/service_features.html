@@ -1,0 +1,110 @@
+{% extends 'client/base.html' %}
+{% block title %}{{ service.title }} AI Tools - Client Portal{% endblock %}
+{% block page_title %}{{ service.title }} — AI Tools{% endblock %}
+{% block content %}
+<div class="space-y-8 max-w-4xl">
+    <a href="{% url 'client_ai_index' %}" class="text-sm text-blue-600 hover:underline">&larr; All AI tools</a>
+
+    {% for fd in feature_data %}
+    <div class="bg-white rounded-lg shadow" x-data="aiRunner({{ fd.feature.pk }}, {{ fd.remaining }})">
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">{{ fd.feature.title }}</h3>
+                <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+                    <span x-text="remaining"></span>/{{ fd.limit }} left today · {{ fd.feature.get_feature_type_display }}
+                </span>
+            </div>
+            <p class="text-sm text-gray-500 mt-1">{{ fd.feature.description }}</p>
+        </div>
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <form @submit.prevent="run($el)" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+                {% for field in fd.form %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                    {{ field }}
+                    {% if field.help_text %}<p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>{% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" :disabled="running || remaining <= 0"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50">
+                    <span x-show="!running">Generate</span>
+                    <span x-show="running" class="flex items-center gap-2">
+                        <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+                        Generating…
+                    </span>
+                </button>
+                <p x-show="remaining <= 0" class="text-xs text-red-600">Daily limit reached for this tool.</p>
+            </form>
+            <div class="bg-gray-50 rounded-lg p-4 min-h-[200px] text-sm overflow-auto max-h-[500px]">
+                <template x-if="!output && !error && !running && !fileUrl">
+                    <p class="text-gray-400">Your result will appear here.</p>
+                </template>
+                <template x-if="running">
+                    <p class="text-gray-500" x-text="statusMessage"></p>
+                </template>
+                <template x-if="error">
+                    <p class="text-red-600" x-text="error"></p>
+                </template>
+                <div x-show="output" class="whitespace-pre-wrap text-gray-800" x-text="output"></div>
+                <template x-if="fileUrl && mime && mime.startsWith('image/')">
+                    <img :src="fileUrl" class="rounded-lg max-w-full" alt="AI generated image">
+                </template>
+                <template x-if="fileUrl && mime && mime.startsWith('video/')">
+                    <video :src="fileUrl" controls class="rounded-lg max-w-full"></video>
+                </template>
+                <template x-if="fileUrl">
+                    <a :href="fileUrl" download class="inline-block mt-2 text-blue-600 text-xs hover:underline">Download</a>
+                </template>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="bg-white rounded-lg shadow p-8 text-center text-gray-500">No AI tools configured for this service yet.</div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function aiRunner(featureId, initialRemaining) {
+    return {
+        running: false, output: '', error: '', fileUrl: '', mime: '',
+        remaining: initialRemaining, statusMessage: 'Working on it…', pollTimer: null,
+        run(formEl) {
+            this.running = true; this.output = ''; this.error = ''; this.fileUrl = '';
+            this.statusMessage = 'Working on it… this can take up to a minute.';
+            const data = new FormData(formEl);
+            fetch(`/client/ai/feature/${featureId}/run/`, {
+                method: 'POST', body: data,
+                headers: {'X-CSRFToken': data.get('csrfmiddlewaretoken')},
+            }).then(r => r.json()).then(d => this.handle(d))
+              .catch(() => { this.running = false; this.error = 'Request failed. Please try again.'; });
+        },
+        handle(d) {
+            if (d.remaining !== undefined) this.remaining = d.remaining;
+            if (d.status === 'queued') {
+                this.statusMessage = d.message || 'Queued… video generation takes a few minutes.';
+                this.poll(d.id);
+            } else if (d.status === 'succeeded') {
+                this.running = false;
+                this.output = d.output_text || '';
+                if (d.file_url) { this.fileUrl = d.file_url; this.mime = d.mime || ''; }
+            } else {
+                this.running = false;
+                this.error = d.error || 'Generation failed.';
+            }
+        },
+        poll(id) {
+            this.pollTimer = setInterval(() => {
+                fetch(`/client/ai/generations/${id}/status/`).then(r => r.json()).then(d => {
+                    if (d.status === 'succeeded' || d.status === 'failed') {
+                        clearInterval(this.pollTimer);
+                        this.handle(d);
+                    }
+                });
+            }, 5000);
+        },
+    };
+}
+</script>
+{% endblock %}

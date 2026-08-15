@@ -105,6 +105,14 @@
                 {% endif %}
             </a>
             
+            <!-- AI Tools -->
+            <a href="{% url 'client_ai_index' %}"
+               class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if 'client_ai' in request.resolver_match.url_name %}bg-primary-50 text-primary-700 border-r-2 border-primary-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+                <i data-lucide="sparkles" class="h-5 w-5 mr-3"></i>
+                AI Tools
+                <span class="ml-auto bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded-full">New</span>
+            </a>
+
             <!-- My Orders -->
             <div x-data="{ open: {% if 'orders' in request.path %}true{% else %}false{% endif %} }">
                 <button @click="open = !open" 
