@@ -29,6 +29,13 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+# Public host, when the site is served through a reverse proxy that rewrites
+# the Host header (see main/middleware.py). Empty in local development, where
+# the browser talks to runserver directly and the Host header is already
+# correct -- CanonicalHostMiddleware disables itself when this is unset.
+CANONICAL_HOST = config('CANONICAL_HOST', default='').strip()
+CANONICAL_PROTO = config('CANONICAL_PROTO', default='https')
+
 
 # Application definition
 
@@ -44,6 +51,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # First: restores the public host/scheme when running behind a proxy.
+    # No-op unless CANONICAL_HOST is set.
+    'main.middleware.CanonicalHostMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -154,8 +164,22 @@ LOGOUT_REDIRECT_URL = '/dashboard/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Trusted origins for CSRF. Behind a proxy the browser's Origin header names
+# the public site, not the host Django sees, so it must be trusted explicitly.
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default=','.join(
+        f'{CANONICAL_PROTO}://{h}'
+        for h in (CANONICAL_HOST, f'www.{CANONICAL_HOST}')
+        if CANONICAL_HOST
+    ),
+    cast=Csv(),
+)
+
 # Security Settings for Production
 if not DEBUG:
+    # TLS is terminated by the proxy, which forwards plain HTTP.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
     SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
     CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)

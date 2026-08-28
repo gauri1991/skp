@@ -5,6 +5,7 @@ export DB_NAME=meenvstf_sumithrakp
 export DB_USER=meenvstf_skpuser
 export DB_PASSWORD='CHANGE-ME'
 export SECRET_KEY='CHANGE-ME-long-random-string'
+export CANONICAL_HOST='sumithrakp.com'
 export ALLOWED_HOSTS='sumithrakp.com,www.sumithrakp.com,127.0.0.1,localhost'
 export SECURE_SSL_REDIRECT=False
 export CSRF_TRUSTED_ORIGINS='https://sumithrakp.com,https://www.sumithrakp.com'

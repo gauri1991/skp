@@ -1,10 +1,31 @@
 # Prepend this block to /home/meenvstf/public_html/.htaccess
 # (above the cPanel-generated sections). It forwards all requests
 # for the domain to gunicorn, except AutoSSL validation files.
+#
+# Why the X-Forwarded-* headers: mod_proxy rewrites the Host header to the
+# proxy target (127.0.0.1:8090) unless ProxyPreserveHost On is set, and that
+# directive is not allowed in .htaccess. Forwarding the original host and
+# scheme lets Django rebuild the public URL -- see main/middleware.py
+# (CanonicalHostMiddleware) and SECURE_PROXY_SSL_HEADER in
+# settings_production.py. If mod_headers is unavailable the app still works:
+# the middleware falls back to CANONICAL_HOST.
 
 # BEGIN django gunicorn proxy
 <IfModule mod_rewrite.c>
 RewriteEngine On
+
+# TLS terminates here, so the http -> https redirect belongs here too
+# (SECURE_SSL_REDIRECT stays False; gunicorn only ever sees plain HTTP and
+# would redirect-loop).
+RewriteCond %{HTTPS} !=on
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+<IfModule mod_headers.c>
+RequestHeader set X-Forwarded-Host "%{Host}i"
+RequestHeader set X-Forwarded-Proto "https"
+</IfModule>
+
 RewriteCond %{REQUEST_URI} !^/\.well-known/
 RewriteRule ^(.*)$ http://127.0.0.1:8090/$1 [P,L]
 </IfModule>
