@@ -17,7 +17,20 @@ SECRET_KEY = os.environ.get('SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+# The public host this site is served on. Requests arrive from the local
+# LiteSpeed proxy with Host: 127.0.0.1:8090, so CanonicalHostMiddleware
+# rewrites them back to this value (see main/middleware.py).
+CANONICAL_HOST = os.environ.get('CANONICAL_HOST', 'sumithrakp.com').strip()
+CANONICAL_PROTO = os.environ.get('CANONICAL_PROTO', 'https')
+
+_DEFAULT_ALLOWED_HOSTS = ','.join(
+    h for h in (CANONICAL_HOST, f'www.{CANONICAL_HOST}', '127.0.0.1', 'localhost') if h
+)
+ALLOWED_HOSTS = [
+    h.strip()
+    for h in os.environ.get('ALLOWED_HOSTS', _DEFAULT_ALLOWED_HOSTS).split(',')
+    if h.strip()
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,6 +45,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # First: restores the public host/scheme behind the loopback proxy, so
+    # ALLOWED_HOSTS, the SSL redirect and CSRF origin checks below all see
+    # the real request.
+    'main.middleware.CanonicalHostMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -130,13 +147,29 @@ LOGIN_URL = '/dashboard/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/dashboard/login/'
 
-# Trusted origins for CSRF when running behind a local reverse proxy
+# Trusted origins for CSRF. The browser posts with
+# Origin: https://sumithrakp.com, so that origin must be trusted explicitly --
+# matching ALLOWED_HOSTS is not enough for Django's origin check.
+_DEFAULT_CSRF_ORIGINS = ','.join(
+    f'{CANONICAL_PROTO}://{h}'
+    for h in (CANONICAL_HOST, f'www.{CANONICAL_HOST}')
+    if CANONICAL_HOST
+)
 CSRF_TRUSTED_ORIGINS = [
-    o for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o
+    o.strip()
+    for o in os.environ.get('CSRF_TRUSTED_ORIGINS', _DEFAULT_CSRF_ORIGINS).split(',')
+    if o.strip()
 ]
 
+# LiteSpeed terminates TLS and proxies plain HTTP to gunicorn. Without this,
+# request.is_secure() is always False: secure cookies are never honoured and
+# SECURE_SSL_REDIRECT below would redirect-loop.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Security Settings
-SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+# Default False: the http -> https redirect belongs at the edge, in .htaccess
+# (see deploy/htaccess-proxy.txt). Django only sees the proxied HTTP request.
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'True') == 'True'
 CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'True') == 'True'
 SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '31536000'))

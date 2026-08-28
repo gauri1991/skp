@@ -16,6 +16,30 @@ Internet → LiteSpeed (.htaccess proxy) → gunicorn on 127.0.0.1:8090 → Djan
   process restart to take effect: `kill $(cat ~/gunicorn.pid)` (the cron
   respawns it).
 
+### The proxy rewrites the Host header
+
+`mod_proxy` replaces the `Host` header with the proxy target unless
+`ProxyPreserveHost On` is set — and that directive is invalid in `.htaccess`,
+the only Apache config we control here. So Django receives
+`Host: 127.0.0.1:8090`, which used to leak into every absolute URL
+(`<link rel="canonical">`, `sitemap.xml`, emailed links) and broke CSRF on every
+POST: the browser sends `Origin: https://sumithrakp.com`, Django believed it
+was serving `http://127.0.0.1:8090`, and the two didn't match.
+
+Two halves fix it, and either half works alone:
+
+1. `htaccess-proxy.txt` forwards `X-Forwarded-Host` / `X-Forwarded-Proto`.
+2. `main.middleware.CanonicalHostMiddleware` (first in `MIDDLEWARE`) restores
+   the public host on any request that arrived on loopback — from
+   `X-Forwarded-Host` when present, otherwise from the `CANONICAL_HOST`
+   setting, which defaults to `sumithrakp.com` and is overridable via
+   `app_env.sh`. It also marks those requests as https, which
+   `SECURE_PROXY_SSL_HEADER` turns into `request.is_secure()`.
+
+`ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` both default to the canonical host
+(plus `www.`) in `settings_production.py`, so a missing `app_env.sh` export no
+longer takes the site down. Regression tests: `manage.py test main`.
+
 ## Recovery: the three server-only pieces
 
 If the server is ever wiped, restore these after re-cloning the repo and
@@ -60,8 +84,8 @@ cd ~/repositories/skp
   `Path(__file__).resolve().parent` (NOT `.parent.parent`).
 - The cron keepalive must check the PID file, not `pgrep` — `pgrep -f` matches
   the cron shell's own command line and never starts anything.
-- `SECURE_SSL_REDIRECT` must be `False` in `app_env.sh` (LiteSpeed terminates
-  TLS; gunicorn sees plain HTTP and would redirect-loop), and
-  `CSRF_TRUSTED_ORIGINS` must list the https origins.
+- `SECURE_SSL_REDIRECT` must stay `False` (LiteSpeed terminates TLS; gunicorn
+  sees plain HTTP and would redirect-loop). The http -> https redirect lives in
+  `.htaccess` instead — it is part of `htaccess-proxy.txt`.
 - `media/` is not in git; content added via the dashboard lives only in
   production (MySQL + `~/repositories/skp/media/`). Back those up separately.
