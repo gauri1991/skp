@@ -16,10 +16,13 @@ RewriteEngine On
 
 # TLS terminates here, so the http -> https redirect belongs here too
 # (SECURE_SSL_REDIRECT stays False; gunicorn only ever sees plain HTTP and
-# would redirect-loop).
+# would redirect-loop). Both TLS conditions must fail before we redirect:
+# if %{HTTPS} is ever unset on this LiteSpeed build, the port check still
+# recognises the request as already-TLS and prevents a redirect loop.
 RewriteCond %{HTTPS} !=on
+RewriteCond %{SERVER_PORT} !=443
 RewriteCond %{REQUEST_URI} !^/\.well-known/
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 <IfModule mod_headers.c>
 RequestHeader set X-Forwarded-Host "%{Host}i"
