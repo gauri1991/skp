@@ -41,7 +41,9 @@ class CanonicalHostMiddlewareTests(SimpleTestCase):
         ))
         self.assertEqual(request.get_host(), 'www.sumithrakp.com')
 
-    def test_first_entry_of_a_forwarded_host_chain_is_used(self):
+    def test_the_nearest_proxys_entry_wins_in_a_forwarded_host_chain(self):
+        # LiteSpeed appends what it saw, so the trustworthy entry is the last
+        # one; the loopback target it proxies to is skipped.
         request = self.middleware(self.factory.get(
             '/',
             HTTP_HOST='127.0.0.1:8090',
@@ -49,19 +51,40 @@ class CanonicalHostMiddlewareTests(SimpleTestCase):
         ))
         self.assertEqual(request.get_host(), 'sumithrakp.com')
 
+    def test_spoofed_forwarded_host_falls_back_to_the_canonical_host(self):
+        # A client can write X-Forwarded-Host itself. Anything ALLOWED_HOSTS
+        # would reject is ignored rather than passed through to raise 400.
+        request = self.middleware(self.factory.get(
+            '/',
+            HTTP_HOST='127.0.0.1:8090',
+            HTTP_X_FORWARDED_HOST='evil.example',
+        ))
+        self.assertEqual(request.get_host(), 'sumithrakp.com')
+
+    def test_spoofed_entry_cannot_outrank_the_real_one(self):
+        request = self.middleware(self.factory.get(
+            '/',
+            HTTP_HOST='127.0.0.1:8090',
+            HTTP_X_FORWARDED_HOST='evil.example, www.sumithrakp.com',
+        ))
+        self.assertEqual(request.get_host(), 'www.sumithrakp.com')
+
     def test_public_host_is_left_alone(self):
         request = self.middleware(self.factory.get('/', HTTP_HOST='www.sumithrakp.com'))
         self.assertEqual(request.get_host(), 'www.sumithrakp.com')
         # Nothing arrived on loopback, so the scheme is not assumed either.
         self.assertNotIn('HTTP_X_FORWARDED_PROTO', request.META)
 
-    def test_proxy_supplied_scheme_is_not_overwritten(self):
+    def test_client_supplied_scheme_cannot_downgrade_the_request(self):
+        # X-Forwarded-Proto reaches Django verbatim from the client here, so
+        # it must not be able to clear is_secure(). The edge redirects http
+        # to https, so a proxied request is always https.
         request = self.middleware(self.factory.get(
             '/',
             HTTP_HOST='127.0.0.1:8090',
             HTTP_X_FORWARDED_PROTO='http',
         ))
-        self.assertFalse(request.is_secure())
+        self.assertTrue(request.is_secure())
 
     def test_localhost_and_ipv6_loopback_are_recognised(self):
         for host in ('localhost:8090', 'localhost', '[::1]:8090', '127.0.0.2'):
@@ -115,6 +138,12 @@ class CsrfOriginTests(SimpleTestCase):
     def test_www_origin_is_accepted_via_trusted_origins(self):
         request = CanonicalHostMiddleware(echo)(self._post('https://www.sumithrakp.com'))
         self.assertIsNone(self.csrf.process_view(request, echo, (), {}))
+
+    def test_spoofed_forwarded_host_cannot_make_an_origin_trusted(self):
+        request = self._post('https://evil.example')
+        request.META['HTTP_X_FORWARDED_HOST'] = 'evil.example'
+        request = CanonicalHostMiddleware(echo)(request)
+        self.assertEqual(self.csrf.process_view(request, echo, (), {}).status_code, 403)
 
     def test_unrelated_origin_is_still_rejected(self):
         request = CanonicalHostMiddleware(echo)(self._post('https://evil.example'))

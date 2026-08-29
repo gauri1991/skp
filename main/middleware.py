@@ -26,6 +26,7 @@ so nothing else can reach it.
 
 from django.conf import settings
 from django.core.exceptions import MiddlewareNotUsed
+from django.http.request import validate_host
 
 
 def _strip_port(host):
@@ -58,8 +59,8 @@ class CanonicalHostMiddleware:
     Reads ``settings.CANONICAL_HOST`` (required -- the middleware disables
     itself when it is empty) and ``settings.CANONICAL_PROTO`` (default
     ``https``). A proxy-supplied ``X-Forwarded-Host`` wins over
-    ``CANONICAL_HOST`` when present, so the same code serves both apex and
-    ``www`` correctly.
+    ``CANONICAL_HOST`` when it names a host ``ALLOWED_HOSTS`` already
+    accepts, so the same code serves both apex and ``www`` correctly.
     """
 
     def __init__(self, get_response):
@@ -71,12 +72,31 @@ class CanonicalHostMiddleware:
 
     def __call__(self, request):
         if _is_loopback(request.META.get('HTTP_HOST', '')):
-            forwarded = request.META.get('HTTP_X_FORWARDED_HOST', '')
-            # A proxy chain may append to the header; the client-facing host
-            # is the first entry.
-            public_host = forwarded.split(',')[0].strip() or self.canonical_host
-            request.META['HTTP_HOST'] = public_host
-            # TLS is terminated at the edge, so the proxied request is plain
-            # HTTP. Only fill in the scheme the proxy did not tell us about.
-            request.META.setdefault('HTTP_X_FORWARDED_PROTO', self.canonical_proto)
+            request.META['HTTP_HOST'] = self._public_host(request)
+            # TLS terminates at the edge, and the edge redirects http -> https
+            # (deploy/htaccess-proxy.txt), so whatever reaches gunicorn was
+            # served over https. Set the scheme outright rather than deferring
+            # to X-Forwarded-Proto: that header is client-writable here, and a
+            # spoofed "http" would otherwise clear request.is_secure().
+            request.META['HTTP_X_FORWARDED_PROTO'] = self.canonical_proto
         return self.get_response(request)
+
+    def _public_host(self, request):
+        """Return the public host to serve this proxied request under.
+
+        ``X-Forwarded-Host`` is not trustworthy on its own: LiteSpeed appends
+        the host it saw rather than replacing what arrived, so a value the
+        client sent leads the list. Only entries ``ALLOWED_HOSTS`` already
+        accepts are considered, and the last of those -- the one the nearest
+        proxy added -- wins. Anything else falls back to ``CANONICAL_HOST``,
+        which degrades a spoofing attempt into the right page instead of the
+        400 that unvalidated pass-through produces.
+        """
+        forwarded = request.META.get('HTTP_X_FORWARDED_HOST', '')
+        for candidate in reversed(forwarded.split(',')):
+            candidate = candidate.strip()
+            if not candidate or _is_loopback(candidate):
+                continue
+            if validate_host(_strip_port(candidate), settings.ALLOWED_HOSTS):
+                return candidate
+        return self.canonical_host

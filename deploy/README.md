@@ -40,6 +40,37 @@ Two halves fix it, and either half works alone:
 (plus `www.`) in `settings_production.py`, so a missing `app_env.sh` export no
 longer takes the site down. Regression tests: `manage.py test main`.
 
+**`X-Forwarded-*` is client-writable here.** LiteSpeed appends the host it saw
+instead of replacing what arrived, so a header the browser sent leads the list
+and reaches Django verbatim — `curl -H 'X-Forwarded-Host: probe.example'`
+against the live site used to produce a 400. The middleware therefore accepts
+only forwarded hosts that `ALLOWED_HOSTS` already allows, takes the *last*
+such entry (the one the nearest proxy added), and falls back to
+`CANONICAL_HOST` otherwise. It likewise sets the scheme from `CANONICAL_PROTO`
+outright rather than trusting a supplied `X-Forwarded-Proto`, which a client
+could otherwise set to `http` to clear `request.is_secure()`.
+
+### Verifying the proxy after a deploy
+
+```
+curl -sI http://sumithrakp.com/            # must be 301 -> https (edge redirect)
+curl -s https://sumithrakp.com/ | grep canonical         # https://sumithrakp.com/
+curl -s https://www.sumithrakp.com/ | grep canonical     # https://www.sumithrakp.com/
+curl -s -H 'X-Forwarded-Host: probe.example' https://sumithrakp.com/ | grep canonical
+                                           # must still be https://sumithrakp.com/
+```
+
+A POST check that exercises the original bug (expect 200 with an "Invalid
+credentials" page, never a 403):
+
+```
+J=$(mktemp); T=$(curl -s -c $J https://sumithrakp.com/dashboard/login/ \
+  | grep -oP 'name="csrfmiddlewaretoken" value="\K[^"]+' | head -1)
+curl -s -o /dev/null -w '%{http_code}\n' -b $J -H 'Origin: https://sumithrakp.com' \
+  -d "csrfmiddlewaretoken=$T" -d 'username=probe@example.com' -d 'password=wrong' \
+  https://sumithrakp.com/dashboard/login/
+```
+
 ## Recovery: the three server-only pieces
 
 If the server is ever wiped, restore these after re-cloning the repo and
@@ -87,5 +118,13 @@ cd ~/repositories/skp
 - `SECURE_SSL_REDIRECT` must stay `False` (LiteSpeed terminates TLS; gunicorn
   sees plain HTTP and would redirect-loop). The http -> https redirect lives in
   `.htaccess` instead — it is part of `htaccess-proxy.txt`.
+- **`.htaccess` does not auto-deploy.** The cron pulls `~/repositories/skp`
+  only; `~/public_html/.htaccess` is server-only state, so editing
+  `htaccess-proxy.txt` in git changes nothing until it is copied across by
+  hand. Missing the redirect block is silent and ugly: `http://sumithrakp.com`
+  serves the whole site at 200 in cleartext, and because the session and CSRF
+  cookies are `Secure` the browser never sends them back — so logging in over
+  `http://` fails the CSRF check even though the proxy fix is deployed. Always
+  run the `curl -sI http://...` check above after touching `.htaccess`.
 - `media/` is not in git; content added via the dashboard lives only in
   production (MySQL + `~/repositories/skp/media/`). Back those up separately.
